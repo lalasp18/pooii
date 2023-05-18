@@ -14,12 +14,15 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
@@ -54,10 +57,10 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
     private void initComponents() {
 
         btnGroupCategoria = new javax.swing.ButtonGroup();
-        menuPopBtn = new javax.swing.JPopupMenu();
-        menuPopQtd = new javax.swing.JMenuItem();
-        menuPopAvaliar = new javax.swing.JMenuItem();
-        menuPopAvaliacao = new javax.swing.JMenuItem();
+        menuPop = new javax.swing.JPopupMenu();
+        popAvaliar = new javax.swing.JMenuItem();
+        popAvaliacao = new javax.swing.JMenuItem();
+        popDescricao = new javax.swing.JMenuItem();
         scrollPanelProdutos = new javax.swing.JScrollPane();
         panelProdutos = new javax.swing.JPanel();
         origami1 = new javax.swing.JToggleButton();
@@ -94,29 +97,29 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         menuExcluirConta1 = new javax.swing.JMenuItem();
 
-        menuPopQtd.setText("Quantidade");
-        menuPopQtd.addActionListener(new java.awt.event.ActionListener() {
+        popAvaliar.setText("Avaliar");
+        popAvaliar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuPopQtdActionPerformed(evt);
+                popAvaliarActionPerformed(evt);
             }
         });
-        menuPopBtn.add(menuPopQtd);
+        menuPop.add(popAvaliar);
 
-        menuPopAvaliar.setText("Avaliar");
-        menuPopAvaliar.addActionListener(new java.awt.event.ActionListener() {
+        popAvaliacao.setText("Ver Avaliação");
+        popAvaliacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuPopAvaliarActionPerformed(evt);
+                popAvaliacaoActionPerformed(evt);
             }
         });
-        menuPopBtn.add(menuPopAvaliar);
+        menuPop.add(popAvaliacao);
 
-        menuPopAvaliacao.setText("Ver Avaliação");
-        menuPopAvaliacao.addActionListener(new java.awt.event.ActionListener() {
+        popDescricao.setText("Ver descrição");
+        popDescricao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuPopAvaliacaoActionPerformed(evt);
+                popDescricaoActionPerformed(evt);
             }
         });
-        menuPopBtn.add(menuPopAvaliacao);
+        menuPop.add(popDescricao);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Loja de Origamis");
@@ -132,13 +135,13 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
 
         origami1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/btn/raposa_redimens-removebg-preview.png"))); // NOI18N
         origami1.setText("jToggleButton1");
-        origami1.setComponentPopupMenu(menuPopBtn);
+        origami1.setComponentPopupMenu(menuPop);
         origami1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         origami1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
         tipo1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/btn/morango_redimens-removebg-preview.png"))); // NOI18N
         tipo1.setText("jToggleButton2");
-        tipo1.setComponentPopupMenu(menuPopBtn);
+        tipo1.setComponentPopupMenu(menuPop);
         tipo1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         tipo1.setInheritsPopupMenu(true);
         tipo1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -156,7 +159,7 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
 
         origami2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/btn/raposa_redimens-removebg-preview.png"))); // NOI18N
         origami2.setText("jToggleButton3");
-        origami2.setComponentPopupMenu(menuPopBtn);
+        origami2.setComponentPopupMenu(menuPop);
         origami2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         origami2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
@@ -189,7 +192,7 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
 
         jToggleButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/btn/morango_redimens-removebg-preview.png"))); // NOI18N
         jToggleButton11.setText("jToggleButton2");
-        jToggleButton11.setComponentPopupMenu(menuPopBtn);
+        jToggleButton11.setComponentPopupMenu(menuPop);
         jToggleButton11.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jToggleButton11.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
@@ -295,37 +298,45 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
 
         jPanel1.setBackground(new Color(255, 0, 200, 128));
 
+        togBtnModular.setBackground(new java.awt.Color(165, 165, 250));
         btnGroupCategoria.add(togBtnModular);
         togBtnModular.setFont(new java.awt.Font("Segoe Print", 1, 24)); // NOI18N
         togBtnModular.setSelected(true);
         togBtnModular.setText("Modular");
+        togBtnModular.setOpaque(true);
         togBtnModular.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 togBtnModularActionPerformed(evt);
             }
         });
 
+        togBtnBlock.setBackground(new java.awt.Color(165, 165, 250));
         btnGroupCategoria.add(togBtnBlock);
         togBtnBlock.setFont(new java.awt.Font("Segoe Print", 1, 24)); // NOI18N
         togBtnBlock.setText("Block Folding");
+        togBtnBlock.setOpaque(true);
         togBtnBlock.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 togBtnBlockActionPerformed(evt);
             }
         });
 
+        togBtnBill.setBackground(new java.awt.Color(165, 165, 250));
         btnGroupCategoria.add(togBtnBill);
         togBtnBill.setFont(new java.awt.Font("Segoe Print", 1, 24)); // NOI18N
         togBtnBill.setText("Bill Folding");
+        togBtnBill.setOpaque(true);
         togBtnBill.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 togBtnBillActionPerformed(evt);
             }
         });
 
+        togBtnArquit.setBackground(new java.awt.Color(165, 165, 250));
         btnGroupCategoria.add(togBtnArquit);
         togBtnArquit.setFont(new java.awt.Font("Segoe Print", 1, 24)); // NOI18N
         togBtnArquit.setText("Arquitetônico");
+        togBtnArquit.setOpaque(true);
         togBtnArquit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 togBtnArquitActionPerformed(evt);
@@ -457,7 +468,7 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_menuCarrinhoActionPerformed
 
-    private void menuPopAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPopAvaliacaoActionPerformed
+    private void popAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popAvaliacaoActionPerformed
         StringBuilder mensagem = new StringBuilder();
         for (int i=0; i < 20; i++) {
             mensagem.append("Usuário tal qualquer ").append("\n");
@@ -489,7 +500,7 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         scrollPane.setPreferredSize(new Dimension(500, 300));
 
         JOptionPane.showMessageDialog(this, scrollPane, "AVALIAÇÕES", JOptionPane.PLAIN_MESSAGE);
-    }//GEN-LAST:event_menuPopAvaliacaoActionPerformed
+    }//GEN-LAST:event_popAvaliacaoActionPerformed
 
     private void togBtnModularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togBtnModularActionPerformed
          carregarDados(togBtnModular, "Modular");
@@ -507,7 +518,7 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         carregarDados(togBtnArquit, "Arquitetônico");
     }//GEN-LAST:event_togBtnArquitActionPerformed
 
-    private void menuPopAvaliarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPopAvaliarActionPerformed
+    private void popAvaliarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popAvaliarActionPerformed
         JTextField comentarioField = new JTextField(20);
         SpinnerModel spinnerModel = new SpinnerNumberModel(0, 0, 5, 1);
         
@@ -548,36 +559,23 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
 
             JOptionPane.showMessageDialog(null, scrollPane, "Avaliação Enviada!", JOptionPane.INFORMATION_MESSAGE);
         }
-    }//GEN-LAST:event_menuPopAvaliarActionPerformed
+    }//GEN-LAST:event_popAvaliarActionPerformed
 
-    private void menuPopQtdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPopQtdActionPerformed
-        SpinnerModel spinnerModel = new SpinnerNumberModel(0, 0, 20, 1);
-        JSpinner qtdSpinner = new JSpinner(spinnerModel);
-        qtdSpinner.setFont(new java.awt.Font("Segoe UI", 1, 16));
-        
-        JPanel panel = new JPanel(new GridLayout(1, 1));
-        panel.add(new JLabel("Quantidade do produto ??? a ser comprada:"));
-        panel.add(qtdSpinner);
-        
-        int option = JOptionPane.showOptionDialog(
-                this,
-                panel,
-                "Quantidade",
-                JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                new String[]{"Enviar", "Cancelar"},
-                "Enviar");
-        
-        if (option == JOptionPane.OK_OPTION) {
-            int qtd = (int) qtdSpinner.getValue();
-        
-            JOptionPane.showMessageDialog(this,
-                    "Quantidade: " + qtd + " ???",
-                    "Definido com sucesso",
-                    JOptionPane.INFORMATION_MESSAGE);
+    private void popDescricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popDescricaoActionPerformed
+        JMenuItem menuItem = (JMenuItem) evt.getSource();
+        JPopupMenu popupMenu = (JPopupMenu) popDescricao.getParent();
+        JToggleButton toggleButton = (JToggleButton) menuPop.getInvoker();
+
+        List<Origami> origamis = gerIG.getGerDominio().listar(Origami.class);
+        Origami selecionado = (Origami) toggleButton.getClientProperty("origami " + 15);
+        for (Origami origami : origamis) {
+            if(origami.equals(selecionado)) {
+                System.out.println("Toggle button selecionado: " + origami.getNome());
+            }
         }
-    }//GEN-LAST:event_menuPopQtdActionPerformed
+        
+
+    }//GEN-LAST:event_popDescricaoActionPerformed
 
     private static String wrapText(String input, int maxCharactersPerLine) {
         return input.replaceAll("(.{1," + maxCharactersPerLine + "})(?:\\s|$)", "$1\n");
@@ -622,9 +620,11 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
                     JToggleButton toggleButton = new JToggleButton(origami.getNome());
                     toggleButton.setIcon(foto);
                     toggleButton.setPreferredSize(new Dimension(146, alturaToggle));
-                    toggleButton.setComponentPopupMenu(menuPopBtn);
+                    toggleButton.setComponentPopupMenu(menuPop);
                     toggleButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
                     toggleButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+                    
+                    toggleButton.putClientProperty("origami " + i, origami);
                     
                     gbc.gridx = colCount;
                     gbc.gridy = rowCount;
@@ -669,16 +669,16 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
     private javax.swing.JMenuItem menuCarrinho;
     private javax.swing.JMenuItem menuExcluirConta1;
     private javax.swing.JMenuItem menuLoja;
-    private javax.swing.JMenuItem menuPopAvaliacao;
-    private javax.swing.JMenuItem menuPopAvaliar;
-    private javax.swing.JPopupMenu menuPopBtn;
-    private javax.swing.JMenuItem menuPopQtd;
+    private javax.swing.JPopupMenu menuPop;
     private javax.swing.JMenuItem menuSair1;
     private javax.swing.JMenu menuUsuario;
     private javax.swing.JToggleButton origami1;
     private javax.swing.JToggleButton origami2;
     private javax.swing.JToggleButton origami3;
     private javax.swing.JPanel panelProdutos;
+    private javax.swing.JMenuItem popAvaliacao;
+    private javax.swing.JMenuItem popAvaliar;
+    private javax.swing.JMenuItem popDescricao;
     private javax.swing.JScrollPane scrollPanelProdutos;
     private javax.swing.JToggleButton tipo1;
     private javax.swing.JToggleButton tipo2;

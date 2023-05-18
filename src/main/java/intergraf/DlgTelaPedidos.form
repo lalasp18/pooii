@@ -4,34 +4,34 @@
   <NonVisualComponents>
     <Component class="javax.swing.ButtonGroup" name="btnGroupCategoria">
     </Component>
-    <Container class="javax.swing.JPopupMenu" name="menuPopBtn">
+    <Container class="javax.swing.JPopupMenu" name="menuPop">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
         <Property name="useNullLayout" type="boolean" value="true"/>
       </Layout>
       <SubComponents>
-        <MenuItem class="javax.swing.JMenuItem" name="menuPopQtd">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Quantidade"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuPopQtdActionPerformed"/>
-          </Events>
-        </MenuItem>
-        <MenuItem class="javax.swing.JMenuItem" name="menuPopAvaliar">
+        <MenuItem class="javax.swing.JMenuItem" name="popAvaliar">
           <Properties>
             <Property name="text" type="java.lang.String" value="Avaliar"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuPopAvaliarActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="popAvaliarActionPerformed"/>
           </Events>
         </MenuItem>
-        <MenuItem class="javax.swing.JMenuItem" name="menuPopAvaliacao">
+        <MenuItem class="javax.swing.JMenuItem" name="popAvaliacao">
           <Properties>
             <Property name="text" type="java.lang.String" value="Ver Avalia&#xe7;&#xe3;o"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuPopAvaliacaoActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="popAvaliacaoActionPerformed"/>
+          </Events>
+        </MenuItem>
+        <MenuItem class="javax.swing.JMenuItem" name="popDescricao">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Ver descri&#xe7;&#xe3;o"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="popDescricaoActionPerformed"/>
           </Events>
         </MenuItem>
       </SubComponents>
@@ -224,7 +224,7 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="jToggleButton1"/>
                 <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                  <ComponentRef name="menuPopBtn"/>
+                  <ComponentRef name="menuPop"/>
                 </Property>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="verticalTextPosition" type="int" value="3"/>
@@ -237,7 +237,7 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="jToggleButton2"/>
                 <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                  <ComponentRef name="menuPopBtn"/>
+                  <ComponentRef name="menuPop"/>
                 </Property>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="inheritsPopupMenu" type="boolean" value="true"/>
@@ -272,7 +272,7 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="jToggleButton3"/>
                 <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                  <ComponentRef name="menuPopBtn"/>
+                  <ComponentRef name="menuPop"/>
                 </Property>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="verticalTextPosition" type="int" value="3"/>
@@ -337,7 +337,7 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="jToggleButton2"/>
                 <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                  <ComponentRef name="menuPopBtn"/>
+                  <ComponentRef name="menuPop"/>
                 </Property>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="verticalTextPosition" type="int" value="3"/>
@@ -473,6 +473,9 @@
       <SubComponents>
         <Component class="javax.swing.JToggleButton" name="togBtnModular">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="fa" green="a5" red="a5" type="rgb"/>
+            </Property>
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="btnGroupCategoria"/>
             </Property>
@@ -481,6 +484,7 @@
             </Property>
             <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="Modular"/>
+            <Property name="opaque" type="boolean" value="true"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="togBtnModularActionPerformed"/>
@@ -488,6 +492,9 @@
         </Component>
         <Component class="javax.swing.JToggleButton" name="togBtnBlock">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="fa" green="a5" red="a5" type="rgb"/>
+            </Property>
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="btnGroupCategoria"/>
             </Property>
@@ -495,6 +502,7 @@
               <Font name="Segoe Print" size="24" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Block Folding"/>
+            <Property name="opaque" type="boolean" value="true"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="togBtnBlockActionPerformed"/>
@@ -502,6 +510,9 @@
         </Component>
         <Component class="javax.swing.JToggleButton" name="togBtnBill">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="fa" green="a5" red="a5" type="rgb"/>
+            </Property>
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="btnGroupCategoria"/>
             </Property>
@@ -509,6 +520,7 @@
               <Font name="Segoe Print" size="24" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Bill Folding"/>
+            <Property name="opaque" type="boolean" value="true"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="togBtnBillActionPerformed"/>
@@ -516,6 +528,9 @@
         </Component>
         <Component class="javax.swing.JToggleButton" name="togBtnArquit">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="fa" green="a5" red="a5" type="rgb"/>
+            </Property>
             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
               <ComponentRef name="btnGroupCategoria"/>
             </Property>
@@ -523,6 +538,7 @@
               <Font name="Segoe Print" size="24" style="1"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Arquitet&#xf4;nico"/>
+            <Property name="opaque" type="boolean" value="true"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="togBtnArquitActionPerformed"/>

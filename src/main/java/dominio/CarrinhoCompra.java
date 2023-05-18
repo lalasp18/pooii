@@ -25,24 +25,20 @@ public class CarrinhoCompra implements Serializable {
     @JoinColumn(name = "origami_id")
     private List<Origami> origami;
     
-    private int qtd;
-    
     private float frete;
 
     // Hibernate
     public CarrinhoCompra() {
     }
 
-    public CarrinhoCompra(int idCarrinhoCompra, List<Origami> origami, int qtd, float frete) {
+    public CarrinhoCompra(int idCarrinhoCompra, List<Origami> origami, float frete) {
         this.idCarrinhoCompra = idCarrinhoCompra;
         this.origami = origami;
-        this.qtd = qtd;
         this.frete = frete;
     }
 
-    public CarrinhoCompra(List<Origami> origami, int qtd, float frete) {
+    public CarrinhoCompra(List<Origami> origami, float frete) {
         this.origami = origami;
-        this.qtd = qtd;
         this.frete = frete;
     }
 
@@ -67,14 +63,6 @@ public class CarrinhoCompra implements Serializable {
         this.origami = origami;
     }
 
-    public int getQtd() {
-        return qtd;
-    }
-
-    public void setQtd(int qtd) {
-        this.qtd = qtd;
-    }
-    
     @Override
     public int hashCode() {
         int hash = 5;
