@@ -41,7 +41,7 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
     public DlgTelaPedidos(java.awt.Frame parent, boolean modal, GerInterGrafica gerIG) {
         initComponents();
         this.gerIG = gerIG;
-        carregarDados(togBtnModular, "Modular");yjryj
+        carregarDados(togBtnModular, "Modularbgwr");
     }
 
     /**
