@@ -15,7 +15,7 @@ import org.hibernate.HibernateException;
 public class AvaliacaoDAO extends GenericDAO {
     
     private List<Avaliacao> pesquisar(String pesq, int tipo) throws HibernateException {
-        // TESTE
+        // TESTE kkjkjk
         return listar(Avaliacao.class);
     }
 }
