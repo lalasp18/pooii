@@ -10,6 +10,7 @@ import dao.ClienteDAO;
 import dao.ConexaoHibernate;
 import dao.GenericDAO;
 import dao.OrigamiDAO;
+import dominio.Avaliacao;
 import dominio.Cliente;
 import dominio.Origami;
 import java.util.List;
@@ -57,6 +58,12 @@ public class GerenciadorDominio {
         Cliente cli = new Cliente(nome, email, senha, cidade);
         cliDAO.inserir(cli);
         return cli.getIdCliente();
+    }
+    
+    public int inserirAvalicao (Cliente cliente, Origami origami, int nota, String comentario) {
+        Avaliacao ava = new Avaliacao(cliente, origami, nota, comentario);
+        avaDAO.inserir(ava);
+        return ava.getIdAvaliacao();
     }
     
     public List<Cliente> pesquisarCliente (String pesq) throws HibernateException {

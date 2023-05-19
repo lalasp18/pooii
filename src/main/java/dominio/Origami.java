@@ -37,7 +37,7 @@ public class Origami implements Serializable {
     @Lob
     private byte[] foto;
     
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> materiais;
 
     // Hibernate
