@@ -4,6 +4,7 @@
  */
 package intergraf;
 
+import dominio.Avaliacao;
 import dominio.Cliente;
 import dominio.Origami;
 import gerTarefas.GerInterGrafica;
@@ -455,14 +456,12 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
     private void btnAdicionarCarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarCarrinhoActionPerformed
         List<JToggleButton> togglesSelecionados = new ArrayList<>();
 
-        // Percorra todos os componentes do painel panelProdutos
         for (Component component : panelProdutos.getComponents()) {
             if (component instanceof JToggleButton) {
                 JToggleButton toggleButton = (JToggleButton) component;
-                // Verifique se o toggle button está selecionado
                 if (toggleButton.isSelected()) {
-                    // Adicione o toggle button à lista de toggles selecionados
-                    togglesSelecionados.add(toggleButton);
+                    Origami selecionado = (Origami) toggleButton.getClientProperty("origami");
+                    System.out.println(selecionado.getNome() + ':' + selecionado.getDificuldade());
                 }
             }
         }
@@ -481,24 +480,26 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
     }//GEN-LAST:event_menuCarrinhoActionPerformed
 
     private void popAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popAvaliacaoActionPerformed
+        List<Avaliacao> avaliacoes = gerIG.getGerDominio().listar(Avaliacao.class);
         
+        JToggleButton toggleButton = (JToggleButton) menuPop.getInvoker();
+        Origami selecionado = (Origami) toggleButton.getClientProperty("origami");
+        String titulo = "";
         
         StringBuilder mensagem = new StringBuilder();
-        for (int i=0; i < 20; i++) {
-            mensagem.append("Usuário tal qualquer ").append("\n");
-            mensagem.append("Nota: ").append("4").append("\n");
-            mensagem.append("Comentário: ").append("Não é tão bom assim e nem faz juz a imagem do produto").append("\n");
-            mensagem.append("-------------------------------------\n");
-            
-            mensagem.append("Usuário tal qualquer ").append("\n");
-            mensagem.append("Nota: ").append(i).append("\n");
-            mensagem.append("Comentário: ").append("Mais vale um bebadis conhecidiss, que um alcoolatra anonimis.Em pé sem cair, deitado sem dormir, sentado sem cochilar e fazendo pose.").append("\n");
-            mensagem.append("-------------------------------------\n");
-            
-            mensagem.append("Usuário tal qualquer ").append("\n");
-            mensagem.append("Nota: ").append(i+1).append("\n");
-            mensagem.append("Comentário: ").append("Mussum Ipsum, cacilds vidis litro abertis. Diuretics paradis num copo é motivis de denguis.Suco de cevadiss, é um leite divinis, qui tem lupuliz, matis, aguis e fermentis.Mais vale um bebadis conhecidiss, que um alcoolatra anonimis.Em pé sem cair, deitado sem dormir, sentado sem cochilar e fazendo pose.").append("\n");
-            mensagem.append("-------------------------------------\n");
+        
+        for (Avaliacao avaliacao : avaliacoes) {
+            if(selecionado.equals(avaliacao.getOrigami())){
+                titulo = "AVALIAÇÕES - " + avaliacao.getOrigami().getNome();
+                if(avaliacao.getCliente() != null) {
+                    mensagem.append("Usuário: ").append(avaliacao.getCliente().getNome()).append("\n");
+                } else {
+                    mensagem.append("Usuário: ").append("Nome qualquer").append("\n");
+                }
+                mensagem.append("Nota: ").append(avaliacao.getNota()).append("\n");
+                mensagem.append("Comentário: ").append(avaliacao.getComentario()).append("\n");
+                mensagem.append("-------------------------------------\n");
+            }
         }
         JTextArea textArea = new JTextArea();
         textArea.setText(mensagem.toString());
@@ -507,13 +508,12 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         textArea.setWrapStyleWord(true);
         
         
-        
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setPreferredSize(new Dimension(500, 300));
 
-        JOptionPane.showMessageDialog(this, scrollPane, "AVALIAÇÕES", JOptionPane.PLAIN_MESSAGE);
+        JOptionPane.showMessageDialog(this, scrollPane, titulo, JOptionPane.PLAIN_MESSAGE);
     }//GEN-LAST:event_popAvaliacaoActionPerformed
 
     private void togBtnModularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_togBtnModularActionPerformed
@@ -577,7 +577,7 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         JScrollPane scrollPane = new JScrollPane(textArea);
         scrollPane.setPreferredSize(new Dimension(250, 150));
 
-        JOptionPane.showMessageDialog(null, scrollPane, titulo, JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, scrollPane, titulo, JOptionPane.PLAIN_MESSAGE);
     }//GEN-LAST:event_popDescricaoActionPerformed
 
     private static String wrapText(String input, int maxCharactersPerLine) {
@@ -587,21 +587,18 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
     private void enviarAvalicao(JTextField comentario, SpinnerModel spinner) {
         JToggleButton toggleButton = (JToggleButton) menuPop.getInvoker();
         Origami selecionado = (Origami) toggleButton.getClientProperty("origami");
-        String wrappedText = wrapText(comentario.getText(), 70);
-        
-        List<Cliente> listaCliente = gerIG.getGerDominio().listar(Cliente.class);
-        Cliente cliente = null;
-        if (!listaCliente.isEmpty()) {
-            cliente = listaCliente.get(0);
-        }
 
+        String text = comentario.getText();
         int avaliacao = (int) spinner.getValue();
+        
+        Cliente cliente = null;
         
         // INSERIR NO BANCO
         try {
             // INSERIR
-            int id = gerIG.getGerDominio().inserirAvalicao(cliente, selecionado, avaliacao, wrappedText);
+            int id = gerIG.getGerDominio().inserirAvalicao(cliente, selecionado, avaliacao, text);
             
+            String wrappedText = wrapText(text, 70);
             JTextArea textArea = new JTextArea("\tAvaliacao " + id + " inserida com sucesso.\n\n" +
                     "Avaliação: " + avaliacao + " estrela(s)" + "\n\n" +
                     "Comentário: " + wrappedText);
