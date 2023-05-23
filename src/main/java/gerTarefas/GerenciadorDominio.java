@@ -11,6 +11,7 @@ import dao.ConexaoHibernate;
 import dao.GenericDAO;
 import dao.OrigamiDAO;
 import dominio.Avaliacao;
+import dominio.CarrinhoCompra;
 import dominio.Cliente;
 import dominio.Origami;
 import java.util.List;
@@ -64,6 +65,12 @@ public class GerenciadorDominio {
         Avaliacao ava = new Avaliacao(cliente, origami, nota, comentario);
         avaDAO.inserir(ava);
         return ava.getIdAvaliacao();
+    }
+    
+    public int inserirCarrinhoCompra (List<Origami> origami, float frete) {
+        CarrinhoCompra carr = new CarrinhoCompra(origami, frete);
+        carrDAO.inserir(carr);
+        return carr.getIdCarrinhoCompra();
     }
     
     public List<Cliente> pesquisarCliente (String pesq) throws HibernateException {

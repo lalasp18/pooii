@@ -4,8 +4,17 @@
  */
 package intergraf;
 
+import dominio.CarrinhoCompra;
+import dominio.Cliente;
+import dominio.Origami;
 import intergraf.DlgTelaPedidos;
 import gerTarefas.GerInterGrafica;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -20,7 +29,7 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
     public DlgCarrinhoDeCompras(java.awt.Frame parent, boolean modal, GerInterGrafica gerIG) {
         initComponents();
         this.gerIG = gerIG;
-        txtTotal.setText("R$ 124,32");
+        carregarTabela();
     }
 
     /**
@@ -33,10 +42,12 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbCarrinho = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
+        txtFrete = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
         txtTotal = new javax.swing.JTextField();
         lblTotal = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -54,19 +65,19 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
 
         jScrollPane1.setOpaque(false);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbCarrinho.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Origami", "Quantidade", "Valor Un.", "Frete", "Valor Total"
+                "Origami", "Quantidade", "Valor Un.", "Valor Total"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class, java.lang.Float.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -77,9 +88,9 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setOpaque(false);
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(jTable1);
+        tbCarrinho.setOpaque(false);
+        tbCarrinho.getTableHeader().setReorderingAllowed(false);
+        jScrollPane1.setViewportView(tbCarrinho);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 580, 510));
 
@@ -97,6 +108,17 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         jPanel1.setBackground(new java.awt.Color(157, 225, 248));
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.GridLayout(0, 1));
+
+        txtFrete.setEditable(false);
+        txtFrete.setBackground(new java.awt.Color(255, 255, 255));
+        txtFrete.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtFrete.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jPanel1.add(txtFrete);
+
+        jLabel2.setFont(new java.awt.Font("Segoe Print", 1, 16)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("FRETE");
+        jPanel1.add(jLabel2);
 
         txtTotal.setEditable(false);
         txtTotal.setBackground(new java.awt.Color(255, 255, 255));
@@ -158,23 +180,90 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         gerIG.janelaPedidos();
         dispose();
     }//GEN-LAST:event_menuLojaActionPerformed
+    
+    private void carregarTabela(){
+        List<CarrinhoCompra> carrinhos = gerIG.getGerDominio().listar(CarrinhoCompra.class);
+//        CarrinhoCompra compra = carrinhos.get(carrinhos.size()-1);
+        float totalCompra = 0.0f;
+        float totalFrete = 0.0f;
+        
+        DefaultTableModel tableModel = (DefaultTableModel) tbCarrinho.getModel();
+        tableModel.setRowCount(0);
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        tbCarrinho.setDefaultRenderer(Object.class, centerRenderer);
+        
+        Map<Origami, Integer> origamisQuantidades = new HashMap<>();
 
+//        for (Origami origami : compra.getOrigami()) {
+//            origamisQuantidades.put(origami, origamisQuantidades.getOrDefault(origami, 0) + 1);
+//        }
+//
+//        for(Origami origami : compra.getOrigami()) {
+//            String nome = origami.getNome();
+//            float preco = origami.getPreco();
+//            int qtd = origamisQuantidades.get(origami);
+//            float total = qtd * preco;
+//            totalTXT += total;
+//
+//            String precoStr = "R$ " + Float.toString(preco);
+//            String totalStr = "R$ " + Float.toString(total);
+//
+//            Object[] rowData = {nome, qtd, precoStr, totalStr};
+//            tableModel.addRow(rowData);
+//
+//        }
+        
+        for (CarrinhoCompra compra : carrinhos) {
+            for (Origami origami : compra.getOrigami()) {
+                origamisQuantidades.put(origami, origamisQuantidades.getOrDefault(origami, 0) + 1);
+            }
+        }
+        
+        for (CarrinhoCompra compra : carrinhos) {
+            for(Origami origami : compra.getOrigami()) {
+                String nome = origami.getNome();
+                float preco = origami.getPreco();
+                int qtd = origamisQuantidades.get(origami);
+                float total = qtd * preco;
+                totalCompra += total;
+
+                String precoStr = "R$ " + Float.toString(preco);
+                String totalStr = "R$ " + Float.toString(total);
+
+                Object[] rowData = {nome, qtd, precoStr, totalStr};
+                tableModel.addRow(rowData);
+            }
+                
+            totalFrete = compra.getFrete();
+        }
+
+
+        txtFrete.setText("R$ " + totalFrete);
+        txtTotal.setText("R$ " + totalCompra);
+        
+        tbCarrinho.setModel(tableModel);
+        tbCarrinho.setShowVerticalLines(false);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JMenuItem menuCarrinho;
     private javax.swing.JMenuItem menuExcluirConta;
     private javax.swing.JMenuItem menuLoja;
     private javax.swing.JMenuItem menuSair;
+    private javax.swing.JTable tbCarrinho;
+    private javax.swing.JTextField txtFrete;
     private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
 }

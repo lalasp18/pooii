@@ -88,7 +88,7 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         btnAdicionarCarrinho = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         fundo = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuUsuario = new javax.swing.JMenu();
@@ -134,7 +134,6 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         panelProdutos.setBackground(new java.awt.Color(255, 255, 204));
         panelProdutos.setOpaque(false);
 
-        origami1.setBackground(new java.awt.Color(255, 255, 255));
         origami1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/btn/raposa_redimens-removebg-preview.png"))); // NOI18N
         origami1.setText("jToggleButton1");
         origami1.setComponentPopupMenu(menuPop);
@@ -300,7 +299,6 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
 
         jPanel1.setBackground(new Color(255, 0, 200, 128));
 
-        togBtnModular.setBackground(new java.awt.Color(255, 255, 255));
         btnGroupCategoria.add(togBtnModular);
         togBtnModular.setFont(new java.awt.Font("Segoe Print", 1, 24)); // NOI18N
         togBtnModular.setSelected(true);
@@ -311,7 +309,6 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
             }
         });
 
-        togBtnBlock.setBackground(new java.awt.Color(255, 255, 255));
         btnGroupCategoria.add(togBtnBlock);
         togBtnBlock.setFont(new java.awt.Font("Segoe Print", 1, 24)); // NOI18N
         togBtnBlock.setText("Block Folding");
@@ -321,7 +318,6 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
             }
         });
 
-        togBtnBill.setBackground(new java.awt.Color(255, 255, 255));
         btnGroupCategoria.add(togBtnBill);
         togBtnBill.setFont(new java.awt.Font("Segoe Print", 1, 24)); // NOI18N
         togBtnBill.setText("Bill Folding");
@@ -331,7 +327,6 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
             }
         });
 
-        togBtnArquit.setBackground(new java.awt.Color(255, 255, 255));
         btnGroupCategoria.add(togBtnArquit);
         togBtnArquit.setFont(new java.awt.Font("Segoe Print", 1, 24)); // NOI18N
         togBtnArquit.setText("Arquitetônico");
@@ -359,11 +354,16 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(102, 0, 0));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("CANCELAR");
-        jButton2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 2, true));
+        btnCancelar.setBackground(new java.awt.Color(102, 0, 0));
+        btnCancelar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCancelar.setForeground(new java.awt.Color(255, 255, 255));
+        btnCancelar.setText("CANCELAR");
+        btnCancelar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 2, true));
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -371,7 +371,7 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(66, 66, 66)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(10, Short.MAX_VALUE)
@@ -409,7 +409,7 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
                 .addGap(29, 29, 29)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 16, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnAdicionarCarrinho, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
@@ -454,20 +454,67 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdicionarCarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarCarrinhoActionPerformed
-        List<JToggleButton> togglesSelecionados = new ArrayList<>();
-
+        List<Origami> origami = new ArrayList<>();
+        float frete = 0;
+                
         for (Component component : panelProdutos.getComponents()) {
             if (component instanceof JToggleButton) {
                 JToggleButton toggleButton = (JToggleButton) component;
                 if (toggleButton.isSelected()) {
                     Origami selecionado = (Origami) toggleButton.getClientProperty("origami");
                     System.out.println(selecionado.getNome() + ':' + selecionado.getDificuldade());
+                    origami.add(selecionado);
                 }
             }
         }
-
-        // Agora você tem a lista de toggle buttons selecionados (togglesSelecionados)
-
+        
+        List<Cliente> clientes = gerIG.getGerDominio().listar(Cliente.class);
+        Cliente client = clientes.get(clientes.size()-1);
+        System.out.println(client.getCidade());
+        
+        if( null != client.getCidade() ) switch (client.getCidade()) {
+            case "Serra":
+                frete = 15;
+                break;
+            case "Vila Velha":
+                frete = 12.5f;
+                break;
+            case "Cariacica":
+                frete = 10;
+                break;
+            case "Vitória":
+                frete = 8.5f;
+                break;
+            case "Guarapari":
+                frete = 20;
+                break;
+            case "Colatina":
+                frete = 18;
+                break;
+            case "Aracruz":
+                frete = 16;
+                break;
+            case "Viana":
+                frete = 14;
+                break;
+            case "Nova Venécia":
+                frete = 22;
+                break;
+            default:
+                frete = 17.5f;
+                break;
+        }
+        
+        try {
+            // INSERIR
+            int id = gerIG.getGerDominio().inserirCarrinhoCompra(origami, frete);
+            JOptionPane.showMessageDialog(this, "Carrinho " + id + " inserido com sucesso.", "Inserir Carrinho de Compra", JOptionPane.INFORMATION_MESSAGE  );
+            btnCancelarActionPerformed(evt);
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(this, ex, "ERRO Carrinho", JOptionPane.ERROR_MESSAGE  );
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex, "ERRO Carrinho", JOptionPane.ERROR_MESSAGE  );
+        }
     }//GEN-LAST:event_btnAdicionarCarrinhoActionPerformed
 
     private void menuSair1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSair1ActionPerformed
@@ -580,6 +627,24 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         JOptionPane.showMessageDialog(this, scrollPane, titulo, JOptionPane.PLAIN_MESSAGE);
     }//GEN-LAST:event_popDescricaoActionPerformed
 
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        List<JToggleButton> togglesSelecionados = new ArrayList<>();
+
+        for (Component component : panelProdutos.getComponents()) {
+            if (component instanceof JToggleButton) {
+                JToggleButton toggleButton = (JToggleButton) component;
+                if (toggleButton.isSelected()) {
+                    toggleButton.setSelected(false);
+                }
+            }
+        }
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    
+    private void definirFrete(float total){
+        
+    }
+    
     private static String wrapText(String input, int maxCharactersPerLine) {
         return input.replaceAll("(.{1," + maxCharactersPerLine + "})(?:\\s|$)", "$1\n");
     }
@@ -686,9 +751,9 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdicionarCarrinho;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.ButtonGroup btnGroupCategoria;
     private javax.swing.JLabel fundo;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;

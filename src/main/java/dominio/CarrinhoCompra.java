@@ -21,7 +21,7 @@ public class CarrinhoCompra implements Serializable {
     @GeneratedValue ( strategy = GenerationType.IDENTITY)
     private int idCarrinhoCompra;
     
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "origami_id")
     private List<Origami> origami;
     
@@ -61,6 +61,14 @@ public class CarrinhoCompra implements Serializable {
 
     public void setOrigami(List<Origami> origami) {
         this.origami = origami;
+    }
+
+    public float getFrete() {
+        return frete;
+    }
+
+    public void setFrete(float frete) {
+        this.frete = frete;
     }
 
     @Override
