@@ -10,8 +10,11 @@ import dominio.Origami;
 import intergraf.DlgTelaPedidos;
 import gerTarefas.GerInterGrafica;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -43,8 +46,8 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tbCarrinho = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnComprar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         txtFrete = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -74,7 +77,7 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
@@ -94,16 +97,21 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 580, 510));
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(102, 0, 0));
-        jButton1.setText("Cancelar");
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 390, 120, 60));
+        btnCancelar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnCancelar.setForeground(new java.awt.Color(102, 0, 0));
+        btnCancelar.setText("Cancelar");
+        getContentPane().add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 390, 120, 60));
 
-        jButton2.setBackground(new java.awt.Color(102, 0, 204));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("Comprar Agora");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 290, 180, 60));
+        btnComprar.setBackground(new java.awt.Color(102, 0, 204));
+        btnComprar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnComprar.setForeground(new java.awt.Color(255, 255, 255));
+        btnComprar.setText("Comprar Agora");
+        btnComprar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnComprarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnComprar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 290, 180, 60));
 
         jPanel1.setBackground(new java.awt.Color(157, 225, 248));
         jPanel1.setOpaque(false);
@@ -111,7 +119,7 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
 
         txtFrete.setEditable(false);
         txtFrete.setBackground(new java.awt.Color(255, 255, 255));
-        txtFrete.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtFrete.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtFrete.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jPanel1.add(txtFrete);
 
@@ -180,10 +188,66 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         gerIG.janelaPedidos();
         dispose();
     }//GEN-LAST:event_menuLojaActionPerformed
+
+    private void btnComprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComprarActionPerformed
+        //  EXEMPLO DE CLIENTE JÁ QUE NÃO POSSUO PESQUISAR PARA MANTÊ-LO LOGADO
+        List<Cliente> clientes = gerIG.getGerDominio().listar(Cliente.class);
+        Cliente client = clientes.get(clientes.size()-1);
+        //  EXEMPLO DE CLIENTE JÁ QUE NÃO POSSUO PESQUISAR PARA MANTÊ-LO LOGADO
+        String msgSucesso = "";
+        int i = 1;
+        
+        List<CarrinhoCompra> carrinhos = gerIG.getGerDominio().listar(CarrinhoCompra.class);
+        for (CarrinhoCompra compra : carrinhos) {
+            client.getPedidos().add(compra);
+            msgSucesso = "Itens dos "  + i + " carrinhos comprados com sucesso";
+            i++;
+        }
+        
+        if(!msgSucesso.isEmpty()) {
+            DefaultTableModel model = (DefaultTableModel) tbCarrinho.getModel();
+            model.setRowCount(0);
+                
+            JOptionPane.showMessageDialog(this, msgSucesso, "Status da Compra", JOptionPane.PLAIN_MESSAGE);
+        }
+    }//GEN-LAST:event_btnComprarActionPerformed
+    
+    private float definirFrete() {
+        //  EXEMPLO DE CLIENTE JÁ QUE NÃO POSSUO PESQUISAR PARA MANTÊ-LO LOGADO
+        List<Cliente> clientes = gerIG.getGerDominio().listar(Cliente.class);
+        Cliente client = clientes.get(clientes.size()-1);
+        //  EXEMPLO DE CLIENTE JÁ QUE NÃO POSSUO PESQUISAR PARA MANTÊ-LO LOGADO
+        
+        if( null != client.getCidade() ) switch (client.getCidade()) {
+            case "Serra":
+                return 15;
+            case "Vila Velha":
+                return 12.5f;
+            case "Cariacica":
+                return 10;
+            case "Vitória":
+                return 8.5f;
+            case "Guarapari":
+                return 20;
+            case "Colatina":
+                return 18;
+            case "Aracruz":
+                return 16;
+            case "Viana":
+                return 14;
+            case "Nova Venécia":
+                return 22;
+            default:
+                return 17.5f;
+        }
+        return 0;
+    }
     
     private void carregarTabela(){
         List<CarrinhoCompra> carrinhos = gerIG.getGerDominio().listar(CarrinhoCompra.class);
-//        CarrinhoCompra compra = carrinhos.get(carrinhos.size()-1);
+        Map<Origami, Integer> origamisQuantidades = new HashMap<>();
+        Set<Origami> origamisExibidos = new HashSet<>();
+        
         float totalCompra = 0.0f;
         float totalFrete = 0.0f;
         
@@ -194,27 +258,6 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         tbCarrinho.setDefaultRenderer(Object.class, centerRenderer);
         
-        Map<Origami, Integer> origamisQuantidades = new HashMap<>();
-
-//        for (Origami origami : compra.getOrigami()) {
-//            origamisQuantidades.put(origami, origamisQuantidades.getOrDefault(origami, 0) + 1);
-//        }
-//
-//        for(Origami origami : compra.getOrigami()) {
-//            String nome = origami.getNome();
-//            float preco = origami.getPreco();
-//            int qtd = origamisQuantidades.get(origami);
-//            float total = qtd * preco;
-//            totalTXT += total;
-//
-//            String precoStr = "R$ " + Float.toString(preco);
-//            String totalStr = "R$ " + Float.toString(total);
-//
-//            Object[] rowData = {nome, qtd, precoStr, totalStr};
-//            tableModel.addRow(rowData);
-//
-//        }
-        
         for (CarrinhoCompra compra : carrinhos) {
             for (Origami origami : compra.getOrigami()) {
                 origamisQuantidades.put(origami, origamisQuantidades.getOrDefault(origami, 0) + 1);
@@ -223,22 +266,29 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         
         for (CarrinhoCompra compra : carrinhos) {
             for(Origami origami : compra.getOrigami()) {
+                if (origamisExibidos.contains(origami)) {
+                    continue; // Ignorar a adição à tabela
+                }
+                
+                origamisExibidos.add(origami);
+                
                 String nome = origami.getNome();
                 float preco = origami.getPreco();
                 int qtd = origamisQuantidades.get(origami);
                 float total = qtd * preco;
                 totalCompra += total;
 
+                String qtdStr = Integer.toString(qtd) + " unid.";
                 String precoStr = "R$ " + Float.toString(preco);
                 String totalStr = "R$ " + Float.toString(total);
 
-                Object[] rowData = {nome, qtd, precoStr, totalStr};
+                Object[] rowData = {nome, qtdStr, precoStr, totalStr};
                 tableModel.addRow(rowData);
             }
-                
-            totalFrete = compra.getFrete();
         }
 
+        totalFrete = definirFrete();
+        totalCompra += totalFrete;
 
         txtFrete.setText("R$ " + totalFrete);
         txtTotal.setText("R$ " + totalCompra);
@@ -248,8 +298,8 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnComprar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu3;

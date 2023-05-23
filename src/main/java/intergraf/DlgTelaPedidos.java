@@ -455,7 +455,6 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
 
     private void btnAdicionarCarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarCarrinhoActionPerformed
         List<Origami> origami = new ArrayList<>();
-        float frete = 0;
                 
         for (Component component : panelProdutos.getComponents()) {
             if (component instanceof JToggleButton) {
@@ -468,46 +467,9 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
             }
         }
         
-        List<Cliente> clientes = gerIG.getGerDominio().listar(Cliente.class);
-        Cliente client = clientes.get(clientes.size()-1);
-        System.out.println(client.getCidade());
-        
-        if( null != client.getCidade() ) switch (client.getCidade()) {
-            case "Serra":
-                frete = 15;
-                break;
-            case "Vila Velha":
-                frete = 12.5f;
-                break;
-            case "Cariacica":
-                frete = 10;
-                break;
-            case "Vitória":
-                frete = 8.5f;
-                break;
-            case "Guarapari":
-                frete = 20;
-                break;
-            case "Colatina":
-                frete = 18;
-                break;
-            case "Aracruz":
-                frete = 16;
-                break;
-            case "Viana":
-                frete = 14;
-                break;
-            case "Nova Venécia":
-                frete = 22;
-                break;
-            default:
-                frete = 17.5f;
-                break;
-        }
-        
         try {
             // INSERIR
-            int id = gerIG.getGerDominio().inserirCarrinhoCompra(origami, frete);
+            int id = gerIG.getGerDominio().inserirCarrinhoCompra(origami);
             JOptionPane.showMessageDialog(this, "Carrinho " + id + " inserido com sucesso.", "Inserir Carrinho de Compra", JOptionPane.INFORMATION_MESSAGE  );
             btnCancelarActionPerformed(evt);
         } catch (HibernateException ex) {
@@ -640,11 +602,6 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    
-    private void definirFrete(float total){
-        
-    }
-    
     private static String wrapText(String input, int maxCharactersPerLine) {
         return input.replaceAll("(.{1," + maxCharactersPerLine + "})(?:\\s|$)", "$1\n");
     }

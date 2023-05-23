@@ -112,21 +112,21 @@ public class DlgCadastroLogin extends javax.swing.JDialog {
              // INSERIR NO BANCO
             try {
                 //  VALIDAR EMAIL
-                boolean existe = validarEmailExistente(email);
+//                boolean existe = validarEmailExistente(email);
                 // PESQUISAR
-                if(!existe) {
+//                if(!existe) {
                     int id = gerIG.getGerDominio().inserirCliente(nomeCliente, email, senha, cidade);
                     JOptionPane.showMessageDialog(this, "Usuário " + id + " cadastrado com sucesso.", "Inserir Cliente", JOptionPane.INFORMATION_MESSAGE  );
 
                     gerIG.janelaLogInCliente();
                     limparCampos();
                     dispose();
-                }
+//                }
             } catch (HibernateException ex) {
-                JOptionPane.showMessageDialog(this, ex, "ERRO Log in", JOptionPane.ERROR_MESSAGE  );
+                JOptionPane.showMessageDialog(this, ex, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
             }
             catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, ex, "ERRO Log in", JOptionPane.ERROR_MESSAGE  );
+                JOptionPane.showMessageDialog(this, ex, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
             }
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed

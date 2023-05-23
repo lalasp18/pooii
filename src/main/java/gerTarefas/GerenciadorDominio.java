@@ -67,8 +67,8 @@ public class GerenciadorDominio {
         return ava.getIdAvaliacao();
     }
     
-    public int inserirCarrinhoCompra (List<Origami> origami, float frete) {
-        CarrinhoCompra carr = new CarrinhoCompra(origami, frete);
+    public int inserirCarrinhoCompra (List<Origami> origami) {
+        CarrinhoCompra carr = new CarrinhoCompra(origami);
         carrDAO.inserir(carr);
         return carr.getIdCarrinhoCompra();
     }
