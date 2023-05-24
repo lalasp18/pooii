@@ -45,7 +45,7 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
     public DlgTelaPedidos(java.awt.Frame parent, boolean modal, GerInterGrafica gerIG) {
         initComponents();
         this.gerIG = gerIG;
-        carregarDados(togBtnModular, "Modularbgwr");
+        carregarDados(togBtnModular, "Modular");
     }
 
     /**
@@ -665,7 +665,7 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         panelProdutos.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.anchor = new GridBagConstraints().NORTH;
+        gbc.anchor = GridBagConstraints.NORTH;
         
         int rowCount = 0;
         int colCount = 0;

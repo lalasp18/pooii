@@ -9,6 +9,7 @@ import dominio.Cliente;
 import dominio.Origami;
 import intergraf.DlgTelaPedidos;
 import gerTarefas.GerInterGrafica;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -192,13 +193,22 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
     private void btnComprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComprarActionPerformed
         //  EXEMPLO DE CLIENTE JÁ QUE NÃO POSSUO PESQUISAR PARA MANTÊ-LO LOGADO
         List<Cliente> clientes = gerIG.getGerDominio().listar(Cliente.class);
-        Cliente client = clientes.get(clientes.size()-1);
+        Cliente client = null;
+        if(clientes.size()>1){
+            client = clientes.get(clientes.size()-1);
+        } else {
+            client = clientes.get(0);
+        }
         //  EXEMPLO DE CLIENTE JÁ QUE NÃO POSSUO PESQUISAR PARA MANTÊ-LO LOGADO
         String msgSucesso = "";
         int i = 1;
+        List<CarrinhoCompra> carrinhoComprado = client.getPedidos();
         
         List<CarrinhoCompra> carrinhos = gerIG.getGerDominio().listar(CarrinhoCompra.class);
         for (CarrinhoCompra compra : carrinhos) {
+            if(carrinhoComprado.contains(compra)) {
+                continue; // Ignorar a adição à lista de pedidos do cliente
+            }
             client.getPedidos().add(compra);
             msgSucesso = "Itens dos "  + i + " carrinhos comprados com sucesso";
             i++;
@@ -207,6 +217,8 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         if(!msgSucesso.isEmpty()) {
             DefaultTableModel model = (DefaultTableModel) tbCarrinho.getModel();
             model.setRowCount(0);
+            txtFrete.setText("");
+            txtTotal.setText("");
                 
             JOptionPane.showMessageDialog(this, msgSucesso, "Status da Compra", JOptionPane.PLAIN_MESSAGE);
         }
@@ -215,7 +227,12 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
     private float definirFrete() {
         //  EXEMPLO DE CLIENTE JÁ QUE NÃO POSSUO PESQUISAR PARA MANTÊ-LO LOGADO
         List<Cliente> clientes = gerIG.getGerDominio().listar(Cliente.class);
-        Cliente client = clientes.get(clientes.size()-1);
+        Cliente client = null;
+        if(clientes.size()>1){
+            client = clientes.get(clientes.size()-1);
+        } else {
+            client = clientes.get(0);
+        }
         //  EXEMPLO DE CLIENTE JÁ QUE NÃO POSSUO PESQUISAR PARA MANTÊ-LO LOGADO
         
         if( null != client.getCidade() ) switch (client.getCidade()) {
@@ -245,8 +262,18 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
     
     private void carregarTabela(){
         List<CarrinhoCompra> carrinhos = gerIG.getGerDominio().listar(CarrinhoCompra.class);
+        List<CarrinhoCompra> carrinhoComprado = new ArrayList();
+        
         Map<Origami, Integer> origamisQuantidades = new HashMap<>();
         Set<Origami> origamisExibidos = new HashSet<>();
+        
+        List<Cliente> clientela = gerIG.getGerDominio().listar(Cliente.class);
+        
+        if(clientela.size()>1) {
+           carrinhoComprado = clientela.get(clientela.size()-1).getPedidos();
+        } else {
+            carrinhoComprado = clientela.get(0).getPedidos();
+        }
         
         float totalCompra = 0.0f;
         float totalFrete = 0.0f;
@@ -259,14 +286,20 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         tbCarrinho.setDefaultRenderer(Object.class, centerRenderer);
         
         for (CarrinhoCompra compra : carrinhos) {
+            if(carrinhoComprado.equals(compra)) {
+                continue; // Ignorar a adição à tabela
+            }
             for (Origami origami : compra.getOrigami()) {
                 origamisQuantidades.put(origami, origamisQuantidades.getOrDefault(origami, 0) + 1);
             }
         }
         
         for (CarrinhoCompra compra : carrinhos) {
+            if(carrinhoComprado.equals(compra)) {
+                continue; // Ignorar a adição à tabela
+            }
             for(Origami origami : compra.getOrigami()) {
-                if (origamisExibidos.contains(origami)) {
+                if (origamisExibidos.equals(origami)) {
                     continue; // Ignorar a adição à tabela
                 }
                 

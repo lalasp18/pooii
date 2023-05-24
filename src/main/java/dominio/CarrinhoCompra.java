@@ -86,9 +86,6 @@ public class CarrinhoCompra implements Serializable {
         if (this.idCarrinhoCompra != other.idCarrinhoCompra) {
             return false;
         }
-        if (!Objects.equals(this.origami, other.origami)) {
-            return false;
-        }
         return true;
     }
 }
