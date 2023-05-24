@@ -40,9 +40,6 @@ public class Origami implements Serializable {
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> materiais;
     
-//    @ManyToMany(mappedBy = "origami")
-//    private List<CarrinhoCompra> compra;
-
     // Hibernate
     public Origami() {
     }
@@ -146,14 +143,6 @@ public class Origami implements Serializable {
     public void setMateriais(List<String> materiais) {
         this.materiais = materiais;
     }
-
-//    public List<CarrinhoCompra> getCompra() {
-//        return compra;
-//    }
-//
-//    public void setCompra(List<CarrinhoCompra> compra) {
-//        this.compra = compra;
-//    }
 
     @Override
     public int hashCode() {

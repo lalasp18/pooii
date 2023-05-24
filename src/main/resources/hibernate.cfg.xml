@@ -7,7 +7,7 @@
   <session-factory>
     <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
     <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-    <property name="hibernate.connection.url">jdbc:postgresql://localhost:5433/origami</property>
+    <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/origami</property>
     <property name="hibernate.connection.username">postgres</property>
     <property name="hibernate.connection.password">postgres</property>
     <property name="hibernate.hbm2ddl.auto">update</property>
@@ -16,6 +16,7 @@
     <mapping class="dominio.Avaliacao"></mapping>
     <mapping class="dominio.CarrinhoCompra"></mapping>
     <mapping class="dominio.Cliente"></mapping>
+    <mapping class="dominio.Item"></mapping>
     <mapping class="dominio.Origami"></mapping>
   </session-factory>
 </hibernate-configuration>

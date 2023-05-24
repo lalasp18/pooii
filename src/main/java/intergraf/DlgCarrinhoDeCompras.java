@@ -203,7 +203,7 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         String msgSucesso = "";
         int i = 1;
         List<CarrinhoCompra> carrinhoComprado = client.getPedidos();
-        
+
         List<CarrinhoCompra> carrinhos = gerIG.getGerDominio().listar(CarrinhoCompra.class);
         for (CarrinhoCompra compra : carrinhos) {
             if(carrinhoComprado.contains(compra)) {
@@ -213,13 +213,13 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
             msgSucesso = "Itens dos "  + i + " carrinhos comprados com sucesso";
             i++;
         }
-        
+
         if(!msgSucesso.isEmpty()) {
             DefaultTableModel model = (DefaultTableModel) tbCarrinho.getModel();
             model.setRowCount(0);
             txtFrete.setText("");
             txtTotal.setText("");
-                
+
             JOptionPane.showMessageDialog(this, msgSucesso, "Status da Compra", JOptionPane.PLAIN_MESSAGE);
         }
     }//GEN-LAST:event_btnComprarActionPerformed
@@ -289,35 +289,35 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
             if(carrinhoComprado.equals(compra)) {
                 continue; // Ignorar a adição à tabela
             }
-            for (Origami origami : compra.getOrigami()) {
-                origamisQuantidades.put(origami, origamisQuantidades.getOrDefault(origami, 0) + 1);
-            }
+//            for (Origami origami : compra.getOrigami()) {
+//                origamisQuantidades.put(origami, origamisQuantidades.getOrDefault(origami, 0) + 1);
+//            }
         }
         
         for (CarrinhoCompra compra : carrinhos) {
             if(carrinhoComprado.equals(compra)) {
                 continue; // Ignorar a adição à tabela
             }
-            for(Origami origami : compra.getOrigami()) {
-                if (origamisExibidos.equals(origami)) {
-                    continue; // Ignorar a adição à tabela
-                }
-                
-                origamisExibidos.add(origami);
-                
-                String nome = origami.getNome();
-                float preco = origami.getPreco();
-                int qtd = origamisQuantidades.get(origami);
-                float total = qtd * preco;
-                totalCompra += total;
-
-                String qtdStr = Integer.toString(qtd) + " unid.";
-                String precoStr = "R$ " + Float.toString(preco);
-                String totalStr = "R$ " + Float.toString(total);
-
-                Object[] rowData = {nome, qtdStr, precoStr, totalStr};
-                tableModel.addRow(rowData);
-            }
+//            for(Origami origami : compra.getOrigami()) {
+//                if (origamisExibidos.equals(origami)) {
+//                    continue; // Ignorar a adição à tabela
+//                }
+//                
+//                origamisExibidos.add(origami);
+//                
+//                String nome = origami.getNome();
+//                float preco = origami.getPreco();
+//                int qtd = origamisQuantidades.get(origami);
+//                float total = qtd * preco;
+//                totalCompra += total;
+//
+//                String qtdStr = Integer.toString(qtd) + " unid.";
+//                String precoStr = "R$ " + Float.toString(preco);
+//                String totalStr = "R$ " + Float.toString(total);
+//
+//                Object[] rowData = {nome, qtdStr, precoStr, totalStr};
+//                tableModel.addRow(rowData);
+//            }
         }
 
         totalFrete = definirFrete();

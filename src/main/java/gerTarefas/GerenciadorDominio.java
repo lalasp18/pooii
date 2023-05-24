@@ -67,11 +67,11 @@ public class GerenciadorDominio {
         return ava.getIdAvaliacao();
     }
     
-    public int inserirCarrinhoCompra (List<Origami> origami) {
-        CarrinhoCompra carr = new CarrinhoCompra(origami);
-        carrDAO.inserir(carr);
-        return carr.getIdCarrinhoCompra();
-    }
+//    public int inserirCarrinhoCompra (List<Origami> origami) {
+//        CarrinhoCompra carr = new CarrinhoCompra(origami);
+//        carrDAO.inserir(carr);
+//        return carr.getIdCarrinhoCompra();
+//    }
     
     public List<Cliente> pesquisarCliente (String pesq) throws HibernateException {
         List<Cliente> lista = cliDAO.pesquisarEmail(pesq);

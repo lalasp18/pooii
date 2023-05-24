@@ -8,6 +8,7 @@ import dominio.Avaliacao;
 import dominio.Cliente;
 import dominio.Origami;
 import gerTarefas.GerInterGrafica;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -17,9 +18,14 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -80,6 +86,10 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         jToggleButton14 = new javax.swing.JToggleButton();
         jToggleButton15 = new javax.swing.JToggleButton();
         jToggleButton16 = new javax.swing.JToggleButton();
+        jToggleButton17 = new javax.swing.JToggleButton();
+        jToggleButton18 = new javax.swing.JToggleButton();
+        jToggleButton19 = new javax.swing.JToggleButton();
+        jToggleButton20 = new javax.swing.JToggleButton();
         jPanel1 = new javax.swing.JPanel();
         togBtnModular = new javax.swing.JToggleButton();
         togBtnBlock = new javax.swing.JToggleButton();
@@ -223,6 +233,27 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         jToggleButton16.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jToggleButton16.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
 
+        jToggleButton17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/btn/raposa_redimens-removebg-preview.png"))); // NOI18N
+        jToggleButton17.setText("jToggleButton1");
+        jToggleButton17.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton17.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+        jToggleButton18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/btn/morango_redimens-removebg-preview.png"))); // NOI18N
+        jToggleButton18.setText("jToggleButton2");
+        jToggleButton18.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton18.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+        jToggleButton19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/btn/raposa_redimens-removebg-preview.png"))); // NOI18N
+        jToggleButton19.setText("jToggleButton3");
+        jToggleButton19.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton19.setInheritsPopupMenu(true);
+        jToggleButton19.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
+        jToggleButton20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/btn/morango_redimens-removebg-preview.png"))); // NOI18N
+        jToggleButton20.setText("jToggleButton4");
+        jToggleButton20.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jToggleButton20.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+
         javax.swing.GroupLayout panelProdutosLayout = new javax.swing.GroupLayout(panelProdutos);
         panelProdutos.setLayout(panelProdutosLayout);
         panelProdutosLayout.setHorizontalGroup(
@@ -262,7 +293,15 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
                         .addGap(5, 5, 5)
                         .addComponent(jToggleButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(5, 5, 5)
-                        .addComponent(jToggleButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jToggleButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelProdutosLayout.createSequentialGroup()
+                        .addComponent(jToggleButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(5, 5, 5)
+                        .addComponent(jToggleButton18, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(5, 5, 5)
+                        .addComponent(jToggleButton19, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(5, 5, 5)
+                        .addComponent(jToggleButton20, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(12, 12, 12))
         );
         panelProdutosLayout.setVerticalGroup(
@@ -290,7 +329,13 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
                     .addComponent(jToggleButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jToggleButton15, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jToggleButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jToggleButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jToggleButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelProdutosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jToggleButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jToggleButton18, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jToggleButton19, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jToggleButton20, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         scrollPanelProdutos.setViewportView(panelProdutos);
@@ -455,13 +500,23 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
 
     private void btnAdicionarCarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarCarrinhoActionPerformed
         List<Origami> origami = new ArrayList<>();
+        int qtdItem;
+        
+        SpinnerModel spinnerModel = new SpinnerNumberModel(0, 0, 20, 1);
+        
+        JSpinner avaliacaoSpinner = new JSpinner(spinnerModel);
+        avaliacaoSpinner.setFont(new java.awt.Font("Segoe UI", 1, 16));
+        
+        JPanel panel = new JPanel(new GridLayout(2, 2));
+        panel.add(new JLabel(""));
+        panel.add(avaliacaoSpinner);
                 
         for (Component component : panelProdutos.getComponents()) {
             if (component instanceof JToggleButton) {
                 JToggleButton toggleButton = (JToggleButton) component;
                 if (toggleButton.isSelected()) {
                     Origami selecionado = (Origami) toggleButton.getClientProperty("origami");
-                    System.out.println(selecionado.getNome() + ':' + selecionado.getDificuldade());
+                    
                     origami.add(selecionado);
                 }
             }
@@ -469,8 +524,8 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         
         try {
             // INSERIR
-            int id = gerIG.getGerDominio().inserirCarrinhoCompra(origami);
-            JOptionPane.showMessageDialog(this, "Carrinho " + id + " inserido com sucesso.", "Inserir Carrinho de Compra", JOptionPane.INFORMATION_MESSAGE  );
+//            int id = gerIG.getGerDominio().inserirCarrinhoCompra(origami);
+//            JOptionPane.showMessageDialog(this, "Carrinho " + id + " inserido com sucesso.", "Inserir Carrinho de Compra", JOptionPane.INFORMATION_MESSAGE  );
             btnCancelarActionPerformed(evt);
         } catch (HibernateException ex) {
             JOptionPane.showMessageDialog(this, ex, "ERRO Carrinho", JOptionPane.ERROR_MESSAGE  );
@@ -542,32 +597,33 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
     }//GEN-LAST:event_togBtnArquitActionPerformed
 
     private void popAvaliarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popAvaliarActionPerformed
-        JTextField comentarioField = new JTextField(20);
-        SpinnerModel spinnerModel = new SpinnerNumberModel(0, 0, 5, 1);
-        
-        JSpinner avaliacaoSpinner = new JSpinner(spinnerModel);
-        avaliacaoSpinner.setFont(new java.awt.Font("Segoe UI", 1, 16));
-
-        JPanel panel = new JPanel(new GridLayout(2, 2));
-        panel.add(new JLabel("Avaliação (0-5 estrelas):"));
-        panel.add(avaliacaoSpinner);
-        panel.add(new JLabel("Comentário:"));
-        panel.add(comentarioField);
-        panel.setPreferredSize(new Dimension(200, 100));
-
-        int option = JOptionPane.showOptionDialog(
-                this,
-                panel,
-                "Avaliação",
-                JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                new String[]{"Enviar", "Cancelar"},
-                "Enviar");
-
-        if (option == JOptionPane.OK_OPTION) {
-            enviarAvalicao(comentarioField, spinnerModel);
-        }
+//        JTextField comentarioField = new JTextField(20);
+//        SpinnerModel spinnerModel = new SpinnerNumberModel(0, 0, 5, 1);
+//        
+//        JSpinner avaliacaoSpinner = new JSpinner(spinnerModel);
+//        avaliacaoSpinner.setFont(new java.awt.Font("Segoe UI", 1, 16));
+//
+//        JPanel panel = new JPanel(new GridLayout(2, 2));
+//        panel.add(new JLabel("Avaliação (0-5 estrelas):"));
+//        panel.add(avaliacaoSpinner);
+//        panel.add(new JLabel("Comentário:"));
+//        panel.add(comentarioField);
+//        panel.setPreferredSize(new Dimension(200, 100));
+//
+//        int option = JOptionPane.showOptionDialog(
+//                this,
+//                panel,
+//                "Avaliação",
+//                JOptionPane.OK_CANCEL_OPTION,
+//                JOptionPane.PLAIN_MESSAGE,
+//                null,
+//                new String[]{"Enviar", "Cancelar"},
+//                "Enviar");
+//
+//        if (option == JOptionPane.OK_OPTION) {
+//            enviarAvalicao(comentarioField, spinnerModel);
+//        }
+customOptionPane();
     }//GEN-LAST:event_popAvaliarActionPerformed
 
     private void popDescricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popDescricaoActionPerformed
@@ -602,6 +658,34 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    public void customOptionPane() {
+        toggleButton.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent e) {
+                if (toggleButton.isSelected()) {
+                    // Criar um JSpinner com um SpinnerNumberModel
+                    SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, 10, 1);
+                    JSpinner spinner = new JSpinner(spinnerModel);
+                    
+                    // Criar o JOptionPane com o JSpinner
+                    Object[] message = {"Quantidade:", spinner};
+                    int option = JOptionPane.showOptionDialog(null, message, "Informe a quantidade",
+                            JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+                    
+                    if (option == JOptionPane.OK_OPTION) {
+                        // Obter o valor selecionado do spinner
+                        int quantidade = (int) spinner.getValue();
+                        System.out.println("Quantidade selecionada: " + quantidade);
+                    } else {
+                        // O usuário cancelou a seleção, faça algo aqui se necessário
+                    }
+                    
+                    // Desselecionar o toggleButton após a conclusão
+                    toggleButton.setSelected(false);
+                }
+            }
+        });
+    }
+    
     private static String wrapText(String input, int maxCharactersPerLine) {
         return input.replaceAll("(.{1," + maxCharactersPerLine + "})(?:\\s|$)", "$1\n");
     }
@@ -723,6 +807,10 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
     private javax.swing.JToggleButton jToggleButton14;
     private javax.swing.JToggleButton jToggleButton15;
     private javax.swing.JToggleButton jToggleButton16;
+    private javax.swing.JToggleButton jToggleButton17;
+    private javax.swing.JToggleButton jToggleButton18;
+    private javax.swing.JToggleButton jToggleButton19;
+    private javax.swing.JToggleButton jToggleButton20;
     private javax.swing.JToggleButton jToggleButton6;
     private javax.swing.JToggleButton jToggleButton7;
     private javax.swing.JToggleButton jToggleButton8;

@@ -21,32 +21,34 @@ public class CarrinhoCompra implements Serializable {
     @GeneratedValue ( strategy = GenerationType.IDENTITY)
     private int idCarrinhoCompra;
     
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "carrinho_origami",
-        joinColumns = @JoinColumn(name = "compra_id"),
-        inverseJoinColumns = @JoinColumn(name = "origami_id")
-    )
-    private List<Origami> origami;
+    private float frete;
+    private float total;
+    
+    @OneToMany(mappedBy = "carrinho", fetch = FetchType.EAGER)
+    private List<Item> listaItens;
     
     // Hibernate
     public CarrinhoCompra() {
     }
 
-    public CarrinhoCompra(int idCarrinhoCompra, List<Origami> origami) {
+    public CarrinhoCompra(int idCarrinhoCompra, float frete, float total, List<Item> listaItens) {
         this.idCarrinhoCompra = idCarrinhoCompra;
-        this.origami = origami;
+        this.frete = frete;
+        this.total = total;
+        this.listaItens = listaItens;
     }
 
-    public CarrinhoCompra(List<Origami> origami) {
-        this.origami = origami;
+    public CarrinhoCompra(float frete, float total, List<Item> listaItens) {
+        this.frete = frete;
+        this.total = total;
+        this.listaItens = listaItens;
     }
 
     @Override
     public String toString() {
-        return "CarrinhoCompra{" + "origami=" + origami + '}';
+        return "CarrinhoCompra{" + "frete=" + frete + ", total=" + total + ", listaItens=" + listaItens + '}';
     }
-    
+
     public int getIdCarrinhoCompra() {
         return idCarrinhoCompra;
     }
@@ -55,19 +57,34 @@ public class CarrinhoCompra implements Serializable {
         this.idCarrinhoCompra = idCarrinhoCompra;
     }
 
-    public List<Origami> getOrigami() {
-        return origami;
+    public float getFrete() {
+        return frete;
     }
 
-    public void setOrigami(List<Origami> origami) {
-        this.origami = origami;
+    public void setFrete(float frete) {
+        this.frete = frete;
+    }
+
+    public float getTotal() {
+        return total;
+    }
+
+    public void setTotal(float total) {
+        this.total = total;
+    }
+
+    public List<Item> getListaItens() {
+        return listaItens;
+    }
+
+    public void setListaItens(List<Item> listaItens) {
+        this.listaItens = listaItens;
     }
 
     @Override
     public int hashCode() {
         int hash = 5;
         hash = 19 * hash + this.idCarrinhoCompra;
-        hash = 19 * hash + Objects.hashCode(this.origami);
         return hash;
     }
 

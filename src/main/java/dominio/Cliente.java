@@ -34,12 +34,8 @@ public class Cliente implements Serializable {
     @Column (length = 50, nullable = false)
     private String cidade;
     
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "cliente_com_carrinho",
-        joinColumns = @JoinColumn(name = "cliente_id"),
-        inverseJoinColumns = @JoinColumn(name = "compra_id")
-    )
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "compra_id")
     @Nullable
     private List<CarrinhoCompra> pedidos;
 
