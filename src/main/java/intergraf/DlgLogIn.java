@@ -109,12 +109,14 @@ public class DlgLogIn extends javax.swing.JDialog {
         char[] passwordChars = txtSenha.getPassword();
         String senha = new String(passwordChars);
         
-        if( gerIG.clienteLogado(email, senha)){
-            gerIG.janelaPedidos();
-            limparCampos();
-            dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Usuário não encontrado!", "ERRO Log In", JOptionPane.ERROR_MESSAGE  );
+        if( validarCampos() ) {
+            if( gerIG.clienteLogado(email, senha)){
+                gerIG.janelaPedidos();
+                limparCampos();
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Usuário não encontrado!", "ERRO Log In", JOptionPane.ERROR_MESSAGE  );
+            }
         }
     }//GEN-LAST:event_btnEntrarActionPerformed
 

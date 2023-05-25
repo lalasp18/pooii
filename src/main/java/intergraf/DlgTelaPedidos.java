@@ -621,8 +621,6 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
     }//GEN-LAST:event_popDescricaoActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        List<JToggleButton> togglesSelecionados = new ArrayList<>();
-
         for (Component component : panelProdutos.getComponents()) {
             if (component instanceof JToggleButton) {
                 JToggleButton toggleButton = (JToggleButton) component;

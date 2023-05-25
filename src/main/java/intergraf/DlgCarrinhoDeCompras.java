@@ -4,18 +4,9 @@
  */
 package intergraf;
 
-import dominio.CarrinhoCompra;
-import dominio.Cliente;
 import dominio.Item;
 import dominio.Origami;
-import intergraf.DlgTelaPedidos;
 import gerTarefas.GerInterGrafica;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
