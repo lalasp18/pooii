@@ -14,7 +14,11 @@ import org.hibernate.HibernateException;
  */
 public class ClienteDAO extends GenericDAO {
     
-    public List<Cliente> pesquisarEmail(String pesq) throws HibernateException {
-        return listar(Cliente.class);
+    public Cliente pesquisarEmail(String email, String senha) throws HibernateException {
+        List<Cliente> clientes = listar(Cliente.class);
+        if(!clientes.isEmpty()){
+            return clientes.get(clientes.size()-1);
+        }
+        return null;
     }
 }

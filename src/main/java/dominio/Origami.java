@@ -5,6 +5,7 @@
 package dominio;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.*;
@@ -38,7 +39,7 @@ public class Origami implements Serializable {
     private byte[] foto;
     
     @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> materiais;
+    private List<String> materiais = new ArrayList<>();
     
     // Hibernate
     public Origami() {
@@ -65,11 +66,6 @@ public class Origami implements Serializable {
         this.qtdPecas = qtdPecas;
         this.foto = foto;
         this.materiais = materiais;
-    }
-
-    @Override
-    public String toString() {
-        return '{' + nome + foto + '}';
     }
 
     public int getIdOrigami() {

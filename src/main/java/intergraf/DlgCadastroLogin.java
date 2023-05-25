@@ -111,17 +111,12 @@ public class DlgCadastroLogin extends javax.swing.JDialog {
         if( validarCampos() ) {
              // INSERIR NO BANCO
             try {
-                //  VALIDAR EMAIL
-//                boolean existe = validarEmailExistente(email);
-                // PESQUISAR
-//                if(!existe) {
-                    int id = gerIG.getGerDominio().inserirCliente(nomeCliente, email, senha, cidade);
-                    JOptionPane.showMessageDialog(this, "Usuário " + id + " cadastrado com sucesso.", "Inserir Cliente", JOptionPane.INFORMATION_MESSAGE  );
+                int id = gerIG.getGerDominio().inserirCliente(nomeCliente, email, senha, cidade);
+                JOptionPane.showMessageDialog(this, "Usuário " + id + " cadastrado com sucesso.", "Inserir Cliente", JOptionPane.INFORMATION_MESSAGE  );
 
-                    gerIG.janelaLogInCliente();
-                    limparCampos();
-                    dispose();
-//                }
+                gerIG.janelaLogInCliente();
+                limparCampos();
+                dispose();
             } catch (HibernateException ex) {
                 JOptionPane.showMessageDialog(this, ex, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
             }
@@ -130,11 +125,6 @@ public class DlgCadastroLogin extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
-
-    private boolean validarEmailExistente(String condicao) {
-        List<Cliente> emailExiste = gerIG.getGerDominio().pesquisarCliente(condicao);
-        return emailExiste.isEmpty();
-    }
     
     private boolean validarCampos() {
         

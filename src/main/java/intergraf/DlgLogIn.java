@@ -4,13 +4,11 @@
  */
 package intergraf;
 
+import dominio.Cliente;
 import gerTarefas.GerInterGrafica;
 import java.awt.Color;
-import java.text.ParseException;
-import javax.swing.BorderFactory;
+import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.border.TitledBorder;
-import org.hibernate.HibernateException;
 
 /**
  *
@@ -19,6 +17,7 @@ import org.hibernate.HibernateException;
 public class DlgLogIn extends javax.swing.JDialog {
 
     private GerInterGrafica gerIG;
+    
     /**
      * Creates new form NewJDialog
      */
@@ -110,24 +109,13 @@ public class DlgLogIn extends javax.swing.JDialog {
         char[] passwordChars = txtSenha.getPassword();
         String senha = new String(passwordChars);
         
-        if( validarCampos() ) {
-             // INSERIR NO BANCO
-            try {
-                // PESQUISAR
-//                int id = gerIG.getGerDominio().inserirCliente(nome, cpf, dt, sexo, cep, ender,  bairro, num, complemento, referencia, telFixo, celular, email, fotoBytes, cidade);
-//                JOptionPane.showMessageDialog(this, "Cliente " + id + "inserido com sucesso.", "Inserir Cliente", JOptionPane.INFORMATION_MESSAGE  );
-                
-                gerIG.janelaPedidos();
-                limparCampos();
-                dispose();
-            } catch (HibernateException ex) {
-                JOptionPane.showMessageDialog(this, ex, "ERRO Log in", JOptionPane.ERROR_MESSAGE  );
-            }
-            catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, ex, "ERRO Log in", JOptionPane.ERROR_MESSAGE  );
-            }
+        if( gerIG.clienteLogado(email, senha)){
+            gerIG.janelaPedidos();
+            limparCampos();
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuário não encontrado!", "ERRO Log In", JOptionPane.ERROR_MESSAGE  );
         }
-        
     }//GEN-LAST:event_btnEntrarActionPerformed
 
     private void btnInscreverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInscreverActionPerformed

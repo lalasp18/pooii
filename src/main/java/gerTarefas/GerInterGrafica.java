@@ -4,6 +4,8 @@
 
 package gerTarefas;
 
+import dominio.Cliente;
+import dominio.Item;
 import intergraf.DlgCadastroLogin;
 import intergraf.DlgCarrinhoDeCompras;
 import intergraf.DlgGerenciarOrigami;
@@ -12,6 +14,7 @@ import intergraf.DlgTelaPedidos;
 import intergraf.MenuPrincipal;
 import java.awt.Frame;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import org.hibernate.HibernateException;
@@ -33,6 +36,9 @@ public class GerInterGrafica {
     // GERENCIADORES de DOMINIO
     GerenciadorDominio gerDominio;
     
+    // CLIENTE LOGADO
+    Cliente gerCliente = null;
+    
     public GerInterGrafica() {
         try {
             gerDominio = new GerenciadorDominio();
@@ -40,6 +46,10 @@ public class GerInterGrafica {
             JOptionPane.showMessageDialog(janPrinc, "Erro de conexão com o banco. " + ex.getMessage() );
                 System.exit(-1);
         } 
+    }
+
+    public Cliente getGerCliente() {
+        return gerCliente;
     }
 
     public GerenciadorDominio getGerDominio() {
@@ -72,10 +82,13 @@ public class GerInterGrafica {
     public void janelaPrincipal() {
         janPrinc = new MenuPrincipal(this);
         janPrinc.setVisible(true);
+        clienteDeslogado();
     }
     
     public void janelaLogInCliente() {
-        janLogin = (DlgLogIn) abrirJanela(janPrinc, janLogin, DlgLogIn.class);
+        if(gerCliente == null) {
+            janLogin = (DlgLogIn) abrirJanela(janPrinc, janLogin, DlgLogIn.class);
+        }
     }
     
     public void janelaCadCliente() {
@@ -96,8 +109,27 @@ public class GerInterGrafica {
     
     public void fecharPerfil() {
         fecharJanela(janTelped, janCarcomp);
+        clienteDeslogado();
     }
     
+    public boolean clienteLogado(String email, String senha) {
+        gerCliente = gerDominio.logar(email, senha);
+        if(gerCliente != null) {
+            return true;
+        }
+        return false;
+    }
+    
+    public void clienteDeslogado() {
+        gerCliente = null;
+    }
+    
+    public List<Item> listaDeItens() {
+        if(janTelped != null) {
+            return janTelped.getItensPedidos();
+        }
+        return null;
+    }
 
     public static void main(String[] args) {
         

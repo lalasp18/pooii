@@ -51,11 +51,6 @@ public class Item implements Serializable {
         this.qtd = qtd;
     }
 
-    @Override
-    public String toString() {
-        return "Item{" + "origami=" + origami + ", carrinho=" + carrinho + '}';
-    }
-    
     public int getIdItem() {
         return idItem;
     }

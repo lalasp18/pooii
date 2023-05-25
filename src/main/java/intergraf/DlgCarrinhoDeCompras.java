@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import org.hibernate.HibernateException;
 
 /**
  *
@@ -28,6 +29,7 @@ import javax.swing.table.DefaultTableModel;
 public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
 
     private GerInterGrafica gerIG;
+    private float totalComprado = 0.0f;
     /**
      * Creates new form DlgCarrinhoDeCompras
      */
@@ -192,51 +194,25 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
     }//GEN-LAST:event_menuLojaActionPerformed
 
     private void btnComprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComprarActionPerformed
-        //  EXEMPLO DE CLIENTE JÁ QUE NÃO POSSUO PESQUISAR PARA MANTÊ-LO LOGADO
-//        List<Cliente> clientes = gerIG.getGerDominio().listar(Cliente.class);
-//        Cliente client = null;
-//        if(clientes.size()>1){
-//            client = clientes.get(clientes.size()-1);
-//        } else {
-//            client = clientes.get(0);
-//        }
-//        //  EXEMPLO DE CLIENTE JÁ QUE NÃO POSSUO PESQUISAR PARA MANTÊ-LO LOGADO
-//        String msgSucesso = "";
-//        int i = 1;
-//        List<CarrinhoCompra> carrinhoComprado = client.getPedidos();
-//
-//        List<CarrinhoCompra> carrinhos = gerIG.getGerDominio().listar(CarrinhoCompra.class);
-//        for (CarrinhoCompra compra : carrinhos) {
-//            if(carrinhoComprado.contains(compra)) {
-//                continue; // Ignorar a adição à lista de pedidos do cliente
-//            }
-//            client.getPedidos().add(compra);
-//            msgSucesso = "Itens dos "  + i + " carrinhos comprados com sucesso";
-//            i++;
-//        }
-//
-//        if(!msgSucesso.isEmpty()) {
-//            DefaultTableModel model = (DefaultTableModel) tbCarrinho.getModel();
-//            model.setRowCount(0);
-//            txtFrete.setText("");
-//            txtTotal.setText("");
-//
-//            JOptionPane.showMessageDialog(this, msgSucesso, "Status da Compra", JOptionPane.PLAIN_MESSAGE);
-//        }
+        float frete = definirFrete();
+        
+        try {
+        // INSERIR
+            int id = gerIG.getGerDominio().inserirCarrinhoCompra(frete, totalComprado, gerIG.listaDeItens(), gerIG.getGerCliente());
+            JOptionPane.showMessageDialog(this, "Carrinho " + id + " comprado com sucesso.", "Status da Compra", JOptionPane.INFORMATION_MESSAGE  );
+            DefaultTableModel model = (DefaultTableModel) tbCarrinho.getModel();
+            model.setRowCount(0);
+            txtFrete.setText("");
+            txtTotal.setText("");
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(this, ex, "ERRO Carrinho", JOptionPane.ERROR_MESSAGE  );
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex, "ERRO Carrinho", JOptionPane.ERROR_MESSAGE  );
+        }
     }//GEN-LAST:event_btnComprarActionPerformed
     
     private float definirFrete() {
-        //  EXEMPLO DE CLIENTE JÁ QUE NÃO POSSUO PESQUISAR PARA MANTÊ-LO LOGADO
-        List<Cliente> clientes = gerIG.getGerDominio().listar(Cliente.class);
-        Cliente client = null;
-        if(clientes.size()>1){
-            client = clientes.get(clientes.size()-1);
-        } else {
-            client = clientes.get(0);
-        }
-        //  EXEMPLO DE CLIENTE JÁ QUE NÃO POSSUO PESQUISAR PARA MANTÊ-LO LOGADO
-        
-        if( null != client.getCidade() ) switch (client.getCidade()) {
+        if( gerIG.getGerCliente()!= null ) switch (gerIG.getGerCliente().getCidade()) {
             case "Serra":
                 return 15;
             case "Vila Velha":
@@ -262,11 +238,6 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
     }
     
     private void carregarTabela(){
-        List<CarrinhoCompra> carrinhos = gerIG.getGerDominio().listar(CarrinhoCompra.class);
-        List<Item> itens = gerIG.getGerDominio().listar(Item.class);
-        List<Item> itemComprado = new ArrayList<>();
-        
-        float totalCompra = 0.0f;
         float totalFrete = 0.0f;
         
         DefaultTableModel tableModel = (DefaultTableModel) tbCarrinho.getModel();
@@ -276,17 +247,9 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         tbCarrinho.setDefaultRenderer(Object.class, centerRenderer);
         
-        if(!itens.isEmpty()) {
-            if(!carrinhos.isEmpty()) {
-                for(CarrinhoCompra carr : carrinhos) {
-                    itemComprado.addAll(carr.getListaItens());
-                }
-            }
-        }
-        
-        if(!itens.isEmpty()) {
-            for(Item produto : itens) {
-                if(!itemComprado.isEmpty() && itemComprado.contains(produto)) {
+        if(!gerIG.listaDeItens().isEmpty() || gerIG.listaDeItens() != null) {
+            for(Item produto : gerIG.listaDeItens()) {
+                if(produto.getCarrinho() != null) {
                     continue;
                 }
 
@@ -296,7 +259,7 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
                 float preco = origami.getPreco();
                 int qtd = produto.getQtd();
                 float total = qtd * preco;
-                totalCompra += total;
+                totalComprado += total;
 
                 String qtdStr = Integer.toString(qtd) + " unid.";
                 String precoStr = "R$ " + Float.toString(preco);
@@ -305,39 +268,13 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
                 Object[] rowData = {nome, qtdStr, precoStr, totalStr};
                 tableModel.addRow(rowData);
             }
+
+            totalFrete = definirFrete();
+            totalComprado += totalFrete;
+
+            txtFrete.setText("R$ " + totalFrete);
+            txtTotal.setText("R$ " + totalComprado);
         }
-        
-//        for (CarrinhoCompra compra : carrinhos) {
-//            if(carrinhoComprado.equals(compra)) {
-//                continue; // Ignorar a adição à tabela
-//            }
-//            for(Origami origami : compra.getOrigami()) {
-//                if (origamisExibidos.equals(origami)) {
-//                    continue; // Ignorar a adição à tabela
-//                }
-//                
-//                origamisExibidos.add(origami);
-//                
-//                String nome = origami.getNome();
-//                float preco = origami.getPreco();
-//                int qtd = origamisQuantidades.get(origami);
-//                float total = qtd * preco;
-//                totalCompra += total;
-//
-//                String qtdStr = Integer.toString(qtd) + " unid.";
-//                String precoStr = "R$ " + Float.toString(preco);
-//                String totalStr = "R$ " + Float.toString(total);
-//
-//                Object[] rowData = {nome, qtdStr, precoStr, totalStr};
-//                tableModel.addRow(rowData);
-//            }
-//        }
-
-        totalFrete = definirFrete();
-        totalCompra += totalFrete;
-
-        txtFrete.setText("R$ " + totalFrete);
-        txtTotal.setText("R$ " + totalCompra);
         
         tbCarrinho.setModel(tableModel);
         tbCarrinho.setShowVerticalLines(false);

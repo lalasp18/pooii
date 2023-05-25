@@ -6,36 +6,13 @@ package intergraf;
 
 import dominio.Avaliacao;
 import dominio.Cliente;
+import dominio.Item;
 import dominio.Origami;
 import gerTarefas.GerInterGrafica;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.JToggleButton;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.*;
 import org.hibernate.HibernateException;
 
 /**
@@ -45,6 +22,13 @@ import org.hibernate.HibernateException;
 public class DlgTelaPedidos extends javax.swing.JDialog {
 
     private GerInterGrafica gerIG;
+    
+    public List<Item> itensPedidos = new ArrayList<>();
+
+    public List<Item> getItensPedidos() {
+        return itensPedidos;
+    }
+    
     /**
      * Creates new form DlgTelaPedidos
      */
@@ -499,8 +483,7 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdicionarCarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarCarrinhoActionPerformed
-        List<Origami> origami = new ArrayList<>();
-        List<Integer> qtdItem = new ArrayList<>();
+        List<Item> listaItem = new ArrayList<>();
         
         SpinnerModel spinnerModel = new SpinnerNumberModel(0, 0, 20, 1);
         
@@ -516,30 +499,15 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
                 JToggleButton toggleButton = (JToggleButton) component;
                 if (toggleButton.isSelected()) {
                     Origami selecionado = (Origami) toggleButton.getClientProperty("origami");
-                    origami.add(selecionado);
+                    int qtd = customOptionPane(selecionado.getNome());
+                    listaItem.add(new Item(selecionado, qtd));
                 }
             }
         }
         
-        for(Origami org: origami) {
-            int valor = customOptionPane(org.getNome());
-            qtdItem.add(valor);
-        }
-        
-        try {
-            // INSERIR
-            for(int i = 0; i < origami.size(); i++) {
-                Origami org = origami.get(i);
-                int qtd = qtdItem.get(i);
-                int id = gerIG.getGerDominio().inserirItem(org, qtd);
-                JOptionPane.showMessageDialog(this, "Item " + id + " inserido com sucesso.", "Inserir Itens", JOptionPane.INFORMATION_MESSAGE  );
-            }
-            btnCancelarActionPerformed(evt);
-        } catch (HibernateException ex) {
-            JOptionPane.showMessageDialog(this, ex, "ERRO Item", JOptionPane.ERROR_MESSAGE  );
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex, "ERRO Item", JOptionPane.ERROR_MESSAGE  );
-        }
+        itensPedidos = listaItem;
+        JOptionPane.showMessageDialog(this, "Itens adicionados com sucesso.", "Lista de itens", JOptionPane.INFORMATION_MESSAGE  );
+        btnCancelarActionPerformed(evt);
     }//GEN-LAST:event_btnAdicionarCarrinhoActionPerformed
 
     private void menuSair1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSair1ActionPerformed

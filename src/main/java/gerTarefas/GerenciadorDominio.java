@@ -77,14 +77,26 @@ public class GerenciadorDominio {
         return itm.getIdItem();
     }
     
-    public int inserirCarrinhoCompra (float frete, float total, List<Item> listaItens) {
-        CarrinhoCompra carr = new CarrinhoCompra(frete, total, listaItens);
+    public int inserirCarrinhoCompra (float frete, float total, List<Item> listaItens, Cliente cliente) {
+        CarrinhoCompra carr = new CarrinhoCompra(frete, total, cliente);
+        
+        for(Item produto : listaItens) {
+            produto.setCarrinho(carr);
+        }
+        carr.setListaItens(listaItens);
+        
+        cliente.getPedidos().add(carr);
+        
         carrDAO.inserir(carr);
         return carr.getIdCarrinhoCompra();
     }
     
-    public List<Cliente> pesquisarCliente (String pesq) throws HibernateException {
-        List<Cliente> lista = cliDAO.pesquisarEmail(pesq);
-        return lista;
+//    public List<Cliente> pesquisarCliente (String pesq) throws HibernateException {
+//        List<Cliente> lista = cliDAO.pesquisarEmail(pesq);
+//        return lista;
+//    }
+    
+    public Cliente logar(String email, String senha) {
+        return cliDAO.pesquisarEmail(email, senha);
     }
 }

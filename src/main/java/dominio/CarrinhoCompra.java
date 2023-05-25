@@ -5,6 +5,7 @@
 package dominio;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
 
@@ -23,8 +24,12 @@ public class CarrinhoCompra implements Serializable {
     private float frete;
     private float total;
     
-    @OneToMany(mappedBy = "carrinho", fetch = FetchType.EAGER)
-    private List<Item> listaItens;
+    @OneToMany(mappedBy = "carrinho", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Item> listaItens = new ArrayList();
+    
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
     
     // Hibernate
     public CarrinhoCompra() {
@@ -37,39 +42,22 @@ public class CarrinhoCompra implements Serializable {
         this.listaItens = listaItens;
     }
 
-    public CarrinhoCompra(float frete, float total, List<Item> listaItens) {
+    public CarrinhoCompra(float frete, float total, Cliente cliente) {
         this.frete = frete;
         this.total = total;
-        this.listaItens = listaItens;
-    }
-
-    @Override
-    public String toString() {
-        return "CarrinhoCompra{" + "frete=" + frete + ", total=" + total + ", listaItens=" + listaItens + '}';
+        this.cliente = cliente;
     }
 
     public int getIdCarrinhoCompra() {
         return idCarrinhoCompra;
     }
 
-    public void setIdCarrinhoCompra(int idCarrinhoCompra) {
-        this.idCarrinhoCompra = idCarrinhoCompra;
-    }
-
     public float getFrete() {
         return frete;
     }
 
-    public void setFrete(float frete) {
-        this.frete = frete;
-    }
-
     public float getTotal() {
         return total;
-    }
-
-    public void setTotal(float total) {
-        this.total = total;
     }
 
     public List<Item> getListaItens() {
@@ -78,6 +66,14 @@ public class CarrinhoCompra implements Serializable {
 
     public void setListaItens(List<Item> listaItens) {
         this.listaItens = listaItens;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     @Override
