@@ -500,7 +500,7 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
 
     private void btnAdicionarCarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarCarrinhoActionPerformed
         List<Origami> origami = new ArrayList<>();
-        int qtdItem;
+        List<Integer> qtdItem = new ArrayList<>();
         
         SpinnerModel spinnerModel = new SpinnerNumberModel(0, 0, 20, 1);
         
@@ -516,21 +516,29 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
                 JToggleButton toggleButton = (JToggleButton) component;
                 if (toggleButton.isSelected()) {
                     Origami selecionado = (Origami) toggleButton.getClientProperty("origami");
-                    
                     origami.add(selecionado);
                 }
             }
         }
         
+        for(Origami org: origami) {
+            int valor = customOptionPane(org.getNome());
+            qtdItem.add(valor);
+        }
+        
         try {
             // INSERIR
-//            int id = gerIG.getGerDominio().inserirCarrinhoCompra(origami);
-//            JOptionPane.showMessageDialog(this, "Carrinho " + id + " inserido com sucesso.", "Inserir Carrinho de Compra", JOptionPane.INFORMATION_MESSAGE  );
+            for(int i = 0; i < origami.size(); i++) {
+                Origami org = origami.get(i);
+                int qtd = qtdItem.get(i);
+                int id = gerIG.getGerDominio().inserirItem(org, qtd);
+                JOptionPane.showMessageDialog(this, "Item " + id + " inserido com sucesso.", "Inserir Itens", JOptionPane.INFORMATION_MESSAGE  );
+            }
             btnCancelarActionPerformed(evt);
         } catch (HibernateException ex) {
-            JOptionPane.showMessageDialog(this, ex, "ERRO Carrinho", JOptionPane.ERROR_MESSAGE  );
+            JOptionPane.showMessageDialog(this, ex, "ERRO Item", JOptionPane.ERROR_MESSAGE  );
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex, "ERRO Carrinho", JOptionPane.ERROR_MESSAGE  );
+            JOptionPane.showMessageDialog(this, ex, "ERRO Item", JOptionPane.ERROR_MESSAGE  );
         }
     }//GEN-LAST:event_btnAdicionarCarrinhoActionPerformed
 
@@ -597,33 +605,32 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
     }//GEN-LAST:event_togBtnArquitActionPerformed
 
     private void popAvaliarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popAvaliarActionPerformed
-//        JTextField comentarioField = new JTextField(20);
-//        SpinnerModel spinnerModel = new SpinnerNumberModel(0, 0, 5, 1);
-//        
-//        JSpinner avaliacaoSpinner = new JSpinner(spinnerModel);
-//        avaliacaoSpinner.setFont(new java.awt.Font("Segoe UI", 1, 16));
-//
-//        JPanel panel = new JPanel(new GridLayout(2, 2));
-//        panel.add(new JLabel("Avaliação (0-5 estrelas):"));
-//        panel.add(avaliacaoSpinner);
-//        panel.add(new JLabel("Comentário:"));
-//        panel.add(comentarioField);
-//        panel.setPreferredSize(new Dimension(200, 100));
-//
-//        int option = JOptionPane.showOptionDialog(
-//                this,
-//                panel,
-//                "Avaliação",
-//                JOptionPane.OK_CANCEL_OPTION,
-//                JOptionPane.PLAIN_MESSAGE,
-//                null,
-//                new String[]{"Enviar", "Cancelar"},
-//                "Enviar");
-//
-//        if (option == JOptionPane.OK_OPTION) {
-//            enviarAvalicao(comentarioField, spinnerModel);
-//        }
-customOptionPane();
+        JTextField comentarioField = new JTextField(20);
+        SpinnerModel spinnerModel = new SpinnerNumberModel(0, 0, 5, 1);
+        
+        JSpinner avaliacaoSpinner = new JSpinner(spinnerModel);
+        avaliacaoSpinner.setFont(new java.awt.Font("Segoe UI", 1, 16));
+
+        JPanel panel = new JPanel(new GridLayout(2, 2));
+        panel.add(new JLabel("Avaliação (0-5 estrelas):"));
+        panel.add(avaliacaoSpinner);
+        panel.add(new JLabel("Comentário:"));
+        panel.add(comentarioField);
+        panel.setPreferredSize(new Dimension(200, 100));
+
+        int option = JOptionPane.showOptionDialog(
+                this,
+                panel,
+                "Avaliação",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                new String[]{"Enviar", "Cancelar"},
+                "Enviar");
+
+        if (option == JOptionPane.OK_OPTION) {
+            enviarAvalicao(comentarioField, spinnerModel);
+        }
     }//GEN-LAST:event_popAvaliarActionPerformed
 
     private void popDescricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popDescricaoActionPerformed
@@ -658,32 +665,39 @@ customOptionPane();
         }
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    public void customOptionPane() {
-        toggleButton.addItemListener(new ItemListener() {
-            public void itemStateChanged(ItemEvent e) {
-                if (toggleButton.isSelected()) {
-                    // Criar um JSpinner com um SpinnerNumberModel
-                    SpinnerNumberModel spinnerModel = new SpinnerNumberModel(1, 1, 10, 1);
-                    JSpinner spinner = new JSpinner(spinnerModel);
-                    
-                    // Criar o JOptionPane com o JSpinner
-                    Object[] message = {"Quantidade:", spinner};
-                    int option = JOptionPane.showOptionDialog(null, message, "Informe a quantidade",
-                            JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
-                    
-                    if (option == JOptionPane.OK_OPTION) {
-                        // Obter o valor selecionado do spinner
-                        int quantidade = (int) spinner.getValue();
-                        System.out.println("Quantidade selecionada: " + quantidade);
-                    } else {
-                        // O usuário cancelou a seleção, faça algo aqui se necessário
-                    }
-                    
-                    // Desselecionar o toggleButton após a conclusão
-                    toggleButton.setSelected(false);
-                }
-            }
-        });
+    private int customOptionPane(String produto) {
+        SpinnerModel spinnerModel = new SpinnerNumberModel(1, 1, 5, 1);
+        
+        JSpinner avaliacaoSpinner = new JSpinner(spinnerModel);
+        avaliacaoSpinner.setFont(new java.awt.Font("Segoe UI", 1, 16));
+
+        JPanel panel = new JPanel(new GridLayout(1, 2));
+        panel.add(new JLabel("Informe a quantidade: "));
+        panel.add(avaliacaoSpinner);
+        panel.setPreferredSize(new Dimension(300, 50));
+        
+        JOptionPane optionPane = new JOptionPane();
+        optionPane.setMessage(panel);
+        optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
+        optionPane.setOptionType(JOptionPane.OK_OPTION);
+        
+        int option = JOptionPane.showOptionDialog(
+                this,
+                panel,
+                "Produto - " + produto,
+                JOptionPane.OK_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                new String[]{"Enviar"},
+                "Enviar"
+        );
+        
+        int selectedValue = 1;
+        if (option == JOptionPane.OK_OPTION) {
+            selectedValue = Integer.parseInt(avaliacaoSpinner.getValue().toString());
+        }
+
+        return selectedValue;
     }
     
     private static String wrapText(String input, int maxCharactersPerLine) {

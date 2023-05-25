@@ -9,10 +9,12 @@ import dao.CarrinhoDAO;
 import dao.ClienteDAO;
 import dao.ConexaoHibernate;
 import dao.GenericDAO;
+import dao.ItemDAO;
 import dao.OrigamiDAO;
 import dominio.Avaliacao;
 import dominio.CarrinhoCompra;
 import dominio.Cliente;
+import dominio.Item;
 import dominio.Origami;
 import java.util.List;
 import org.hibernate.HibernateException;
@@ -27,6 +29,7 @@ public class GerenciadorDominio {
     CarrinhoDAO carrDAO = null;
     ClienteDAO cliDAO = null;
     GenericDAO genDAO = null;
+    ItemDAO itmDAO = null;
     OrigamiDAO oriDAO = null;
 
     public GerenciadorDominio() throws HibernateException {
@@ -36,6 +39,7 @@ public class GerenciadorDominio {
         carrDAO = new CarrinhoDAO();
         cliDAO = new ClienteDAO();
         genDAO = new GenericDAO();
+        itmDAO = new ItemDAO();
         oriDAO = new OrigamiDAO();
     }
     
@@ -67,15 +71,20 @@ public class GerenciadorDominio {
         return ava.getIdAvaliacao();
     }
     
-//    public int inserirCarrinhoCompra (List<Origami> origami) {
-//        CarrinhoCompra carr = new CarrinhoCompra(origami);
-//        carrDAO.inserir(carr);
-//        return carr.getIdCarrinhoCompra();
-//    }
+    public int inserirItem (Origami origami, int qtd) {
+        Item itm = new Item(origami, qtd);
+        itmDAO.inserir(itm);
+        return itm.getIdItem();
+    }
+    
+    public int inserirCarrinhoCompra (float frete, float total, List<Item> listaItens) {
+        CarrinhoCompra carr = new CarrinhoCompra(frete, total, listaItens);
+        carrDAO.inserir(carr);
+        return carr.getIdCarrinhoCompra();
+    }
     
     public List<Cliente> pesquisarCliente (String pesq) throws HibernateException {
         List<Cliente> lista = cliDAO.pesquisarEmail(pesq);
         return lista;
-        
     }
 }
