@@ -52,12 +52,14 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu3 = new javax.swing.JMenu();
         menuLoja = new javax.swing.JMenuItem();
-        menuCarrinho = new javax.swing.JMenuItem();
+        menuCompras = new javax.swing.JMenu();
+        subMenuCarrinho = new javax.swing.JMenuItem();
+        subMenuHistorico = new javax.swing.JMenuItem();
         menuSair = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
         menuExcluirConta = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Carrinho de Compras");
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -145,6 +147,7 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/customer-review.png"))); // NOI18N
         jMenu3.setText("<html><style>h1{font-size:12px}</style><h1>Usuário</h1></html>");
 
+        menuLoja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/loja-alt.png"))); // NOI18N
         menuLoja.setText("Loja de origamis");
         menuLoja.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,9 +156,25 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         });
         jMenu3.add(menuLoja);
 
-        menuCarrinho.setText("Carrinho de compras");
-        jMenu3.add(menuCarrinho);
+        menuCompras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/adicionar-sacola-de-compras.png"))); // NOI18N
+        menuCompras.setText("Compras");
 
+        subMenuCarrinho.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/carrinho-de-compras (1).png"))); // NOI18N
+        subMenuCarrinho.setText("Carrinho de compras");
+        menuCompras.add(subMenuCarrinho);
+
+        subMenuHistorico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/tempo-passado.png"))); // NOI18N
+        subMenuHistorico.setText("Histórico");
+        subMenuHistorico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuHistoricoActionPerformed(evt);
+            }
+        });
+        menuCompras.add(subMenuHistorico);
+
+        jMenu3.add(menuCompras);
+
+        menuSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/saida.png"))); // NOI18N
         menuSair.setText("Sair");
         menuSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -165,6 +184,7 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         jMenu3.add(menuSair);
         jMenu3.add(jSeparator2);
 
+        menuExcluirConta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/lixo.png"))); // NOI18N
         menuExcluirConta.setText("Excluir conta");
         jMenu3.add(menuExcluirConta);
 
@@ -201,6 +221,11 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, ex, "ERRO Carrinho", JOptionPane.ERROR_MESSAGE  );
         }
     }//GEN-LAST:event_btnComprarActionPerformed
+
+    private void subMenuHistoricoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuHistoricoActionPerformed
+        gerIG.janelaHistorico();
+        dispose();
+    }//GEN-LAST:event_subMenuHistoricoActionPerformed
     
     private float definirFrete() {
         if( gerIG.getGerCliente()!= null ) switch (gerIG.getGerCliente().getCidade()) {
@@ -282,10 +307,12 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JLabel lblTotal;
-    private javax.swing.JMenuItem menuCarrinho;
+    private javax.swing.JMenu menuCompras;
     private javax.swing.JMenuItem menuExcluirConta;
     private javax.swing.JMenuItem menuLoja;
     private javax.swing.JMenuItem menuSair;
+    private javax.swing.JMenuItem subMenuCarrinho;
+    private javax.swing.JMenuItem subMenuHistorico;
     private javax.swing.JTable tbCarrinho;
     private javax.swing.JTextField txtFrete;
     private javax.swing.JTextField txtTotal;

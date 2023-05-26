@@ -87,8 +87,10 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         jMenuBar1 = new javax.swing.JMenuBar();
         menuUsuario = new javax.swing.JMenu();
         menuLoja = new javax.swing.JMenuItem();
-        menuCarrinho = new javax.swing.JMenuItem();
-        menuSair1 = new javax.swing.JMenuItem();
+        menuCompras = new javax.swing.JMenu();
+        subMenuCarrinho = new javax.swing.JMenuItem();
+        subMenuHistorico = new javax.swing.JMenuItem();
+        menuSair = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         menuExcluirConta1 = new javax.swing.JMenuItem();
 
@@ -116,7 +118,7 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         });
         menuPop.add(popAvaliacao);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Loja de Origamis");
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -452,26 +454,44 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         menuUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/customer-review.png"))); // NOI18N
         menuUsuario.setText("<html><style>h1{font-size:12px}</style><h1>Usuário</h1></html>");
 
+        menuLoja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/loja-alt.png"))); // NOI18N
         menuLoja.setText("Loja de origamis");
         menuUsuario.add(menuLoja);
 
-        menuCarrinho.setText("Carrinho de compras");
-        menuCarrinho.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuCarrinhoActionPerformed(evt);
-            }
-        });
-        menuUsuario.add(menuCarrinho);
+        menuCompras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/adicionar-sacola-de-compras.png"))); // NOI18N
+        menuCompras.setText("Compras");
 
-        menuSair1.setText("Sair");
-        menuSair1.addActionListener(new java.awt.event.ActionListener() {
+        subMenuCarrinho.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/carrinho-de-compras (1).png"))); // NOI18N
+        subMenuCarrinho.setText("Carrinho de compras");
+        subMenuCarrinho.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuSair1ActionPerformed(evt);
+                subMenuCarrinhoActionPerformed(evt);
             }
         });
-        menuUsuario.add(menuSair1);
+        menuCompras.add(subMenuCarrinho);
+
+        subMenuHistorico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/tempo-passado.png"))); // NOI18N
+        subMenuHistorico.setText("Histórico");
+        subMenuHistorico.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuHistoricoActionPerformed(evt);
+            }
+        });
+        menuCompras.add(subMenuHistorico);
+
+        menuUsuario.add(menuCompras);
+
+        menuSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/saida.png"))); // NOI18N
+        menuSair.setText("Sair");
+        menuSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuSairActionPerformed(evt);
+            }
+        });
+        menuUsuario.add(menuSair);
         menuUsuario.add(jSeparator3);
 
+        menuExcluirConta1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/lixo.png"))); // NOI18N
         menuExcluirConta1.setText("Excluir conta");
         menuUsuario.add(menuExcluirConta1);
 
@@ -510,14 +530,14 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         btnCancelarActionPerformed(evt);
     }//GEN-LAST:event_btnAdicionarCarrinhoActionPerformed
 
-    private void menuSair1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSair1ActionPerformed
+    private void menuSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSairActionPerformed
         gerIG.fecharPerfil();
-    }//GEN-LAST:event_menuSair1ActionPerformed
+    }//GEN-LAST:event_menuSairActionPerformed
 
-    private void menuCarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCarrinhoActionPerformed
+    private void subMenuCarrinhoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuCarrinhoActionPerformed
         gerIG.janelaCarrinho();
         dispose();
-    }//GEN-LAST:event_menuCarrinhoActionPerformed
+    }//GEN-LAST:event_subMenuCarrinhoActionPerformed
 
     private void popAvaliacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popAvaliacaoActionPerformed
         List<Avaliacao> avaliacoes = gerIG.getGerDominio().listar(Avaliacao.class);
@@ -630,6 +650,11 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void subMenuHistoricoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuHistoricoActionPerformed
+        gerIG.janelaHistorico();
+        dispose();
+    }//GEN-LAST:event_subMenuHistoricoActionPerformed
 
     private int customOptionPane(String produto) {
         SpinnerModel spinnerModel = new SpinnerNumberModel(1, 1, 5, 1);
@@ -795,11 +820,11 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
     private javax.swing.JToggleButton jToggleButton7;
     private javax.swing.JToggleButton jToggleButton8;
     private javax.swing.JToggleButton jToggleButton9;
-    private javax.swing.JMenuItem menuCarrinho;
+    private javax.swing.JMenu menuCompras;
     private javax.swing.JMenuItem menuExcluirConta1;
     private javax.swing.JMenuItem menuLoja;
     private javax.swing.JPopupMenu menuPop;
-    private javax.swing.JMenuItem menuSair1;
+    private javax.swing.JMenuItem menuSair;
     private javax.swing.JMenu menuUsuario;
     private javax.swing.JToggleButton origami1;
     private javax.swing.JToggleButton origami2;
@@ -809,6 +834,8 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
     private javax.swing.JMenuItem popAvaliar;
     private javax.swing.JMenuItem popDescricao;
     private javax.swing.JScrollPane scrollPanelProdutos;
+    private javax.swing.JMenuItem subMenuCarrinho;
+    private javax.swing.JMenuItem subMenuHistorico;
     private javax.swing.JToggleButton tipo1;
     private javax.swing.JToggleButton tipo2;
     private javax.swing.JToggleButton togBtnArquit;

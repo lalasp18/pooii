@@ -9,6 +9,7 @@ import dominio.Item;
 import intergraf.DlgCadastroLogin;
 import intergraf.DlgCarrinhoDeCompras;
 import intergraf.DlgGerenciarOrigami;
+import intergraf.DlgHistorico;
 import intergraf.DlgLogIn;
 import intergraf.DlgTelaPedidos;
 import intergraf.MenuPrincipal;
@@ -32,6 +33,7 @@ public class GerInterGrafica {
     private DlgCadastroLogin janCadlog = null;
     private DlgTelaPedidos janTelped = null;
     private DlgCarrinhoDeCompras janCarcomp = null;
+    private DlgHistorico janHistor = null;
     
     // GERENCIADORES de DOMINIO
     GerenciadorDominio gerDominio;
@@ -69,12 +71,15 @@ public class GerInterGrafica {
         return dlg;
     }
     
-    private void fecharJanela(JDialog dlg_1, JDialog dlg_2) {
+    private void fecharJanela(JDialog dlg_1, JDialog dlg_2, JDialog dlg_3) {
         if (dlg_1 != null && dlg_1.isVisible()) {
             dlg_1.dispose();
         }
         if (dlg_2 != null && dlg_2.isVisible()) {
             dlg_2.dispose();
+        }
+        if (dlg_3 != null && dlg_3.isVisible()) {
+            dlg_3.dispose();
         }
     }
 
@@ -103,12 +108,16 @@ public class GerInterGrafica {
         janCarcomp = (DlgCarrinhoDeCompras) abrirJanela(janPrinc, janCarcomp, DlgCarrinhoDeCompras.class);
     }
     
+    public void janelaHistorico() {
+        janHistor = (DlgHistorico) abrirJanela(janPrinc, janHistor, DlgHistorico.class);
+    }
+    
     public void janelaGerenciar() {
         janGeren = (DlgGerenciarOrigami) abrirJanela(janPrinc, janGeren, DlgGerenciarOrigami.class);
     }
     
     public void fecharPerfil() {
-        fecharJanela(janTelped, janCarcomp);
+        fecharJanela(janTelped, janCarcomp, janHistor);
         clienteDeslogado();
     }
     
