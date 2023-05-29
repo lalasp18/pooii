@@ -5,7 +5,18 @@
  */
 package intergraf;
 
+import dominio.CarrinhoCompra;
+import dominio.Cliente;
 import gerTarefas.GerInterGrafica;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -22,6 +33,7 @@ public class DlgHistorico extends javax.swing.JDialog {
         initComponents();
         this.gerIG = gerIG;
         scrollHistorico.getViewport().setOpaque(false);
+        customizeTableHeader(tbHistorico);
     }
 
     /**
@@ -34,7 +46,7 @@ public class DlgHistorico extends javax.swing.JDialog {
     private void initComponents() {
 
         scrollHistorico = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbHistorico = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -47,13 +59,13 @@ public class DlgHistorico extends javax.swing.JDialog {
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         menuExcluirConta1 = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         scrollHistorico.setOpaque(false);
 
-        jTable1.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbHistorico.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        tbHistorico.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -76,9 +88,9 @@ public class DlgHistorico extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jTable1.setOpaque(false);
-        jTable1.getTableHeader().setReorderingAllowed(false);
-        scrollHistorico.setViewportView(jTable1);
+        tbHistorico.setOpaque(false);
+        tbHistorico.getTableHeader().setReorderingAllowed(false);
+        scrollHistorico.setViewportView(tbHistorico);
 
         getContentPane().add(scrollHistorico, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, 770, 430));
 
@@ -86,7 +98,6 @@ public class DlgHistorico extends javax.swing.JDialog {
         jLabel2.setFont(new java.awt.Font("Segoe Print", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 102, 102));
         jLabel2.setText("Histórico de compra");
-        jLabel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jLabel2.setOpaque(true);
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 30, -1, -1));
 
@@ -158,13 +169,60 @@ public class DlgHistorico extends javax.swing.JDialog {
         dispose();
     }//GEN-LAST:event_menuLojaActionPerformed
 
+    public void carregarTabela() {
+        DefaultTableModel tableModel = (DefaultTableModel) tbHistorico.getModel();
+        tableModel.setRowCount(0);
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        tbHistorico.setDefaultRenderer(Object.class, centerRenderer);
+        
+        if (gerIG.getGerCliente() != null) {
+            Cliente cliente = gerIG.getGerCliente();
+            
+            String cidade = cliente.getCidade();
+            int recente = cliente.getPedidos().size() - 1;
+            double frete = cliente.getPedidos().get(recente).getFrete();
+            
+            for(CarrinhoCompra compra : cliente.getPedidos()) {
+                double total = compra.getTotal();
+                String status =
+            }
+            String papel = origami.getTipoPapel();
+            float preco = origami.getPreco();
 
+            String precoStr = "R$ " + Float.toString(preco);
+
+            Object[] rowData = {nome, dificuldade, papel, precoStr};
+            tableModel.addRow(rowData);
+        }
+
+        tabela.setModel(tableModel);
+        tabela.setShowVerticalLines(false);
+    }
+    
+    public void customizeTableHeader(JTable table) {
+        JTableHeader tableHeader = table.getTableHeader();
+        
+        tableHeader.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                ((JLabel) rendererComponent).setHorizontalAlignment(SwingConstants.CENTER);
+                ((JLabel) rendererComponent).setBackground(new Color(255,102,102));
+                ((JLabel) rendererComponent).setForeground(Color.WHITE);
+                ((JLabel) rendererComponent).setFont(new Font("Segoe Print", Font.BOLD, 16));
+                
+                return rendererComponent;
+            }
+        });
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPopupMenu.Separator jSeparator3;
-    private javax.swing.JTable jTable1;
     private javax.swing.JMenu menuCompras;
     private javax.swing.JMenuItem menuExcluirConta1;
     private javax.swing.JMenuItem menuLoja;
@@ -173,5 +231,6 @@ public class DlgHistorico extends javax.swing.JDialog {
     private javax.swing.JScrollPane scrollHistorico;
     private javax.swing.JMenuItem subMenuCarrinho;
     private javax.swing.JMenuItem subMenuHistorico;
+    private javax.swing.JTable tbHistorico;
     // End of variables declaration//GEN-END:variables
 }
