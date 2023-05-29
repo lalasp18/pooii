@@ -27,6 +27,8 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
     public DlgCarrinhoDeCompras(java.awt.Frame parent, boolean modal, GerInterGrafica gerIG) {
         initComponents();
         this.gerIG = gerIG;
+        menuUsuario.setText("<html><style>h1{font-size:12px}</style><h1>" + gerIG.getGerCliente().getNome()
+                + "</h1></html>");
         carregarTabela();
     }
 
@@ -50,7 +52,7 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         lblTotal = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu3 = new javax.swing.JMenu();
+        menuUsuario = new javax.swing.JMenu();
         menuLoja = new javax.swing.JMenuItem();
         menuCompras = new javax.swing.JMenu();
         subMenuCarrinho = new javax.swing.JMenuItem();
@@ -144,8 +146,8 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cliente.jpg"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/customer-review.png"))); // NOI18N
-        jMenu3.setText("<html><style>h1{font-size:12px}</style><h1>Usuário</h1></html>");
+        menuUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/customer-review.png"))); // NOI18N
+        menuUsuario.setText("<html><style>h1{font-size:12px}</style><h1>Usuário</h1></html>");
 
         menuLoja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/loja-alt.png"))); // NOI18N
         menuLoja.setText("Loja de origamis");
@@ -154,7 +156,7 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
                 menuLojaActionPerformed(evt);
             }
         });
-        jMenu3.add(menuLoja);
+        menuUsuario.add(menuLoja);
 
         menuCompras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/adicionar-sacola-de-compras.png"))); // NOI18N
         menuCompras.setText("Compras");
@@ -172,7 +174,7 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         });
         menuCompras.add(subMenuHistorico);
 
-        jMenu3.add(menuCompras);
+        menuUsuario.add(menuCompras);
 
         menuSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/saida.png"))); // NOI18N
         menuSair.setText("Sair");
@@ -181,14 +183,14 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
                 menuSairActionPerformed(evt);
             }
         });
-        jMenu3.add(menuSair);
-        jMenu3.add(jSeparator2);
+        menuUsuario.add(menuSair);
+        menuUsuario.add(jSeparator2);
 
         menuExcluirConta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/lixo.png"))); // NOI18N
         menuExcluirConta.setText("Excluir conta");
-        jMenu3.add(menuExcluirConta);
+        menuUsuario.add(menuExcluirConta);
 
-        jMenuBar1.add(jMenu3);
+        jMenuBar1.add(menuUsuario);
 
         setJMenuBar(jMenuBar1);
 
@@ -206,19 +208,20 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
 
     private void btnComprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComprarActionPerformed
         float frete = definirFrete();
-        
-        try {
-        // INSERIR
-            int id = gerIG.getGerDominio().inserirCarrinhoCompra(frete, totalComprado, gerIG.listaDeItens(), gerIG.getGerCliente());
-            JOptionPane.showMessageDialog(this, "Carrinho " + id + " comprado com sucesso.", "Status da Compra", JOptionPane.INFORMATION_MESSAGE  );
-            DefaultTableModel model = (DefaultTableModel) tbCarrinho.getModel();
-            model.setRowCount(0);
-            txtFrete.setText("");
-            txtTotal.setText("");
-        } catch (HibernateException ex) {
-            JOptionPane.showMessageDialog(this, ex, "ERRO Carrinho", JOptionPane.ERROR_MESSAGE  );
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, ex, "ERRO Carrinho", JOptionPane.ERROR_MESSAGE  );
+        if(gerIG.listaDeItens().size() > 0) {
+            try {
+            // INSERIR
+                int id = gerIG.getGerDominio().inserirCarrinhoCompra(frete, totalComprado, gerIG.listaDeItens(), gerIG.getGerCliente());
+                JOptionPane.showMessageDialog(this, "Carrinho " + id + " comprado com sucesso.", "Status da Compra", JOptionPane.INFORMATION_MESSAGE  );
+                DefaultTableModel model = (DefaultTableModel) tbCarrinho.getModel();
+                model.setRowCount(0);
+                txtFrete.setText("");
+                txtTotal.setText("");
+            } catch (HibernateException ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO Carrinho", JOptionPane.ERROR_MESSAGE  );
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO Carrinho", JOptionPane.ERROR_MESSAGE  );
+            }
         }
     }//GEN-LAST:event_btnComprarActionPerformed
 
@@ -301,7 +304,6 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
     private javax.swing.JButton btnComprar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -311,6 +313,7 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
     private javax.swing.JMenuItem menuExcluirConta;
     private javax.swing.JMenuItem menuLoja;
     private javax.swing.JMenuItem menuSair;
+    private javax.swing.JMenu menuUsuario;
     private javax.swing.JMenuItem subMenuCarrinho;
     private javax.swing.JMenuItem subMenuHistorico;
     private javax.swing.JTable tbCarrinho;

@@ -35,6 +35,8 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
     public DlgTelaPedidos(java.awt.Frame parent, boolean modal, GerInterGrafica gerIG) {
         initComponents();
         this.gerIG = gerIG;
+        menuUsuario.setText("<html><style>h1{font-size:12px}</style><h1>" + gerIG.getGerCliente().getNome()
+                + "</h1></html>");
         carregarDados(togBtnModular, "Modular");
     }
 
@@ -397,7 +399,7 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(16, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -407,19 +409,17 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
                                 .addComponent(togBtnModular, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(togBtnBlock, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(togBtnBill, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(togBtnArquit, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(togBtnArquit, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(btnAdicionarCarrinho, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(10, 10, 10))))
                         .addGap(14, 14, 14))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAdicionarCarrinho, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(59, 59, 59))
+                        .addGap(33, 33, 33))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(59, 59, 59))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -510,6 +510,7 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         JPanel panel = new JPanel(new GridLayout(2, 2));
         panel.add(new JLabel(""));
         panel.add(avaliacaoSpinner);
+        int count = 0;
                 
         for (Component component : panelProdutos.getComponents()) {
             if (component instanceof JToggleButton) {
@@ -518,13 +519,16 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
                     Origami selecionado = (Origami) toggleButton.getClientProperty("origami");
                     int qtd = customOptionPane(selecionado.getNome());
                     listaItem.add(new Item(selecionado, qtd));
+                    count++;
                 }
             }
         }
         
-        itensPedidos = listaItem;
-        JOptionPane.showMessageDialog(this, "Itens adicionados com sucesso.", "Lista de itens", JOptionPane.INFORMATION_MESSAGE  );
-        btnCancelarActionPerformed(evt);
+        if(count > 0){
+            itensPedidos.addAll(listaItem);
+            JOptionPane.showMessageDialog(this, "Itens adicionados com sucesso.", "Lista de itens", JOptionPane.INFORMATION_MESSAGE  );
+            btnCancelarActionPerformed(evt);
+        }
     }//GEN-LAST:event_btnAdicionarCarrinhoActionPerformed
 
     private void menuSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuSairActionPerformed
@@ -699,12 +703,10 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         String text = comentario.getText();
         int avaliacao = (int) spinner.getValue();
         
-        Cliente cliente = null;
-        
         // INSERIR NO BANCO
         try {
             // INSERIR
-            int id = gerIG.getGerDominio().inserirAvalicao(cliente, selecionado, avaliacao, text);
+            int id = gerIG.getGerDominio().inserirAvalicao(gerIG.getGerCliente(), selecionado, avaliacao, text);
             
             String wrappedText = wrapText(text, 70);
             JTextArea textArea = new JTextArea("\tAvaliacao " + id + " inserida com sucesso.\n\n" +

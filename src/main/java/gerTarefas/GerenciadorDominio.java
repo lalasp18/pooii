@@ -91,12 +91,12 @@ public class GerenciadorDominio {
         return carr.getIdCarrinhoCompra();
     }
     
-//    public List<Cliente> pesquisarCliente (String pesq) throws HibernateException {
-//        List<Cliente> lista = cliDAO.pesquisarEmail(pesq);
-//        return lista;
-//    }
-    
     public Cliente logar(String email, String senha) {
-        return cliDAO.pesquisarEmail(email, senha);
+        return cliDAO.pesquisarPerfil(email, senha);
+    }
+    
+    public Cliente emailExiste (String pesq) throws HibernateException {
+        Cliente existe = cliDAO.pesquisarEmail(pesq);
+        return existe;
     }
 }

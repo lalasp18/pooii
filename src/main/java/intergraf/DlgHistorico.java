@@ -7,10 +7,15 @@ package intergraf;
 
 import dominio.CarrinhoCompra;
 import dominio.Cliente;
+import dominio.Item;
+import dominio.Origami;
 import gerTarefas.GerInterGrafica;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Random;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -32,8 +37,11 @@ public class DlgHistorico extends javax.swing.JDialog {
     public DlgHistorico(java.awt.Frame parent, boolean modal, GerInterGrafica gerIG) {
         initComponents();
         this.gerIG = gerIG;
+        menuUsuario.setText("<html><style>h1{font-size:12px}</style><h1>" + gerIG.getGerCliente().getNome()
+                + "</h1></html>");
         scrollHistorico.getViewport().setOpaque(false);
         customizeTableHeader(tbHistorico);
+        carregarTabela();
     }
 
     /**
@@ -70,7 +78,7 @@ public class DlgHistorico extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Cidade", "Frete", "Total", "Status"
+                "Origami", "Valor un.", "Data de compra", "Status"
             }
         ) {
             Class[] types = new Class [] {
@@ -168,37 +176,50 @@ public class DlgHistorico extends javax.swing.JDialog {
         gerIG.janelaPedidos();
         dispose();
     }//GEN-LAST:event_menuLojaActionPerformed
+    
+    public String statusFraseRandom() {
+        String[] frases = {
+           "Pedido entregue",
+           "Erro no pagamento",
+           "Pedido enviado",
+           "Pagamento confirmado"
+        };
+        
+        Random random = new Random();
 
-    public void carregarTabela() {
-        DefaultTableModel tableModel = (DefaultTableModel) tbHistorico.getModel();
-        tableModel.setRowCount(0);
+        int randomIndex = random.nextInt(frases.length);
         
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        tbHistorico.setDefaultRenderer(Object.class, centerRenderer);
+        return frases[randomIndex];
+    }
+    
+    public String dataFormatada() {
+        Random random = new Random();
+
+        int ano = random.nextInt(25) + 2000;
+        int mes = random.nextInt(12) + 1;
+        int dia = random.nextInt(28) + 1;
+
+        LocalDate dataAleatoria = LocalDate.of(ano, mes, dia);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String dataFormatada = dataAleatoria.format(formatter);
         
-        if (gerIG.getGerCliente() != null) {
-            Cliente cliente = gerIG.getGerCliente();
-            
-            String cidade = cliente.getCidade();
-            int recente = cliente.getPedidos().size() - 1;
-            double frete = cliente.getPedidos().get(recente).getFrete();
-            
-            for(CarrinhoCompra compra : cliente.getPedidos()) {
-                double total = compra.getTotal();
-                String status =
+        return dataFormatada;
+    }
+    
+    public void customizeTableCell() {
+        DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column); 
+
+                String str = (String) value;
+                c.setForeground(new Color(255,102,102));
+                return c;
             }
-            String papel = origami.getTipoPapel();
-            float preco = origami.getPreco();
-
-            String precoStr = "R$ " + Float.toString(preco);
-
-            Object[] rowData = {nome, dificuldade, papel, precoStr};
-            tableModel.addRow(rowData);
-        }
-
-        tabela.setModel(tableModel);
-        tabela.setShowVerticalLines(false);
+        };
+        cellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        tbHistorico.getColumnModel().getColumn(3).setCellRenderer(cellRenderer);
     }
     
     public void customizeTableHeader(JTable table) {
@@ -211,11 +232,46 @@ public class DlgHistorico extends javax.swing.JDialog {
                 ((JLabel) rendererComponent).setHorizontalAlignment(SwingConstants.CENTER);
                 ((JLabel) rendererComponent).setBackground(new Color(255,102,102));
                 ((JLabel) rendererComponent).setForeground(Color.WHITE);
-                ((JLabel) rendererComponent).setFont(new Font("Segoe Print", Font.BOLD, 16));
+                ((JLabel) rendererComponent).setFont(new Font("Segoe Print", Font.BOLD, 15));
                 
                 return rendererComponent;
             }
         });
+    }
+    
+    public void carregarTabela() {
+        DefaultTableModel tableModel = (DefaultTableModel) tbHistorico.getModel();
+        tableModel.setRowCount(0);
+        
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        tbHistorico.setDefaultRenderer(Object.class, centerRenderer);
+        customizeTableCell();
+        
+        if (gerIG.getGerCliente() != null) {
+            Cliente cliente = gerIG.getGerCliente();
+            
+            
+            if(cliente.getPedidos().size() > 1) {
+                for(CarrinhoCompra compra : cliente.getPedidos()) {
+                    String status = statusFraseRandom();
+                    String data = dataFormatada();
+                    
+                    for(Item produtos : compra.getListaItens()) {
+                        String origami = produtos.getOrigami().getNome();
+                        float valor = produtos.getOrigami().getPreco();
+                        
+                        String valorStr = "R$ " + Float.toString(valor);
+                        
+                        Object[] rowData = {origami, valorStr, data, status};
+                        tableModel.addRow(rowData);
+                    }
+                }
+            }
+        }
+        tbHistorico.setFont(new java.awt.Font("Segoe UI", 0, 16));
+        tbHistorico.setModel(tableModel);
+        tbHistorico.setShowVerticalLines(false);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
