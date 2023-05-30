@@ -23,12 +23,6 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
 
     private GerInterGrafica gerIG;
     
-    public List<Item> itensPedidos = new ArrayList<>();
-
-    public List<Item> getItensPedidos() {
-        return itensPedidos;
-    }
-    
     /**
      * Creates new form DlgTelaPedidos
      */
@@ -525,7 +519,7 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         }
         
         if(count > 0){
-            itensPedidos.addAll(listaItem);
+            gerIG.itensPedidos.addAll(listaItem);
             JOptionPane.showMessageDialog(this, "Itens adicionados com sucesso.", "Lista de itens", JOptionPane.INFORMATION_MESSAGE  );
             btnCancelarActionPerformed(evt);
         }

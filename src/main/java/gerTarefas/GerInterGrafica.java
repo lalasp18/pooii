@@ -15,6 +15,7 @@ import intergraf.DlgTelaPedidos;
 import intergraf.MenuPrincipal;
 import java.awt.Frame;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -41,6 +42,8 @@ public class GerInterGrafica {
     // CLIENTE LOGADO
     Cliente gerCliente = null;
     
+    public List<Item> itensPedidos = new ArrayList<>();
+    
     public GerInterGrafica() {
         try {
             gerDominio = new GerenciadorDominio();
@@ -48,6 +51,10 @@ public class GerInterGrafica {
             JOptionPane.showMessageDialog(janPrinc, "Erro de conexão com o banco. " + ex.getMessage() );
                 System.exit(-1);
         } 
+    }
+
+    public List<Item> getItensPedidos() {
+        return itensPedidos;
     }
 
     public Cliente getGerCliente() {
@@ -133,13 +140,6 @@ public class GerInterGrafica {
         gerCliente = null;
     }
     
-    public List<Item> listaDeItens() {
-        if(janTelped != null) {
-            return janTelped.getItensPedidos();
-        }
-        return null;
-    }
-
     public static void main(String[] args) {
         
         // TRADUÇÃO

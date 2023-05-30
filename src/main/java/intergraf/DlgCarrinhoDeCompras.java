@@ -208,10 +208,10 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
 
     private void btnComprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComprarActionPerformed
         float frete = definirFrete();
-        if(gerIG.listaDeItens().size() > 0) {
+        if(gerIG.itensPedidos.size() > 0) {
             try {
             // INSERIR
-                int id = gerIG.getGerDominio().inserirCarrinhoCompra(frete, totalComprado, gerIG.listaDeItens(), gerIG.getGerCliente());
+                int id = gerIG.getGerDominio().inserirCarrinhoCompra(frete, totalComprado, gerIG.itensPedidos, gerIG.getGerCliente());
                 JOptionPane.showMessageDialog(this, "Carrinho " + id + " comprado com sucesso.", "Status da Compra", JOptionPane.INFORMATION_MESSAGE  );
                 DefaultTableModel model = (DefaultTableModel) tbCarrinho.getModel();
                 model.setRowCount(0);
@@ -266,8 +266,8 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         tbCarrinho.setDefaultRenderer(Object.class, centerRenderer);
         
-        if(!gerIG.listaDeItens().isEmpty() || gerIG.listaDeItens() != null) {
-            for(Item produto : gerIG.listaDeItens()) {
+        if(!gerIG.itensPedidos.isEmpty() || gerIG.itensPedidos != null) {
+            for(Item produto : gerIG.itensPedidos) {
                 if(produto.getCarrinho() != null) {
                     continue;
                 }
