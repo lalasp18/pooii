@@ -99,4 +99,8 @@ public class GerenciadorDominio {
         Cliente existe = cliDAO.pesquisarEmail(pesq);
         return existe;
     }
+    
+    public Origami nomeOrigamiExiste (String pesq) throws HibernateException {
+        return oriDAO.pesquisarNome(pesq);
+    }
 }
