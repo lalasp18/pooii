@@ -47,6 +47,9 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        menuPop = new javax.swing.JPopupMenu();
+        popEditar = new javax.swing.JMenuItem();
+        popDeletar = new javax.swing.JMenuItem();
         tbPanOrigami = new javax.swing.JTabbedPane();
         panNovo = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
@@ -90,6 +93,19 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         jScrollPane4 = new javax.swing.JScrollPane();
         tbBill = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+
+        popEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/conteudo.png"))); // NOI18N
+        popEditar.setText("Editar");
+        menuPop.add(popEditar);
+
+        popDeletar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/lixo.png"))); // NOI18N
+        popDeletar.setText("Deletar");
+        popDeletar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                popDeletarActionPerformed(evt);
+            }
+        });
+        menuPop.add(popDeletar);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gerenciador de Origamis");
@@ -441,6 +457,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
             }
         });
         tbModular.setToolTipText("Tabela Origami Modular");
+        tbModular.setComponentPopupMenu(menuPop);
         tbModular.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tbModular);
 
@@ -493,6 +510,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
             }
         });
         tbArquit.setToolTipText("Tabela Origami Arquitetônico");
+        tbArquit.setComponentPopupMenu(menuPop);
         tbArquit.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(tbArquit);
 
@@ -545,6 +563,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
             }
         });
         tbBlock.setToolTipText("Tabela Origami Block Folding");
+        tbBlock.setComponentPopupMenu(menuPop);
         tbBlock.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(tbBlock);
 
@@ -596,7 +615,13 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        tbBill.setComponentPopupMenu(menuPop);
         tbBill.getTableHeader().setReorderingAllowed(false);
+        tbBill.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbBillMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(tbBill);
 
         javax.swing.GroupLayout panBillLayout = new javax.swing.GroupLayout(panBill);
@@ -705,6 +730,20 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         limparCampos();
     }//GEN-LAST:event_btnLimparActionPerformed
+
+    private void popDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popDeletarActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_popDeletarActionPerformed
+
+    private void tbBillMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbBillMouseClicked
+        if (SwingUtilities.isRightMouseButton(evt)) {
+            int row = tbBill.rowAtPoint(evt.getPoint());
+            if (row >= 0 && row < tbBill.getRowCount()) {
+                tbBill.setRowSelectionInterval(row, row);
+            }
+        }
+    }//GEN-LAST:event_tbBillMouseClicked
 
     private void panelEvento() {
         tbPanOrigami.addChangeListener(new ChangeListener() {
@@ -888,12 +927,15 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
     private javax.swing.JLabel lblNome;
     private javax.swing.JLabel lblPreco;
     private javax.swing.JLabel lblQtdPecas;
+    private javax.swing.JPopupMenu menuPop;
     private javax.swing.JPanel panArquit;
     private javax.swing.JPanel panBill;
     private javax.swing.JPanel panBlock;
     private javax.swing.JPanel panModular;
     private javax.swing.JPanel panNovo;
     private javax.swing.JPanel panelMateriais;
+    private javax.swing.JMenuItem popDeletar;
+    private javax.swing.JMenuItem popEditar;
     private javax.swing.JSpinner spnPreco;
     private javax.swing.JSpinner spnQtdPecas;
     private javax.swing.JTable tbArquit;

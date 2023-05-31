@@ -7,6 +7,8 @@ package intergraf;
 import dominio.Item;
 import dominio.Origami;
 import gerTarefas.GerInterGrafica;
+import java.awt.event.WindowListener;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -63,6 +65,13 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Carrinho de Compras");
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jScrollPane1.setOpaque(false);
@@ -99,6 +108,11 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         btnCancelar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnCancelar.setForeground(new java.awt.Color(102, 0, 0));
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 390, 120, 60));
 
         btnComprar.setBackground(new java.awt.Color(102, 0, 204));
@@ -146,7 +160,7 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cliente.jpg"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        menuUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/customer-review.png"))); // NOI18N
+        menuUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/user.png"))); // NOI18N
         menuUsuario.setText("<html><style>h1{font-size:12px}</style><h1>Usuário</h1></html>");
 
         menuLoja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/loja-alt.png"))); // NOI18N
@@ -165,7 +179,7 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         subMenuCarrinho.setText("Carrinho de compras");
         menuCompras.add(subMenuCarrinho);
 
-        subMenuHistorico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/tempo-passado.png"))); // NOI18N
+        subMenuHistorico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/history.png"))); // NOI18N
         subMenuHistorico.setText("Histórico");
         subMenuHistorico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -208,10 +222,10 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
 
     private void btnComprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComprarActionPerformed
         float frete = definirFrete();
-        if(gerIG.itensPedidos.size() > 0) {
+        if(gerIG.produtosPedidos().size() > 0) {
             try {
             // INSERIR
-                int id = gerIG.getGerDominio().inserirCarrinhoCompra(frete, totalComprado, gerIG.itensPedidos, gerIG.getGerCliente());
+                int id = gerIG.getGerDominio().inserirCarrinhoCompra(frete, totalComprado, gerIG.produtosPedidos(), gerIG.getGerCliente());
                 JOptionPane.showMessageDialog(this, "Carrinho " + id + " comprado com sucesso.", "Status da Compra", JOptionPane.INFORMATION_MESSAGE  );
                 DefaultTableModel model = (DefaultTableModel) tbCarrinho.getModel();
                 model.setRowCount(0);
@@ -229,6 +243,16 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         gerIG.janelaHistorico();
         dispose();
     }//GEN-LAST:event_subMenuHistoricoActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        gerIG.produtosPedidos().clear();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        menuUsuario.setText("<html><style>h1{font-size:12px}</style><h1>" + gerIG.getGerCliente().getNome()
+                + "</h1></html>");
+        carregarTabela();
+    }//GEN-LAST:event_formWindowGainedFocus
     
     private float definirFrete() {
         if( gerIG.getGerCliente()!= null ) switch (gerIG.getGerCliente().getCidade()) {
@@ -258,6 +282,9 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
     
     private void carregarTabela(){
         float totalFrete = 0.0f;
+        totalComprado = 0.0f;
+        txtFrete.setText("R$ ");
+        txtTotal.setText("R$ ");
         
         DefaultTableModel tableModel = (DefaultTableModel) tbCarrinho.getModel();
         tableModel.setRowCount(0);
@@ -266,8 +293,8 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         tbCarrinho.setDefaultRenderer(Object.class, centerRenderer);
         
-        if(!gerIG.itensPedidos.isEmpty() || gerIG.itensPedidos != null) {
-            for(Item produto : gerIG.itensPedidos) {
+        if(gerIG.produtosPedidos().size() > 0) {
+            for(Item produto : gerIG.produtosPedidos()) {
                 if(produto.getCarrinho() != null) {
                     continue;
                 }

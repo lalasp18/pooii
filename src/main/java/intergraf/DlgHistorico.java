@@ -68,6 +68,13 @@ public class DlgHistorico extends javax.swing.JDialog {
         menuExcluirConta1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         scrollHistorico.setOpaque(false);
@@ -106,13 +113,14 @@ public class DlgHistorico extends javax.swing.JDialog {
         jLabel2.setFont(new java.awt.Font("Segoe Print", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 102, 102));
         jLabel2.setText("Histórico de compra");
+        jLabel2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jLabel2.setOpaque(true);
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 30, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/cliente.jpg"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        menuUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/customer-review.png"))); // NOI18N
+        menuUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/user.png"))); // NOI18N
         menuUsuario.setText("<html><style>h1{font-size:12px}</style><h1>Usuário</h1></html>");
 
         menuLoja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/loja-alt.png"))); // NOI18N
@@ -136,7 +144,7 @@ public class DlgHistorico extends javax.swing.JDialog {
         });
         menuCompras.add(subMenuCarrinho);
 
-        subMenuHistorico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/tempo-passado.png"))); // NOI18N
+        subMenuHistorico.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/history.png"))); // NOI18N
         subMenuHistorico.setText("Histórico");
         menuCompras.add(subMenuHistorico);
 
@@ -176,6 +184,14 @@ public class DlgHistorico extends javax.swing.JDialog {
         gerIG.janelaPedidos();
         dispose();
     }//GEN-LAST:event_menuLojaActionPerformed
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        menuUsuario.setText("<html><style>h1{font-size:12px}</style><h1>" + gerIG.getGerCliente().getNome()
+                + "</h1></html>");
+        scrollHistorico.getViewport().setOpaque(false);
+        customizeTableHeader(tbHistorico);
+        carregarTabela();
+    }//GEN-LAST:event_formWindowGainedFocus
     
     public String statusFraseRandom() {
         String[] frases = {

@@ -42,8 +42,6 @@ public class GerInterGrafica {
     // CLIENTE LOGADO
     Cliente gerCliente = null;
     
-    public List<Item> itensPedidos = new ArrayList<>();
-    
     public GerInterGrafica() {
         try {
             gerDominio = new GerenciadorDominio();
@@ -51,10 +49,6 @@ public class GerInterGrafica {
             JOptionPane.showMessageDialog(janPrinc, "Erro de conexão com o banco. " + ex.getMessage() );
                 System.exit(-1);
         } 
-    }
-
-    public List<Item> getItensPedidos() {
-        return itensPedidos;
     }
 
     public Cliente getGerCliente() {
@@ -138,6 +132,10 @@ public class GerInterGrafica {
     
     public void clienteDeslogado() {
         gerCliente = null;
+    }
+    
+    public List<Item> produtosPedidos(){
+        return janTelped.getItensPedidos();
     }
     
     public static void main(String[] args) {
