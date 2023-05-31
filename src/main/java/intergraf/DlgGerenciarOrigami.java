@@ -822,7 +822,6 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         
         if (rowMd != -1) {
             String elemento = (String) tbModular.getValueAt(rowMd, 0);
-            System.out.println(elemento);
             Origami deletar = gerIG.getGerDominio().nomeOrigamiExiste(elemento);
             if(deletar != null) {
                 gerIG.getGerDominio().excluir(deletar);
@@ -836,7 +835,6 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         
         if (rowAr != -1) {
             String elemento = (String) tbArquit.getValueAt(rowAr, 0);
-            System.out.println(elemento);
             Origami deletar = gerIG.getGerDominio().nomeOrigamiExiste(elemento);
             if(deletar != null) {
                 gerIG.getGerDominio().excluir(deletar);
@@ -850,7 +848,6 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         
         if (rowBc != -1) {
             String elemento = (String) tbBlock.getValueAt(rowBc, 0);
-            System.out.println(elemento);
             Origami deletar = gerIG.getGerDominio().nomeOrigamiExiste(elemento);
             if(deletar != null) {
                 gerIG.getGerDominio().excluir(deletar);
@@ -864,7 +861,6 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         
         if (rowBi != -1) {
             String elemento = (String) tbBill.getValueAt(rowBi, 0);
-            System.out.println(elemento);
             Origami deletar = gerIG.getGerDominio().nomeOrigamiExiste(elemento);
             if(deletar != null) {
                 gerIG.getGerDominio().excluir(deletar);

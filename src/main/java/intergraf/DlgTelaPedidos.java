@@ -675,7 +675,7 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         menuUsuario.setText("<html><style>h1{font-size:12px}</style><h1>" + gerIG.getGerCliente().getNome()
                 + "</h1></html>");
-        carregarDados(togBtnModular, "Modular");
+//        carregarDados(togBtnModular, "Modular");
     }//GEN-LAST:event_formWindowGainedFocus
     
     private int customOptionPane(String produto) {

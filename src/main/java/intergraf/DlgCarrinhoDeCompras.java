@@ -246,6 +246,7 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         gerIG.produtosPedidos().clear();
+        carregarTabela();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus

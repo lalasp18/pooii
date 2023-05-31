@@ -37,8 +37,8 @@ public class ClienteDAO extends GenericDAO {
             
             // RESTRIÇÕES
             Predicate restricoes = builder.and(
-                builder.like(tabela.get("email"), email + "%"),
-                builder.like(tabela.get("senha"), senha + "%")
+                builder.equal(tabela.get("email"), email),
+                builder.equal(tabela.get("senha"), senha)
             );
                         
             consulta.where(restricoes);
@@ -75,7 +75,7 @@ public class ClienteDAO extends GenericDAO {
             Root tabela = consulta.from(Cliente.class);
             
             // RESTRIÇÕES
-            Predicate restricoes = builder.like(tabela.get("email"), email + "%" ); 
+            Predicate restricoes = builder.equal(tabela.get("email"), email); 
                         
             consulta.where(restricoes);
             try {

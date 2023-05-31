@@ -188,8 +188,6 @@ public class DlgHistorico extends javax.swing.JDialog {
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         menuUsuario.setText("<html><style>h1{font-size:12px}</style><h1>" + gerIG.getGerCliente().getNome()
                 + "</h1></html>");
-        scrollHistorico.getViewport().setOpaque(false);
-        customizeTableHeader(tbHistorico);
         carregarTabela();
     }//GEN-LAST:event_formWindowGainedFocus
     
@@ -229,7 +227,6 @@ public class DlgHistorico extends javax.swing.JDialog {
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column); 
 
-                String str = (String) value;
                 c.setForeground(new Color(255,102,102));
                 return c;
             }
@@ -268,7 +265,7 @@ public class DlgHistorico extends javax.swing.JDialog {
             Cliente cliente = gerIG.getGerCliente();
             
             
-            if(cliente.getPedidos().size() > 1) {
+            if(cliente.getPedidos().size() > 0) {
                 for(CarrinhoCompra compra : cliente.getPedidos()) {
                     String status = statusFraseRandom();
                     String data = dataFormatada();
