@@ -60,8 +60,6 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
         subMenuCarrinho = new javax.swing.JMenuItem();
         subMenuHistorico = new javax.swing.JMenuItem();
         menuSair = new javax.swing.JMenuItem();
-        jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        menuExcluirConta = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Carrinho de Compras");
@@ -198,11 +196,6 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
             }
         });
         menuUsuario.add(menuSair);
-        menuUsuario.add(jSeparator2);
-
-        menuExcluirConta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/lixo.png"))); // NOI18N
-        menuExcluirConta.setText("Excluir conta");
-        menuUsuario.add(menuExcluirConta);
 
         jMenuBar1.add(menuUsuario);
 
@@ -335,10 +328,8 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JLabel lblTotal;
     private javax.swing.JMenu menuCompras;
-    private javax.swing.JMenuItem menuExcluirConta;
     private javax.swing.JMenuItem menuLoja;
     private javax.swing.JMenuItem menuSair;
     private javax.swing.JMenu menuUsuario;

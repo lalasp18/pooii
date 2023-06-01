@@ -96,8 +96,6 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         subMenuCarrinho = new javax.swing.JMenuItem();
         subMenuHistorico = new javax.swing.JMenuItem();
         menuSair = new javax.swing.JMenuItem();
-        jSeparator3 = new javax.swing.JPopupMenu.Separator();
-        menuExcluirConta1 = new javax.swing.JMenuItem();
 
         popDescricao.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/info.png"))); // NOI18N
         popDescricao.setText("Descrição");
@@ -501,11 +499,6 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
             }
         });
         menuUsuario.add(menuSair);
-        menuUsuario.add(jSeparator3);
-
-        menuExcluirConta1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/lixo.png"))); // NOI18N
-        menuExcluirConta1.setText("Excluir conta");
-        menuUsuario.add(menuExcluirConta1);
 
         jMenuBar1.add(menuUsuario);
 
@@ -826,7 +819,6 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JToggleButton jToggleButton10;
     private javax.swing.JToggleButton jToggleButton11;
     private javax.swing.JToggleButton jToggleButton12;
@@ -843,7 +835,6 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
     private javax.swing.JToggleButton jToggleButton8;
     private javax.swing.JToggleButton jToggleButton9;
     private javax.swing.JMenu menuCompras;
-    private javax.swing.JMenuItem menuExcluirConta1;
     private javax.swing.JMenuItem menuLoja;
     private javax.swing.JPopupMenu menuPop;
     private javax.swing.JMenuItem menuSair;

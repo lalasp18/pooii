@@ -64,8 +64,6 @@ public class DlgHistorico extends javax.swing.JDialog {
         subMenuCarrinho = new javax.swing.JMenuItem();
         subMenuHistorico = new javax.swing.JMenuItem();
         menuSair = new javax.swing.JMenuItem();
-        jSeparator3 = new javax.swing.JPopupMenu.Separator();
-        menuExcluirConta1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
@@ -158,11 +156,6 @@ public class DlgHistorico extends javax.swing.JDialog {
             }
         });
         menuUsuario.add(menuSair);
-        menuUsuario.add(jSeparator3);
-
-        menuExcluirConta1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/lixo.png"))); // NOI18N
-        menuExcluirConta1.setText("Excluir conta");
-        menuUsuario.add(menuExcluirConta1);
 
         jMenuBar1.add(menuUsuario);
 
@@ -193,10 +186,13 @@ public class DlgHistorico extends javax.swing.JDialog {
     
     public String statusFraseRandom() {
         String[] frases = {
+           "Pedido realizado",
+           "Pagamento confirmado",         
+           "Pedido enviado",
+           "Saiu para entrega",
            "Pedido entregue",
            "Erro no pagamento",
-           "Pedido enviado",
-           "Pagamento confirmado"
+           "Cancelado",
         };
         
         Random random = new Random();
@@ -291,9 +287,7 @@ public class DlgHistorico extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JMenu menuCompras;
-    private javax.swing.JMenuItem menuExcluirConta1;
     private javax.swing.JMenuItem menuLoja;
     private javax.swing.JMenuItem menuSair;
     private javax.swing.JMenu menuUsuario;
