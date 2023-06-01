@@ -9,6 +9,7 @@ import gerTarefas.FuncoesUteis;
 import gerTarefas.GerInterGrafica;
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +29,14 @@ import org.hibernate.HibernateException;
 public class DlgGerenciarOrigami extends javax.swing.JDialog {
 
     private GerInterGrafica gerIG;
-    /**
-     * Creates new form DlgGerenciarOrigami
-     */
+    private Origami oriSelecionado;
+
+
+
     public DlgGerenciarOrigami(java.awt.Frame parent, boolean modal, GerInterGrafica gerIG) {
         initComponents();
         this.gerIG = gerIG;
+        habilitarBotoes();
         limparCampos();
         panelEvento();
     }
@@ -76,11 +79,12 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         chkOutros = new javax.swing.JCheckBox();
         chkBarbante = new javax.swing.JCheckBox();
         btnAdicionar = new javax.swing.JButton();
-        btnLimpar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnAlterar = new javax.swing.JButton();
         panModular = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbModular = new javax.swing.JTable();
-        editarMod = new javax.swing.JButton();
+        EditarMod = new javax.swing.JButton();
         ExcluirMod = new javax.swing.JButton();
         panArquit = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -365,12 +369,21 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
             }
         });
 
-        btnLimpar.setFont(new java.awt.Font("Segoe Print", 1, 18)); // NOI18N
-        btnLimpar.setForeground(new java.awt.Color(255, 153, 0));
-        btnLimpar.setText("Cancelar");
-        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setFont(new java.awt.Font("Segoe Print", 1, 18)); // NOI18N
+        btnCancelar.setForeground(new java.awt.Color(255, 153, 0));
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLimparActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        btnAlterar.setFont(new java.awt.Font("Segoe Print", 1, 18)); // NOI18N
+        btnAlterar.setForeground(new java.awt.Color(0, 0, 102));
+        btnAlterar.setText("Alterar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
             }
         });
 
@@ -392,12 +405,14 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                         .addGap(134, 134, 134)
                         .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(panNovoLayout.createSequentialGroup()
-                .addGap(229, 229, 229)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panNovoLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(56, 56, 56)
                 .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(59, 59, 59)
-                .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(151, 151, 151))
         );
         panNovoLayout.setVerticalGroup(
             panNovoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -406,14 +421,15 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                 .addGroup(panNovoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addGroup(panNovoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(panelMateriais, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(39, 39, 39)
                 .addGroup(panNovoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26))
         );
 
@@ -452,10 +468,15 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         tbModular.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tbModular);
 
-        editarMod.setBackground(new java.awt.Color(0, 0, 102));
-        editarMod.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
-        editarMod.setForeground(new java.awt.Color(255, 255, 255));
-        editarMod.setText("Editar");
+        EditarMod.setBackground(new java.awt.Color(0, 0, 102));
+        EditarMod.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
+        EditarMod.setForeground(new java.awt.Color(255, 255, 255));
+        EditarMod.setText("Editar");
+        EditarMod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditarModActionPerformed(evt);
+            }
+        });
 
         ExcluirMod.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
         ExcluirMod.setForeground(new java.awt.Color(255, 153, 0));
@@ -475,7 +496,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
                 .addGap(44, 44, 44)
                 .addGroup(panModularLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(editarMod, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(EditarMod, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(ExcluirMod, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32))
         );
@@ -485,13 +506,13 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                 .addGroup(panModularLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panModularLayout.createSequentialGroup()
                         .addGap(136, 136, 136)
-                        .addComponent(editarMod)
+                        .addComponent(EditarMod)
                         .addGap(29, 29, 29)
                         .addComponent(ExcluirMod, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panModularLayout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         tbPanOrigami.addTab("Modular", panModular);
@@ -533,6 +554,11 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         EditarArq.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
         EditarArq.setForeground(new java.awt.Color(255, 255, 255));
         EditarArq.setText("Editar");
+        EditarArq.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditarArqActionPerformed(evt);
+            }
+        });
 
         ExcluirArq.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
         ExcluirArq.setForeground(new java.awt.Color(255, 153, 0));
@@ -568,7 +594,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                         .addComponent(EditarArq)
                         .addGap(29, 29, 29)
                         .addComponent(ExcluirArq, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         tbPanOrigami.addTab("Arquitetônico", panArquit);
@@ -610,6 +636,11 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         EditarBlock.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
         EditarBlock.setForeground(new java.awt.Color(255, 255, 255));
         EditarBlock.setText("Editar");
+        EditarBlock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditarBlockActionPerformed(evt);
+            }
+        });
 
         ExcluirBlock.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
         ExcluirBlock.setForeground(new java.awt.Color(255, 153, 0));
@@ -645,7 +676,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                         .addComponent(EditarBlock)
                         .addGap(29, 29, 29)
                         .addComponent(ExcluirBlock, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         tbPanOrigami.addTab("Block Folding", panBlock);
@@ -686,6 +717,11 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         EditarBill.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
         EditarBill.setForeground(new java.awt.Color(255, 255, 255));
         EditarBill.setText("Editar");
+        EditarBill.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditarBillActionPerformed(evt);
+            }
+        });
 
         ExcluirBill.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
         ExcluirBill.setForeground(new java.awt.Color(255, 153, 0));
@@ -721,7 +757,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                         .addComponent(EditarBill)
                         .addGap(29, 29, 29)
                         .addComponent(ExcluirBill, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         tbPanOrigami.addTab("Bill Folding", panBill);
@@ -804,30 +840,25 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(this, "Origami " + id + " inserido com sucesso.", "Inserir Origami", JOptionPane.INFORMATION_MESSAGE  );
                     limparCampos();
                 } catch (HibernateException ex) {
-                    JOptionPane.showMessageDialog(this, ex, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
+                    JOptionPane.showMessageDialog(this, ex, "ERRO Origami", JOptionPane.ERROR_MESSAGE  );
                 }
                 catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, ex, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
+                    JOptionPane.showMessageDialog(this, ex, "ERRO Origami", JOptionPane.ERROR_MESSAGE  );
                 }
             }
         }
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
-    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         limparCampos();
-    }//GEN-LAST:event_btnLimparActionPerformed
+        if(oriSelecionado != null) {
+            oriSelecionado = null;
+            habilitarBotoes();
+        }
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void ExcluirModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExcluirModActionPerformed
-        int rowMd = tbModular.getSelectedRow();
-        
-        if (rowMd != -1) {
-            String elemento = (String) tbModular.getValueAt(rowMd, 0);
-            Origami deletar = gerIG.getGerDominio().nomeOrigamiExiste(elemento);
-            if(deletar != null) {
-                gerIG.getGerDominio().excluir(deletar);
-                carregarDados(tbModular, "Modular");
-            }
-        }
+        editarOuExcluirActionPerformed(evt, "", tbModular, "Excluir");
     }//GEN-LAST:event_ExcluirModActionPerformed
 
     private void ExcluirArqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExcluirArqActionPerformed
@@ -869,6 +900,227 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_ExcluirBillActionPerformed
 
+    private void EditarModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarModActionPerformed
+        editarOuExcluirActionPerformed(evt, "Editar", tbModular, "");
+    }//GEN-LAST:event_EditarModActionPerformed
+
+    private void EditarArqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarArqActionPerformed
+        int rowAr = tbArquit.getSelectedRow();
+        
+        if (rowAr != -1) {
+            String elemento = (String) tbArquit.getValueAt(rowAr, 0);
+            Origami deletar = gerIG.getGerDominio().nomeOrigamiExiste(elemento);
+            if(deletar != null) {
+                gerIG.getGerDominio().excluir(deletar);
+                carregarDados(tbArquit, "Arquitetônico");
+            }
+        }
+    }//GEN-LAST:event_EditarArqActionPerformed
+
+    private void EditarBlockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarBlockActionPerformed
+        int rowBc = tbBlock.getSelectedRow();
+        
+        if (rowBc != -1) {
+            String elemento = (String) tbBlock.getValueAt(rowBc, 0);
+            Origami deletar = gerIG.getGerDominio().nomeOrigamiExiste(elemento);
+            if(deletar != null) {
+                gerIG.getGerDominio().excluir(deletar);
+                carregarDados(tbBlock, "Block Folding");
+            }
+        } 
+    }//GEN-LAST:event_EditarBlockActionPerformed
+
+    private void EditarBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarBillActionPerformed
+        int rowBi = tbBill.getSelectedRow();
+        
+        if (rowBi != -1) {
+            String elemento = (String) tbBill.getValueAt(rowBi, 0);
+            Origami deletar = gerIG.getGerDominio().nomeOrigamiExiste(elemento);
+            if(deletar != null) {
+                gerIG.getGerDominio().excluir(deletar);
+                carregarDados(tbBill, "Bill Folding");
+            }
+        }
+    }//GEN-LAST:event_EditarBillActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        String nome = txtNome.getText();
+        String dific = boxDificuldade.getSelectedItem().toString();
+        Float valor = Float.parseFloat(spnPreco.getValue().toString());
+
+        String varicao = boxVariacao.getSelectedItem().toString();
+        String papel = boxTipoPapel.getSelectedItem().toString();
+        int qtd = Integer.parseInt(spnQtdPecas.getValue().toString());
+
+        Icon foto = lblFoto.getIcon();
+
+        List<String> material = new ArrayList<>();
+        if(chkTassel.isSelected()) {
+            material.add(chkTassel.getText());
+        }
+        if(chkBijuteria.isSelected()) {
+            material.add(chkBijuteria.getText());
+        }
+        if(chkVerniz.isSelected()) {
+            material.add(chkVerniz.getText());
+        }
+        if(chkPompom.isSelected()) {
+            material.add(chkPompom.getText());
+        }
+        if(chkCola.isSelected()) {
+            material.add(chkCola.getText());
+        }
+        if(chkNylon.isSelected()) {
+            material.add(chkNylon.getText());
+        }
+        if(chkPisca.isSelected()) {
+            material.add(chkPisca.getText());
+        }
+        if(chkMandala.isSelected()) {
+            material.add(chkMandala.getText());
+        }
+        if(chkBarbante.isSelected()) {
+            material.add(chkBarbante.getText());
+        }
+        if(chkOutros.isSelected()) {
+            material.add(chkOutros.getText());
+        }
+
+        if( validarCampos() ) {
+             // UPDATE NO BANCO
+            if(gerIG.getGerDominio().nomeOrigamiExiste(nome) != null && !gerIG.getGerDominio().nomeOrigamiExiste(nome).equals(oriSelecionado)) {
+                lblNome.setForeground(Color.red);      
+                JOptionPane.showMessageDialog(this, "Nome já cadastrado!", "ERRO Origami", JOptionPane.ERROR_MESSAGE  );
+            } else {
+                try {
+                    byte[] fotoBytes = FuncoesUteis.IconToBytes(foto);
+
+                    // UPDATE
+                    gerIG.getGerDominio().alterarOrigami(oriSelecionado, nome, dific, valor, varicao, papel, qtd, fotoBytes, material);
+                    JOptionPane.showMessageDialog(this, "Origami " + oriSelecionado.getIdOrigami() + " alterado com sucesso.", "Alterar Origami", JOptionPane.INFORMATION_MESSAGE  );
+                    btnCancelarActionPerformed(evt);
+                    boxVariacao.setEnabled(true);
+                } catch (HibernateException ex) {
+                    JOptionPane.showMessageDialog(this, ex, "ERRO Origami", JOptionPane.ERROR_MESSAGE  );
+                }
+                catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, ex, "ERRO Origami", JOptionPane.ERROR_MESSAGE  );
+                }
+            }
+        }
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void editarOuExcluirActionPerformed(java.awt.event.ActionEvent evt, String acao, JTable tabela, String condicao) {
+        int row = tabela.getSelectedRow();
+
+        if (row != -1) {
+            String elemento = (String) tbModular.getValueAt(row, 0);
+            Origami origami = gerIG.getGerDominio().nomeOrigamiExiste(elemento);
+
+            if (origami != null) {
+                if (acao.equals("Editar")) {
+                    oriSelecionado = origami;
+                    habilitarBotoes();
+                    tbPanOrigami.setSelectedIndex(0);
+                    alterarDados();
+                } else if (acao.equals("Excluir")) {
+                    gerIG.getGerDominio().excluir(origami);
+                    carregarDados(tabela, condicao);
+                }
+            }
+        }
+    }
+    
+    private void alterarDados() {
+        lblNome.setForeground(Color.DARK_GRAY);
+        lblPreco.setForeground(Color.DARK_GRAY); 
+        lblQtdPecas.setForeground(Color.DARK_GRAY);
+        lblFoto.setForeground(Color.DARK_GRAY);
+        
+        TitledBorder titledBorder = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Materiais");
+        titledBorder.setTitleFont(new java.awt.Font("Segoe UI", 0, 14));
+        titledBorder.setTitleColor(Color.DARK_GRAY);
+        panelMateriais.setBorder(titledBorder);
+        
+        txtNome.setText(oriSelecionado.getNome());
+        boxDificuldade.setSelectedItem(oriSelecionado.getDificuldade());
+        spnPreco.setValue(oriSelecionado.getPreco());
+
+        boxVariacao.setSelectedItem(oriSelecionado.getCategoria());
+        boxVariacao.setEnabled(false);
+        
+        boxTipoPapel.setSelectedItem(oriSelecionado.getTipoPapel());
+        spnQtdPecas.setValue(oriSelecionado.getQtdPecas());
+        
+        byte[] imagemBytes = oriSelecionado.getFoto();
+        Image imagemOriginal = Toolkit.getDefaultToolkit().createImage(imagemBytes);
+        ImageIcon imagemRedimensionadaIcon = new ImageIcon(imagemOriginal);
+        resizeFoto(imagemRedimensionadaIcon);
+
+        List<String> materiais = new ArrayList<>(oriSelecionado.getMateriais());
+        for(String mat : materiais) {
+            if(mat.equals(chkTassel.getText())) {
+                chkTassel.setSelected(true);
+            } else {
+                chkTassel.setSelected(false);
+            }
+            
+            if(mat.equals(chkBijuteria.getText())) {
+                chkBijuteria.setSelected(true);
+            } else {
+                chkBijuteria.setSelected(false);
+            }
+            
+            if(mat.equals(chkVerniz.getText())) {
+                chkVerniz.setSelected(true);
+            } else {
+                chkVerniz.setSelected(false);
+            }
+            
+            if(mat.equals(chkPompom.getText())) {
+                chkPompom.setSelected(true);
+            } else {
+                chkPompom.setSelected(false);
+            }
+
+            if(mat.equals(chkCola.getText())) {
+                chkCola.setSelected(true);
+            } else {
+                chkCola.setSelected(false);
+            }
+
+            if(mat.equals(chkNylon.getText())) {
+                chkNylon.setSelected(true);
+            } else {
+                chkNylon.setSelected(false);
+            }
+
+            if(mat.equals(chkPisca.getText())) {
+                chkPisca.setSelected(true);
+            } else {
+                chkPisca.setSelected(false);
+            }
+
+            if(mat.equals(chkMandala.getText())) {
+                chkMandala.setSelected(true);
+            } else {
+                chkMandala.setSelected(false);
+            }
+
+            if(mat.equals(chkBarbante.getText())) {
+                chkBarbante.setSelected(true);
+            } else {
+                chkBarbante.setSelected(false);
+            }
+
+            if(mat.equals(chkOutros.getText())) {
+                chkOutros.setSelected(true);
+            } else {
+                chkOutros.setSelected(false);
+            }
+        }
+    }
+    
     private void panelEvento() {
         tbPanOrigami.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
@@ -1020,11 +1272,21 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         chkOutros.setSelected(false);
     }
     
+    public void habilitarBotoes() {
+        if ( oriSelecionado == null ) {
+            btnAdicionar.setVisible(true);
+            btnAlterar.setVisible(false);
+        } else {
+            btnAdicionar.setVisible(false);
+            btnAlterar.setVisible(true);
+        }
+    }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton EditarArq;
     private javax.swing.JButton EditarBill;
     private javax.swing.JButton EditarBlock;
+    private javax.swing.JButton EditarMod;
     private javax.swing.JButton ExcluirArq;
     private javax.swing.JButton ExcluirBill;
     private javax.swing.JButton ExcluirBlock;
@@ -1033,7 +1295,8 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> boxTipoPapel;
     private javax.swing.JComboBox<String> boxVariacao;
     private javax.swing.JButton btnAdicionar;
-    private javax.swing.JButton btnLimpar;
+    private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JCheckBox chkBarbante;
     private javax.swing.JCheckBox chkBijuteria;
     private javax.swing.JCheckBox chkCola;
@@ -1046,7 +1309,6 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
     private javax.swing.JCheckBox chkVerniz;
     private javax.swing.JLabel dific1;
     private javax.swing.JLabel dific2;
-    private javax.swing.JButton editarMod;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JPanel jPanel12;

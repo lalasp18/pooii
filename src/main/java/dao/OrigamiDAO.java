@@ -35,7 +35,7 @@ public class OrigamiDAO extends GenericDAO {
             Root tabela = consulta.from(Origami.class);
             
             // RESTRIÇÕES
-            Predicate restricoes = builder.like(tabela.get("nome"), nome + "%" ); 
+            Predicate restricoes = builder.equal(tabela.get("nome"), nome); 
                         
             consulta.where(restricoes);
             try {

@@ -59,10 +59,36 @@ public class GerenciadorDominio {
         return ori.getIdOrigami();
     }
     
+    public Origami nomeOrigamiExiste (String pesq) throws HibernateException {
+        return oriDAO.pesquisarNome(pesq);
+    }
+    
+    public void alterarOrigami(Origami ori, String nome, String dificuldade, float preco, String categoria, String tipoPapel, int qtdPecas, byte[] foto, List<String> materiais) throws HibernateException   {
+        ori.setNome(nome);
+        ori.setDificuldade(dificuldade);
+        ori.setPreco(preco);
+        ori.setCategoria(categoria);
+        ori.setTipoPapel(tipoPapel);
+        ori.setQtdPecas(qtdPecas);
+        ori.setFoto(foto);
+        ori.setMateriais(materiais);
+        
+        oriDAO.alterar(ori);        
+    }
+    
     public int inserirCliente (String nome, String email, String senha, String cidade) throws HibernateException {
         Cliente cli = new Cliente(nome, email, senha, cidade);
         cliDAO.inserir(cli);
         return cli.getIdCliente();
+    }
+    
+    public Cliente logar(String email, String senha) {
+        return cliDAO.pesquisarPerfil(email, senha);
+    }
+    
+    public Cliente emailExiste (String pesq) throws HibernateException {
+        Cliente existe = cliDAO.pesquisarEmail(pesq);
+        return existe;
     }
     
     public int inserirAvalicao (Cliente cliente, Origami origami, int nota, String comentario) {
@@ -89,18 +115,5 @@ public class GerenciadorDominio {
         
         carrDAO.inserir(carr);
         return carr.getIdCarrinhoCompra();
-    }
-    
-    public Cliente logar(String email, String senha) {
-        return cliDAO.pesquisarPerfil(email, senha);
-    }
-    
-    public Cliente emailExiste (String pesq) throws HibernateException {
-        Cliente existe = cliDAO.pesquisarEmail(pesq);
-        return existe;
-    }
-    
-    public Origami nomeOrigamiExiste (String pesq) throws HibernateException {
-        return oriDAO.pesquisarNome(pesq);
     }
 }
