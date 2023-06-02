@@ -104,6 +104,8 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         panVendas = new javax.swing.JPanel();
         scrollVendas = new javax.swing.JScrollPane();
         tbVendas = new javax.swing.JTable();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -515,7 +517,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                     .addGroup(panModularLayout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         tbPanOrigami.addTab("Modular", panModular);
@@ -597,7 +599,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                         .addComponent(EditarArq)
                         .addGap(29, 29, 29)
                         .addComponent(ExcluirArq, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         tbPanOrigami.addTab("Arquitetônico", panArquit);
@@ -679,7 +681,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                         .addComponent(EditarBlock)
                         .addGap(29, 29, 29)
                         .addComponent(ExcluirBlock, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         tbPanOrigami.addTab("Block Folding", panBlock);
@@ -760,7 +762,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                         .addComponent(EditarBill)
                         .addGap(29, 29, 29)
                         .addComponent(ExcluirBill, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         tbPanOrigami.addTab("Bill Folding", panBill);
@@ -775,7 +777,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Origami", "Valor un.", "Data de compra", "Status"
+                "Cliente", "Total", "Data de compra", "Status"
             }
         ) {
             Class[] types = new Class [] {
@@ -797,20 +799,36 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         tbVendas.getTableHeader().setReorderingAllowed(false);
         scrollVendas.setViewportView(tbVendas);
 
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jButton1.setBackground(new java.awt.Color(0, 0, 102));
+        jButton1.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Editar");
+
         javax.swing.GroupLayout panVendasLayout = new javax.swing.GroupLayout(panVendas);
         panVendas.setLayout(panVendasLayout);
         panVendasLayout.setHorizontalGroup(
             panVendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panVendasLayout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(scrollVendas, javax.swing.GroupLayout.PREFERRED_SIZE, 733, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addGroup(panVendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(scrollVendas, javax.swing.GroupLayout.PREFERRED_SIZE, 733, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panVendasLayout.createSequentialGroup()
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
         panVendasLayout.setVerticalGroup(
             panVendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panVendasLayout.createSequentialGroup()
-                .addContainerGap(103, Short.MAX_VALUE)
-                .addComponent(scrollVendas, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
+                .addGroup(panVendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addComponent(scrollVendas, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38))
         );
 
@@ -1317,6 +1335,8 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
     private javax.swing.JCheckBox chkVerniz;
     private javax.swing.JLabel dific1;
     private javax.swing.JLabel dific2;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JPanel jPanel12;
