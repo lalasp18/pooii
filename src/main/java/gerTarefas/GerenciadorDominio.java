@@ -16,6 +16,7 @@ import dominio.CarrinhoCompra;
 import dominio.Cliente;
 import dominio.Item;
 import dominio.Origami;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.HibernateException;
 
@@ -86,9 +87,8 @@ public class GerenciadorDominio {
         return cliDAO.pesquisarPerfil(email, senha);
     }
     
-    public Cliente emailExiste (String pesq) throws HibernateException {
-        Cliente existe = cliDAO.pesquisarEmail(pesq);
-        return existe;
+    public Cliente pesquisarEmailCliente (String pesq) throws HibernateException {
+        return cliDAO.pesquisarEmailExistente(pesq);
     }
     
     public int inserirAvalicao (Cliente cliente, Origami origami, int nota, String comentario) {
@@ -103,8 +103,8 @@ public class GerenciadorDominio {
         return itm.getIdItem();
     }
     
-    public int inserirCarrinhoCompra (float frete, float total, List<Item> listaItens, Cliente cliente) {
-        CarrinhoCompra carr = new CarrinhoCompra(frete, total, cliente);
+    public int inserirCarrinhoCompra (float frete, float total, Date dataCompra, String status, List<Item> listaItens, Cliente cliente) {
+        CarrinhoCompra carr = new CarrinhoCompra(frete, total, dataCompra, status, cliente);
         
         for(Item produto : listaItens) {
             produto.setCarrinho(carr);
@@ -115,5 +115,20 @@ public class GerenciadorDominio {
         
         carrDAO.inserir(carr);
         return carr.getIdCarrinhoCompra();
+    }
+    
+    public List<CarrinhoCompra> statusDaCompra(String pesq) {
+        return carrDAO.pesquisarStatus(pesq);
+    }
+    
+//    public CarrinhoCompra editarStatus(String nomeCliente, Date data) {
+//        Cliente clt = pesquisarCliente(nomeCliente, 0);
+//        return carrDAO.pesquisarCompra(clt, data);
+//    }
+    
+    public void alterarStatusCompra(CarrinhoCompra compraAtualizada, String status) {
+        compraAtualizada.setStatus(status);
+        
+        carrDAO.alterar(compraAtualizada);
     }
 }

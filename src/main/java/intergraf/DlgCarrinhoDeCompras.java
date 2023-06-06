@@ -6,9 +6,11 @@ package intergraf;
 
 import dominio.Item;
 import dominio.Origami;
+import gerTarefas.FuncoesUteis;
 import gerTarefas.GerInterGrafica;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -215,10 +217,14 @@ public class DlgCarrinhoDeCompras extends javax.swing.JDialog {
 
     private void btnComprarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnComprarActionPerformed
         float frete = definirFrete();
+        String data = FuncoesUteis.gerarRandomDataFormatada();
+        String status = "Pedido realizado";
+        
         if(gerIG.produtosPedidos().size() > 0) {
             try {
+                Date dt = FuncoesUteis.strToDate(data);
             // INSERIR
-                int id = gerIG.getGerDominio().inserirCarrinhoCompra(frete, totalComprado, gerIG.produtosPedidos(), gerIG.getGerCliente());
+                int id = gerIG.getGerDominio().inserirCarrinhoCompra(frete, totalComprado, dt, status, gerIG.produtosPedidos(), gerIG.getGerCliente());
                 JOptionPane.showMessageDialog(this, "Carrinho " + id + " comprado com sucesso.", "Status da Compra", JOptionPane.INFORMATION_MESSAGE  );
                 DefaultTableModel model = (DefaultTableModel) tbCarrinho.getModel();
                 model.setRowCount(0);

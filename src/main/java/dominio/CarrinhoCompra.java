@@ -5,7 +5,9 @@
 package dominio;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
@@ -24,6 +26,10 @@ public class CarrinhoCompra implements Serializable {
     private float frete;
     private float total;
     
+    @Temporal ( TemporalType.DATE )
+    private Date dataCompra;
+    private String status;
+    
     @OneToMany(mappedBy = "carrinho", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Item> listaItens = new ArrayList();
     
@@ -35,16 +41,20 @@ public class CarrinhoCompra implements Serializable {
     public CarrinhoCompra() {
     }
 
-    public CarrinhoCompra(int idCarrinhoCompra, float frete, float total, List<Item> listaItens) {
+    public CarrinhoCompra(int idCarrinhoCompra, float frete, float total, Date dataCompra, String status, Cliente cliente) {
         this.idCarrinhoCompra = idCarrinhoCompra;
         this.frete = frete;
         this.total = total;
-        this.listaItens = listaItens;
+        this.dataCompra = dataCompra;
+        this.status = status;
+        this.cliente = cliente;
     }
 
-    public CarrinhoCompra(float frete, float total, Cliente cliente) {
+    public CarrinhoCompra(float frete, float total, Date dataCompra, String status, Cliente cliente) {
         this.frete = frete;
         this.total = total;
+        this.dataCompra = dataCompra;
+        this.status = status;
         this.cliente = cliente;
     }
 
@@ -58,6 +68,22 @@ public class CarrinhoCompra implements Serializable {
 
     public float getTotal() {
         return total;
+    }
+
+    public Date getDataCompra() {
+        return dataCompra;
+    }
+
+    public void setDataCompra(Date dataCompra) {
+        this.dataCompra = dataCompra;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public List<Item> getListaItens() {
@@ -76,6 +102,19 @@ public class CarrinhoCompra implements Serializable {
         this.cliente = cliente;
     }
 
+    public Object[] toArray() throws ParseException {
+        return new Object[] { this, "R$ "+total,  getDtCompraFormatada(), status };
+    }
+
+    @Override
+    public String toString() {
+        return cliente.getNome();
+    }
+    
+    public String getDtCompraFormatada() throws ParseException {
+        return gerTarefas.FuncoesUteis.dateToStr(dataCompra);
+    }
+    
     @Override
     public int hashCode() {
         int hash = 5;

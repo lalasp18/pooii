@@ -5,6 +5,7 @@
 package dominio;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -138,6 +139,15 @@ public class Origami implements Serializable {
 
     public void setMateriais(List<String> materiais) {
         this.materiais = materiais;
+    }
+
+    public Object[] toArray() throws ParseException {
+        return new Object[] { this, dificuldade, tipoPapel, "R$ "+preco };
+    }
+
+    @Override
+    public String toString() {
+        return nome;
     }
 
     @Override

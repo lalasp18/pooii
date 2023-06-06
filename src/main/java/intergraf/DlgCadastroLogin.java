@@ -107,7 +107,7 @@ public class DlgCadastroLogin extends javax.swing.JDialog {
         String cidade = boxCidade.getSelectedItem().toString();
         
         if( validarCampos() ) {
-            if(gerIG.getGerDominio().emailExiste(email) != null) {
+            if(gerIG.getGerDominio().pesquisarEmailCliente(email) != null) {
                 lblEmail.setForeground(Color.red);      
                 JOptionPane.showMessageDialog(this, "E-mail já cadastrado!", "ERRO Log In", JOptionPane.ERROR_MESSAGE  );
             } else {

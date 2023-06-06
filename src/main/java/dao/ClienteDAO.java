@@ -60,9 +60,10 @@ public class ClienteDAO extends GenericDAO {
         return client;
     }
     
-    public Cliente pesquisarEmail(String email) throws HibernateException {
+    public Cliente pesquisarEmailExistente(String pesq) throws HibernateException {
         Cliente client = null;
         Session sessao = null;
+        
         try {
             sessao = ConexaoHibernate.getSessionFactory().openSession();
             sessao.beginTransaction();
@@ -75,7 +76,7 @@ public class ClienteDAO extends GenericDAO {
             Root tabela = consulta.from(Cliente.class);
             
             // RESTRIÇÕES
-            Predicate restricoes = builder.equal(tabela.get("email"), email); 
+            Predicate restricoes = builder.equal(tabela.get("email"), pesq); 
                         
             consulta.where(restricoes);
             try {
@@ -95,5 +96,4 @@ public class ClienteDAO extends GenericDAO {
         }
         return client;
     }
-    
 }

@@ -8,20 +8,12 @@ package intergraf;
 import dominio.CarrinhoCompra;
 import dominio.Cliente;
 import dominio.Item;
-import dominio.Origami;
+import gerTarefas.FuncoesUteis;
 import gerTarefas.GerInterGrafica;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Random;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
+import java.text.ParseException;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
+import org.hibernate.HibernateException;
 
 /**
  *
@@ -40,7 +32,6 @@ public class DlgHistorico extends javax.swing.JDialog {
         menuUsuario.setText("<html><style>h1{font-size:12px}</style><h1>" + gerIG.getGerCliente().getNome()
                 + "</h1></html>");
         scrollHistorico.getViewport().setOpaque(false);
-        customizeTableHeader(tbHistorico);
         carregarTabela();
     }
 
@@ -184,97 +175,33 @@ public class DlgHistorico extends javax.swing.JDialog {
         carregarTabela();
     }//GEN-LAST:event_formWindowGainedFocus
     
-    public String statusFraseRandom() {
-        String[] frases = {
-           "Pedido realizado",
-           "Pagamento confirmado",         
-           "Pedido enviado",
-           "Saiu para entrega",
-           "Pedido entregue",
-           "Erro no pagamento",
-           "Cancelado",
-        };
-        
-        Random random = new Random();
-
-        int randomIndex = random.nextInt(frases.length);
-        
-        return frases[randomIndex];
-    }
-    
-    public String dataFormatada() {
-        Random random = new Random();
-
-        int ano = random.nextInt(25) + 2000;
-        int mes = random.nextInt(12) + 1;
-        int dia = random.nextInt(28) + 1;
-
-        LocalDate dataAleatoria = LocalDate.of(ano, mes, dia);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String dataFormatada = dataAleatoria.format(formatter);
-        
-        return dataFormatada;
-    }
-    
-    public void customizeTableCell() {
-        DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column); 
-
-                c.setForeground(new Color(255,102,102));
-                return c;
-            }
-        };
-        cellRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        tbHistorico.getColumnModel().getColumn(3).setCellRenderer(cellRenderer);
-    }
-    
-    public void customizeTableHeader(JTable table) {
-        JTableHeader tableHeader = table.getTableHeader();
-        
-        tableHeader.setDefaultRenderer(new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                Component rendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                ((JLabel) rendererComponent).setHorizontalAlignment(SwingConstants.CENTER);
-                ((JLabel) rendererComponent).setBackground(new Color(255,102,102));
-                ((JLabel) rendererComponent).setForeground(Color.WHITE);
-                ((JLabel) rendererComponent).setFont(new Font("Segoe Print", Font.BOLD, 15));
-                
-                return rendererComponent;
-            }
-        });
-    }
-    
     public void carregarTabela() {
-        DefaultTableModel tableModel = (DefaultTableModel) tbHistorico.getModel();
-        tableModel.setRowCount(0);
-        
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        tbHistorico.setDefaultRenderer(Object.class, centerRenderer);
-        customizeTableCell();
+        DefaultTableModel tableModel = FuncoesUteis.defaultTableCenter(tbHistorico);
+        FuncoesUteis.customizeTableCell(tbHistorico, 3);
+        FuncoesUteis.customizeTableHeader(tbHistorico);
         
         if (gerIG.getGerCliente() != null) {
             Cliente cliente = gerIG.getGerCliente();
             
             
             if(cliente.getPedidos().size() > 0) {
-                for(CarrinhoCompra compra : cliente.getPedidos()) {
-                    String status = statusFraseRandom();
-                    String data = dataFormatada();
-                    
-                    for(Item produtos : compra.getListaItens()) {
-                        String origami = produtos.getOrigami().getNome();
-                        float valor = produtos.getOrigami().getPreco();
-                        
-                        String valorStr = "R$ " + Float.toString(valor);
-                        
-                        Object[] rowData = {origami, valorStr, data, status};
-                        tableModel.addRow(rowData);
-                    }
+                for(CarrinhoCompra compra : cliente.getPedidos()) {                                             
+                    try {
+                        String status = compra.getStatus();
+                        String data = compra.getDtCompraFormatada();
+
+                        for(Item produtos : compra.getListaItens()) {
+                            String origami = produtos.getOrigami().getNome();
+                            float valor = produtos.getOrigami().getPreco();
+
+                            String valorStr = "R$ " + Float.toString(valor);
+
+                            Object[] rowData = {origami, valorStr, data, status};
+                            tableModel.addRow(rowData);
+                        }
+                    } catch (HibernateException | ParseException  ex) {
+                        JOptionPane.showMessageDialog(this, ex, "ERRO ao LISTAR Histórico de Compra", JOptionPane.ERROR_MESSAGE  );
+                    } 
                 }
             }
         }

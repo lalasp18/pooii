@@ -4,6 +4,7 @@
  */
 package intergraf;
 
+import dominio.CarrinhoCompra;
 import dominio.Origami;
 import gerTarefas.FuncoesUteis;
 import gerTarefas.GerInterGrafica;
@@ -11,7 +12,9 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -104,8 +107,9 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         panVendas = new javax.swing.JPanel();
         scrollVendas = new javax.swing.JScrollPane();
         tbVendas = new javax.swing.JTable();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        boxStatus = new javax.swing.JComboBox<>();
+        btnEditarStatus = new javax.swing.JButton();
+        btnPesquisar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -454,16 +458,9 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                 "Nome", "Dificuldade", "Tipo de Papel", "Valor Un."
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -517,7 +514,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                     .addGroup(panModularLayout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
 
         tbPanOrigami.addTab("Modular", panModular);
@@ -536,16 +533,9 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                 "Nome", "Dificuldade", "Tipo de Papel", "Valor Un."
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -599,7 +589,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                         .addComponent(EditarArq)
                         .addGap(29, 29, 29)
                         .addComponent(ExcluirArq, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
 
         tbPanOrigami.addTab("Arquitetônico", panArquit);
@@ -618,16 +608,9 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                 "Nome", "Dificuldade", "Tipo de Papel", "Valor Un."
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -681,7 +664,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                         .addComponent(EditarBlock)
                         .addGap(29, 29, 29)
                         .addComponent(ExcluirBlock, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
 
         tbPanOrigami.addTab("Block Folding", panBlock);
@@ -700,16 +683,9 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                 "Nome", "Dificuldade", "Tipo de Papel", "Valor Un."
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -762,12 +738,13 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                         .addComponent(EditarBill)
                         .addGap(29, 29, 29)
                         .addComponent(ExcluirBill, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(76, Short.MAX_VALUE))
         );
 
         tbPanOrigami.addTab("Bill Folding", panBill);
 
         panVendas.setToolTipText("Tabela de Vendas");
+        panVendas.setOpaque(false);
 
         scrollVendas.setOpaque(false);
 
@@ -780,16 +757,9 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                 "Cliente", "Total", "Data de compra", "Status"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -799,12 +769,25 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         tbVendas.getTableHeader().setReorderingAllowed(false);
         scrollVendas.setViewportView(tbVendas);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        boxStatus.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        boxStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Pedido realizado", "Pagamento confirmado", "Pedido enviado", "Saiu para entrega", "Pedido entregue", "Erro no pagamento", "Cancelado" }));
 
-        jButton1.setBackground(new java.awt.Color(0, 0, 102));
-        jButton1.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Editar");
+        btnEditarStatus.setBackground(new java.awt.Color(0, 0, 102));
+        btnEditarStatus.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
+        btnEditarStatus.setForeground(new java.awt.Color(255, 255, 255));
+        btnEditarStatus.setText("Editar status");
+        btnEditarStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarStatusActionPerformed(evt);
+            }
+        });
+
+        btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/search.png"))); // NOI18N
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panVendasLayout = new javax.swing.GroupLayout(panVendas);
         panVendas.setLayout(panVendasLayout);
@@ -814,21 +797,25 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                 .addGap(30, 30, 30)
                 .addGroup(panVendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(scrollVendas, javax.swing.GroupLayout.PREFERRED_SIZE, 733, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panVendasLayout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panVendasLayout.createSequentialGroup()
+                        .addComponent(boxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
+                        .addComponent(btnEditarStatus)))
                 .addContainerGap(47, Short.MAX_VALUE))
         );
         panVendasLayout.setVerticalGroup(
             panVendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panVendasLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addGroup(panVendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                .addComponent(scrollVendas, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
+                .addGroup(panVendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panVendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(boxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnEditarStatus)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addComponent(scrollVendas, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38))
         );
 
@@ -1029,12 +1016,81 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnAlterarActionPerformed
 
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        String pesquisar = boxStatus.getSelectedItem().toString();
+        if("Todos".equals(pesquisar)) {
+            carregarVendas();
+        } else {
+            try {
+                List<CarrinhoCompra> compras = gerIG.getGerDominio().statusDaCompra(pesquisar);
+
+                DefaultTableModel tableModel = FuncoesUteis.defaultTableCenter(tbVendas);
+
+                for ( CarrinhoCompra venda : compras ) {
+                    tableModel.addRow( venda.toArray() );                
+                }
+
+                tbVendas.setModel(tableModel);
+                tbVendas.setShowVerticalLines(false);
+
+            } catch (HibernateException | ParseException  ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Carrinhos de Compra", JOptionPane.ERROR_MESSAGE  );
+            } 
+        }
+    }//GEN-LAST:event_btnPesquisarActionPerformed
+
+    private void btnEditarStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarStatusActionPerformed
+        int row = tbVendas.getSelectedRow();
+
+        if (row != -1) {                                             
+            CarrinhoCompra venda = (CarrinhoCompra) tbVendas.getValueAt(row, 0);
+
+            String[] options = {"Pedido realizado", "Pagamento confirmado", "Pedido enviado", "Saiu para entrega", "Pedido entregue", "Erro no pagamento", "Cancelado"};
+            JComboBox<String> comboBox = new JComboBox<>(options);
+
+            int result = JOptionPane.showOptionDialog(this, comboBox, "Selecione uma opção para alterar status",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+
+            if (result == JOptionPane.OK_OPTION) {
+                try {
+                    String selectedOption = (String) comboBox.getSelectedItem();
+                    gerIG.getGerDominio().alterarStatusCompra(venda, selectedOption);
+                    JOptionPane.showMessageDialog(this, "Carrinho de Compra " + venda.getIdCarrinhoCompra()+ " alterado com sucesso.", "Alterar Carrinho de Compra", JOptionPane.INFORMATION_MESSAGE  );
+                    carregarVendas();
+                    boxStatus.setSelectedIndex(0);
+                } catch (HibernateException ex) {
+                    JOptionPane.showMessageDialog(this, ex, "ERRO Carrinho de Compra", JOptionPane.ERROR_MESSAGE  );
+                }
+                catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, ex, "ERRO Carrinho de Compra", JOptionPane.ERROR_MESSAGE  );
+                }
+            }
+        }
+    }//GEN-LAST:event_btnEditarStatusActionPerformed
+
+    private void carregarVendas() {
+        try {
+            List<CarrinhoCompra> compras = gerIG.getGerDominio().listar(CarrinhoCompra.class);
+            
+            DefaultTableModel tableModel = FuncoesUteis.defaultTableCenter(tbVendas);
+            
+            for ( CarrinhoCompra venda : compras ) {
+                tableModel.addRow( venda.toArray() );                
+            }
+            
+            tbVendas.setModel(tableModel);
+            tbVendas.setShowVerticalLines(false);
+            
+        } catch (HibernateException | ParseException  ex) {
+            JOptionPane.showMessageDialog(this, ex, "ERRO ao LISTAR Carrinhos de Compra", JOptionPane.ERROR_MESSAGE  );
+        } 
+    }
+    
     private void editarOuExcluirActionPerformed(java.awt.event.ActionEvent evt, String acao, JTable tabela, String condicao) {
         int row = tabela.getSelectedRow();
 
         if (row != -1) {
-            String elemento = (String) tabela.getValueAt(row, 0);
-            Origami origami = gerIG.getGerDominio().nomeOrigamiExiste(elemento);
+            Origami origami = (Origami) tabela.getValueAt(row, 0);
 
             if (origami != null) {
                 if (acao.equals("Editar")) {
@@ -1160,37 +1216,32 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                     carregarDados(tbBlock, "Block Folding");
                 } else if (selectedIndex == 4) {
                     carregarDados(tbBill, "Bill Folding");
+                } else if (selectedIndex == 5) {
+                    FuncoesUteis.customizeTableHeader(tbVendas);
+                    FuncoesUteis.customizeTableCell(tbVendas, 3);
+                    carregarVendas();
                 }
             }
         });
     }
     
     private void carregarDados(JTable tabela, String condicao) {
-        List<Origami> origamis = gerIG.getGerDominio().listar(Origami.class);
+        try {
+            List<Origami> origamis = gerIG.getGerDominio().listar(Origami.class);
 
-        DefaultTableModel tableModel = (DefaultTableModel) tabela.getModel();
-        tableModel.setRowCount(0);
-        
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        tabela.setDefaultRenderer(Object.class, centerRenderer);
-        
-        for (Origami origami : origamis) {
-            if (condicao.equals(origami.getCategoria())) {
-                String nome = origami.getNome();
-                String dificuldade = origami.getDificuldade();
-                String papel = origami.getTipoPapel();
-                float preco = origami.getPreco();
-                
-                String precoStr = "R$ " + Float.toString(preco);
+            DefaultTableModel tableModel = FuncoesUteis.defaultTableCenter(tabela);
 
-                Object[] rowData = {nome, dificuldade, papel, precoStr};
-                tableModel.addRow(rowData);
+            for (Origami origami : origamis) {
+                if (condicao.equals(origami.getCategoria())) {
+                    tableModel.addRow(origami.toArray());
+                }
             }
-        }
 
-        tabela.setModel(tableModel);
-        tabela.setShowVerticalLines(false);
+            tabela.setModel(tableModel);
+            tabela.setShowVerticalLines(false);    
+        } catch (HibernateException | ParseException  ex) {
+            JOptionPane.showMessageDialog(this, ex, "ERRO ao LISTAR Origamis", JOptionPane.ERROR_MESSAGE  );
+        } 
     }
     
     private void resizeFoto(ImageIcon img) {
@@ -1318,11 +1369,14 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
     private javax.swing.JButton ExcluirBlock;
     private javax.swing.JButton ExcluirMod;
     private javax.swing.JComboBox<String> boxDificuldade;
+    private javax.swing.JComboBox<String> boxStatus;
     private javax.swing.JComboBox<String> boxTipoPapel;
     private javax.swing.JComboBox<String> boxVariacao;
     private javax.swing.JButton btnAdicionar;
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnEditarStatus;
+    private javax.swing.JButton btnPesquisar;
     private javax.swing.JCheckBox chkBarbante;
     private javax.swing.JCheckBox chkBijuteria;
     private javax.swing.JCheckBox chkCola;
@@ -1335,8 +1389,6 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
     private javax.swing.JCheckBox chkVerniz;
     private javax.swing.JLabel dific1;
     private javax.swing.JLabel dific2;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JPanel jPanel12;

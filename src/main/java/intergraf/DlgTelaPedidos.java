@@ -635,7 +635,7 @@ public class DlgTelaPedidos extends javax.swing.JDialog {
         Origami selecionado = (Origami) toggleButton.getClientProperty("origami");
         String titulo = "Descrição do produto - " + selecionado.getNome();
 
-        JTextArea textArea = new JTextArea("\tValor: " + selecionado.getPreco() + "\n\n" +
+        JTextArea textArea = new JTextArea("Unidades do produto: " + selecionado.getQtdPecas() + "\n\nValor: R$" + selecionado.getPreco() + "\n\n" +
                 "Dificuldade: " + selecionado.getDificuldade() + "\n\n" +
                 "Tipo de papel: " + selecionado.getTipoPapel() + "\n\n" +
                 "Materiais complementares: " + selecionado.getMateriais());
