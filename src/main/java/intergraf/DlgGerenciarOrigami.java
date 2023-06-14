@@ -1106,7 +1106,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                         JOptionPane.showMessageDialog(this, ex, "ERRO Excluir Origami", JOptionPane.ERROR_MESSAGE  );
                     }
                     catch (Exception ex) {
-                        JOptionPane.showMessageDialog(this, ex + "\n\nDetalhe: Key (idorigami)=("+origami.getIdOrigami()+") ainda é referenciada em outras tabelas.", "ERRO Excluir Origami", JOptionPane.ERROR_MESSAGE  );
+                        JOptionPane.showMessageDialog(this, "ERRO!\n\nO origami "+origami.getNome()+" está referenciado em algumas compras.", "ERRO Excluir Origami", JOptionPane.ERROR_MESSAGE  );
                     }
                 }
             }
