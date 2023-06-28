@@ -6,6 +6,8 @@
 package dominio;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.util.Objects;
 import javax.persistence.*;
 
 /**
@@ -81,5 +83,39 @@ public class Item implements Serializable {
 
     public void setCarrinho(CarrinhoCompra carrinho) {
         this.carrinho = carrinho;
+    }
+    
+    public Object[] toArray() throws ParseException {
+        return new Object[] { this, qtd, carrinho.getDtCompraFormatada() };
+    }
+
+    @Override
+    public String toString() {
+        return origami.getNome();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 19 * hash + this.idItem;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Item other = (Item) obj;
+        if (this.idItem != other.idItem) {
+            return false;
+        }
+        return true;
     }
 }
