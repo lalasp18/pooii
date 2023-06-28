@@ -19,7 +19,8 @@ public class GerenciadorRelatorios {
     public void relComConexao() {
         try {
             // PASSO 1 - Caminho do relatório
-            InputStream rel = getClass().getResourceAsStream("../relatorios/relClientes.jasper");
+//            InputStream rel = getClass().getResourceAsStream("/src/main/resources/reportsOr/relportOrigami.jasper");
+            InputStream rel = getClass().getResourceAsStream("/reportsOr/relportOrigami.jasper");
 
             
             // PASSO 2 - Criar parâmetros de Pesquisa 
@@ -53,12 +54,12 @@ public class GerenciadorRelatorios {
               */  
 
             } else {
-                JOptionPane.showMessageDialog(null, "Relatório de clientes vazio.");
+                JOptionPane.showMessageDialog(null, "Relatório de origamis vazio.");
             }
         
         }
         catch(JRException erro){
-            JOptionPane.showMessageDialog(null, "ERRO ao abrir relatório de clientes. " + erro.getMessage() );
+            JOptionPane.showMessageDialog(null, "ERRO ao abrir relatório de origamis. " + erro.getMessage() );
             
         }
         
@@ -69,7 +70,8 @@ public class GerenciadorRelatorios {
     public void relComLista(List lista, String nome ) {
         try {
             // PASSO 1 - Caminho do relatório
-            InputStream rel = getClass().getResourceAsStream("../relatorios/" + nome);
+//            InputStream rel = getClass().getResourceAsStream("/src/main/resources/reportsOr/" + nome);
+            InputStream rel = getClass().getResourceAsStream("/reportsOr/" + nome);
 
             // COMPILAR
             // JasperReport rel = JasperCompileManager.compileReport(relArq);
@@ -107,7 +109,7 @@ public class GerenciadorRelatorios {
         
         }
         catch(JRException erro){
-            JOptionPane.showMessageDialog(null, "ERRO ao abrir relatório de clientes. " + erro.getMessage() );
+            JOptionPane.showMessageDialog(null, "ERRO ao abrir relatório de origamis. " + erro.getMessage() );
             
         }
         

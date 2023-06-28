@@ -110,6 +110,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         boxStatus = new javax.swing.JComboBox<>();
         btnEditarStatus = new javax.swing.JButton();
         btnPesquisar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -514,7 +515,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                     .addGroup(panModularLayout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         tbPanOrigami.addTab("Modular", panModular);
@@ -589,7 +590,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                         .addComponent(EditarArq)
                         .addGap(29, 29, 29)
                         .addComponent(ExcluirArq, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         tbPanOrigami.addTab("Arquitetônico", panArquit);
@@ -664,7 +665,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                         .addComponent(EditarBlock)
                         .addGap(29, 29, 29)
                         .addComponent(ExcluirBlock, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         tbPanOrigami.addTab("Block Folding", panBlock);
@@ -738,7 +739,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                         .addComponent(EditarBill)
                         .addGap(29, 29, 29)
                         .addComponent(ExcluirBill, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         tbPanOrigami.addTab("Bill Folding", panBill);
@@ -789,6 +790,13 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
             }
         });
 
+        jButton1.setText("Relatório");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panVendasLayout = new javax.swing.GroupLayout(panVendas);
         panVendas.setLayout(panVendasLayout);
         panVendasLayout.setHorizontalGroup(
@@ -802,6 +810,8 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(btnPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(48, 48, 48)
                         .addComponent(btnEditarStatus)))
                 .addContainerGap(47, Short.MAX_VALUE))
         );
@@ -813,7 +823,8 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                     .addComponent(btnPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panVendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(boxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnEditarStatus)))
+                        .addComponent(btnEditarStatus)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addComponent(scrollVendas, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38))
@@ -1067,6 +1078,16 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_btnEditarStatusActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            List<CarrinhoCompra> compras = gerIG.getGerDominio().listar(CarrinhoCompra.class);
+            
+            gerIG.getGerRelatorios().relComLista(compras, "relportOrigami.jasper");
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(this, "ERRO ao LISTAR Carrinhos de Compra" + ex  );
+        } 
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void carregarVendas() {
         try {
@@ -1389,6 +1410,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
     private javax.swing.JCheckBox chkVerniz;
     private javax.swing.JLabel dific1;
     private javax.swing.JLabel dific2;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JPanel jPanel12;

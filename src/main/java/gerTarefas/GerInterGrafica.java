@@ -38,6 +38,7 @@ public class GerInterGrafica {
     
     // GERENCIADORES de DOMINIO
     GerenciadorDominio gerDominio;
+    GerenciadorRelatorios gerRel;
     
     // CLIENTE LOGADO
     Cliente gerCliente = null;
@@ -45,6 +46,7 @@ public class GerInterGrafica {
     public GerInterGrafica() {
         try {
             gerDominio = new GerenciadorDominio();
+            gerRel = new GerenciadorRelatorios();
         } catch (HibernateException  ex) {
             JOptionPane.showMessageDialog(janPrinc, "Erro de conexão com o banco. " + ex.getMessage() );
                 System.exit(-1);
@@ -57,6 +59,10 @@ public class GerInterGrafica {
 
     public GerenciadorDominio getGerDominio() {
         return gerDominio;
+    }
+
+    public GerenciadorRelatorios getGerRelatorios() {
+        return gerRel;
     }
     
    // ABRIR JDIALOG
