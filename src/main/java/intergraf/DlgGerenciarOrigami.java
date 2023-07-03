@@ -4,6 +4,7 @@
  */
 package intergraf;
 
+import dominio.Avaliacao;
 import dominio.CarrinhoCompra;
 import dominio.Origami;
 import gerTarefas.FuncoesUteis;
@@ -790,7 +791,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
             }
         });
 
-        jButton1.setText("Relatório");
+        jButton1.setText("Relatórios");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -810,10 +811,10 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(btnPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(48, 48, 48)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
                         .addComponent(btnEditarStatus)))
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         panVendasLayout.setVerticalGroup(
             panVendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1081,11 +1082,14 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
-            List<CarrinhoCompra> compras = gerIG.getGerDominio().listar(CarrinhoCompra.class);
+            List<Origami> origami = gerIG.getGerDominio().listar(Origami.class);
+            gerIG.getGerRelatorios().relComLista(origami, "reportGeral.jasper");
             
-            gerIG.getGerRelatorios().relComLista(compras, "relportOrigami.jasper");
+            List<Avaliacao> aval = gerIG.getGerDominio().listar(Avaliacao.class);
+            gerIG.getGerRelatorios().relComLista(aval, "reportClientes.jasper");
+            
         } catch (HibernateException ex) {
-            JOptionPane.showMessageDialog(this, "ERRO ao LISTAR Carrinhos de Compra" + ex  );
+            JOptionPane.showMessageDialog(this, "ERRO ao LISTAR Relatório Geral" + ex  );
         } 
     }//GEN-LAST:event_jButton1ActionPerformed
 

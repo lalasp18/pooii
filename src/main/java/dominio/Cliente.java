@@ -6,6 +6,7 @@ package dominio;
 
 import com.sun.istack.Nullable;
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

@@ -1,6 +1,7 @@
 package gerTarefas;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class GerenciadorRelatorios {
         try {
             // PASSO 1 - Caminho do relatório
 //            InputStream rel = getClass().getResourceAsStream("/src/main/resources/reportsOr/relportOrigami.jasper");
-            InputStream rel = getClass().getResourceAsStream("/reportsOr/relportOrigami.jasper");
+            InputStream rel = getClass().getResourceAsStream("/reportsOr/reportGeral.jasper");
 
             
             // PASSO 2 - Criar parâmetros de Pesquisa 
@@ -79,10 +80,11 @@ public class GerenciadorRelatorios {
             
             // PASSO 2 - Criar parâmetros de Pesquisa 
             Map parametros = new HashMap();
-               
+
+
             
             // PASSO 3 - Carregar o relatório com os dados
-            JRBeanCollectionDataSource dados = new JRBeanCollectionDataSource(lista);            
+            JRBeanCollectionDataSource dados = new JRBeanCollectionDataSource(lista);
             JasperPrint print;
             print = JasperFillManager.fillReport(rel, parametros, dados);
            

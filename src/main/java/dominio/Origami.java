@@ -34,6 +34,8 @@ public class Origami implements Serializable {
     
     @Column (length = 50, nullable = false)
     private String tipoPapel;
+    
+    @JoinColumn(name = "qtdPecas")
     private int qtdPecas;
     
     @Lob
