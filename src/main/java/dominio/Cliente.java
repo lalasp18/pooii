@@ -6,6 +6,8 @@ package dominio;
 
 import com.sun.istack.Nullable;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.*;
@@ -34,10 +36,8 @@ public class Cliente implements Serializable {
     @Column (length = 50, nullable = false)
     private String cidade;
     
-    @OneToMany
-    @Nullable
-    @JoinColumn(name = "carrinho_id")
-    private List<CarrinhoCompra> pedidos;
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<CarrinhoCompra> pedidos = new ArrayList();
 
     // Hibernate
     public Cliente() {
@@ -52,24 +52,11 @@ public class Cliente implements Serializable {
         this.pedidos = pedidos;
     }
 
-    public Cliente(String nome, String email, String senha, String cidade, List<CarrinhoCompra> pedidos) {
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-        this.cidade = cidade;
-        this.pedidos = pedidos;
-    }
-
     public Cliente(String nome, String email, String senha, String cidade) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.cidade = cidade;
-    }
-
-    @Override
-    public String toString() {
-        return "Cliente{" + "email=" + email + '}';
     }
 
     public int getIdCliente() {
@@ -124,7 +111,7 @@ public class Cliente implements Serializable {
     public int hashCode() {
         int hash = 5;
         hash = 19 * hash + this.idCliente;
-        hash = 19 * hash + Objects.hashCode(this.nome);
+        hash = 19 * hash + Objects.hashCode(this.email);
         return hash;
     }
 
@@ -143,7 +130,7 @@ public class Cliente implements Serializable {
         if (this.idCliente != other.idCliente) {
             return false;
         }
-        if (!Objects.equals(this.nome, other.nome)) {
+        if (!Objects.equals(this.email, other.email)) {
             return false;
         }
         return true;

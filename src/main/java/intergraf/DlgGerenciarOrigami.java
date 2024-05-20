@@ -4,21 +4,20 @@
  */
 package intergraf;
 
+import dominio.Avaliacao;
+import dominio.CarrinhoCompra;
 import dominio.Origami;
 import gerTarefas.FuncoesUteis;
 import gerTarefas.GerInterGrafica;
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.File;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -34,12 +33,14 @@ import org.hibernate.HibernateException;
 public class DlgGerenciarOrigami extends javax.swing.JDialog {
 
     private GerInterGrafica gerIG;
-    /**
-     * Creates new form DlgGerenciarOrigami
-     */
+    private Origami oriSelecionado;
+
+
+
     public DlgGerenciarOrigami(java.awt.Frame parent, boolean modal, GerInterGrafica gerIG) {
         initComponents();
         this.gerIG = gerIG;
+        habilitarBotoes();
         limparCampos();
         panelEvento();
     }
@@ -82,19 +83,35 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         chkOutros = new javax.swing.JCheckBox();
         chkBarbante = new javax.swing.JCheckBox();
         btnAdicionar = new javax.swing.JButton();
-        btnLimpar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
+        btnAlterar = new javax.swing.JButton();
         panModular = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbModular = new javax.swing.JTable();
+        EditarMod = new javax.swing.JButton();
+        ExcluirMod = new javax.swing.JButton();
         panArquit = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbArquit = new javax.swing.JTable();
+        EditarArq = new javax.swing.JButton();
+        ExcluirArq = new javax.swing.JButton();
         panBlock = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tbBlock = new javax.swing.JTable();
+        EditarBlock = new javax.swing.JButton();
+        ExcluirBlock = new javax.swing.JButton();
         panBill = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tbBill = new javax.swing.JTable();
+        EditarBill = new javax.swing.JButton();
+        ExcluirBill = new javax.swing.JButton();
+        panVendas = new javax.swing.JPanel();
+        scrollVendas = new javax.swing.JScrollPane();
+        tbVendas = new javax.swing.JTable();
+        boxStatus = new javax.swing.JComboBox<>();
+        btnEditarStatus = new javax.swing.JButton();
+        btnPesquisar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -363,12 +380,21 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
             }
         });
 
-        btnLimpar.setFont(new java.awt.Font("Segoe Print", 1, 18)); // NOI18N
-        btnLimpar.setForeground(new java.awt.Color(255, 153, 0));
-        btnLimpar.setText("Cancelar");
-        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setFont(new java.awt.Font("Segoe Print", 1, 18)); // NOI18N
+        btnCancelar.setForeground(new java.awt.Color(255, 153, 0));
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLimparActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        btnAlterar.setFont(new java.awt.Font("Segoe Print", 1, 18)); // NOI18N
+        btnAlterar.setForeground(new java.awt.Color(0, 0, 102));
+        btnAlterar.setText("Alterar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
             }
         });
 
@@ -391,10 +417,12 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                         .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(panNovoLayout.createSequentialGroup()
-                .addGap(229, 229, 229)
+                .addGap(155, 155, 155)
+                .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(56, 56, 56)
                 .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(59, 59, 59)
-                .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         panNovoLayout.setVerticalGroup(
@@ -404,15 +432,16 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                 .addGroup(panNovoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblFoto, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panNovoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(panelMateriais, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(39, 39, 39)
+                .addGap(38, 38, 38)
                 .addGroup(panNovoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLimpar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26))
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27))
         );
 
         tbPanOrigami.addTab("Novo Origami", panNovo);
@@ -431,16 +460,9 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                 "Nome", "Dificuldade", "Tipo de Papel", "Valor Un."
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -450,21 +472,51 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         tbModular.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tbModular);
 
+        EditarMod.setBackground(new java.awt.Color(0, 0, 102));
+        EditarMod.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
+        EditarMod.setForeground(new java.awt.Color(255, 255, 255));
+        EditarMod.setText("Editar");
+        EditarMod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditarModActionPerformed(evt);
+            }
+        });
+
+        ExcluirMod.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
+        ExcluirMod.setForeground(new java.awt.Color(255, 153, 0));
+        ExcluirMod.setText("Excluir");
+        ExcluirMod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExcluirModActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panModularLayout = new javax.swing.GroupLayout(panModular);
         panModular.setLayout(panModularLayout);
         panModularLayout.setHorizontalGroup(
             panModularLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panModularLayout.createSequentialGroup()
                 .addGap(42, 42, 42)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 715, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE)
+                .addGap(44, 44, 44)
+                .addGroup(panModularLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(EditarMod, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ExcluirMod, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32))
         );
         panModularLayout.setVerticalGroup(
             panModularLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panModularLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addGroup(panModularLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panModularLayout.createSequentialGroup()
+                        .addGap(136, 136, 136)
+                        .addComponent(EditarMod)
+                        .addGap(29, 29, 29)
+                        .addComponent(ExcluirMod, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panModularLayout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         tbPanOrigami.addTab("Modular", panModular);
@@ -483,16 +535,9 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                 "Nome", "Dificuldade", "Tipo de Papel", "Valor Un."
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -502,21 +547,51 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         tbArquit.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(tbArquit);
 
+        EditarArq.setBackground(new java.awt.Color(0, 0, 102));
+        EditarArq.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
+        EditarArq.setForeground(new java.awt.Color(255, 255, 255));
+        EditarArq.setText("Editar");
+        EditarArq.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditarArqActionPerformed(evt);
+            }
+        });
+
+        ExcluirArq.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
+        ExcluirArq.setForeground(new java.awt.Color(255, 153, 0));
+        ExcluirArq.setText("Excluir");
+        ExcluirArq.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExcluirArqActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panArquitLayout = new javax.swing.GroupLayout(panArquit);
         panArquit.setLayout(panArquitLayout);
         panArquitLayout.setHorizontalGroup(
             panArquitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panArquitLayout.createSequentialGroup()
                 .addGap(42, 42, 42)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 715, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 604, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addGroup(panArquitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(EditarArq, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ExcluirArq, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35))
         );
         panArquitLayout.setVerticalGroup(
             panArquitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panArquitLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addGroup(panArquitLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panArquitLayout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panArquitLayout.createSequentialGroup()
+                        .addGap(135, 135, 135)
+                        .addComponent(EditarArq)
+                        .addGap(29, 29, 29)
+                        .addComponent(ExcluirArq, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         tbPanOrigami.addTab("Arquitetônico", panArquit);
@@ -535,16 +610,9 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                 "Nome", "Dificuldade", "Tipo de Papel", "Valor Un."
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -554,21 +622,51 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         tbBlock.getTableHeader().setReorderingAllowed(false);
         jScrollPane3.setViewportView(tbBlock);
 
+        EditarBlock.setBackground(new java.awt.Color(0, 0, 102));
+        EditarBlock.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
+        EditarBlock.setForeground(new java.awt.Color(255, 255, 255));
+        EditarBlock.setText("Editar");
+        EditarBlock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditarBlockActionPerformed(evt);
+            }
+        });
+
+        ExcluirBlock.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
+        ExcluirBlock.setForeground(new java.awt.Color(255, 153, 0));
+        ExcluirBlock.setText("Excluir");
+        ExcluirBlock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExcluirBlockActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panBlockLayout = new javax.swing.GroupLayout(panBlock);
         panBlock.setLayout(panBlockLayout);
         panBlockLayout.setHorizontalGroup(
             panBlockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panBlockLayout.createSequentialGroup()
                 .addGap(42, 42, 42)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 715, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 604, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addGroup(panBlockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(EditarBlock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ExcluirBlock, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33))
         );
         panBlockLayout.setVerticalGroup(
             panBlockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panBlockLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addGroup(panBlockLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panBlockLayout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panBlockLayout.createSequentialGroup()
+                        .addGap(137, 137, 137)
+                        .addComponent(EditarBlock)
+                        .addGap(29, 29, 29)
+                        .addComponent(ExcluirBlock, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         tbPanOrigami.addTab("Block Folding", panBlock);
@@ -587,16 +685,9 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                 "Nome", "Dificuldade", "Tipo de Papel", "Valor Un."
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -605,24 +696,142 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         tbBill.getTableHeader().setReorderingAllowed(false);
         jScrollPane4.setViewportView(tbBill);
 
+        EditarBill.setBackground(new java.awt.Color(0, 0, 102));
+        EditarBill.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
+        EditarBill.setForeground(new java.awt.Color(255, 255, 255));
+        EditarBill.setText("Editar");
+        EditarBill.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditarBillActionPerformed(evt);
+            }
+        });
+
+        ExcluirBill.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
+        ExcluirBill.setForeground(new java.awt.Color(255, 153, 0));
+        ExcluirBill.setText("Excluir");
+        ExcluirBill.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExcluirBillActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panBillLayout = new javax.swing.GroupLayout(panBill);
         panBill.setLayout(panBillLayout);
         panBillLayout.setHorizontalGroup(
             panBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panBillLayout.createSequentialGroup()
                 .addGap(42, 42, 42)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 715, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 604, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addGroup(panBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(EditarBill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ExcluirBill, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(34, 34, 34))
         );
         panBillLayout.setVerticalGroup(
             panBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panBillLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addGroup(panBillLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panBillLayout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panBillLayout.createSequentialGroup()
+                        .addGap(135, 135, 135)
+                        .addComponent(EditarBill)
+                        .addGap(29, 29, 29)
+                        .addComponent(ExcluirBill, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
 
         tbPanOrigami.addTab("Bill Folding", panBill);
+
+        panVendas.setToolTipText("Tabela de Vendas");
+        panVendas.setOpaque(false);
+
+        scrollVendas.setOpaque(false);
+
+        tbVendas.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        tbVendas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Cliente", "Total", "Data de compra", "Status"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbVendas.setOpaque(false);
+        tbVendas.getTableHeader().setReorderingAllowed(false);
+        scrollVendas.setViewportView(tbVendas);
+
+        boxStatus.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        boxStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Pedido realizado", "Pagamento confirmado", "Pedido enviado", "Saiu para entrega", "Pedido entregue", "Erro no pagamento", "Cancelado" }));
+
+        btnEditarStatus.setBackground(new java.awt.Color(0, 0, 102));
+        btnEditarStatus.setFont(new java.awt.Font("Segoe Print", 1, 15)); // NOI18N
+        btnEditarStatus.setForeground(new java.awt.Color(255, 255, 255));
+        btnEditarStatus.setText("Editar status");
+        btnEditarStatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarStatusActionPerformed(evt);
+            }
+        });
+
+        btnPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/search.png"))); // NOI18N
+        btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Relatórios");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panVendasLayout = new javax.swing.GroupLayout(panVendas);
+        panVendas.setLayout(panVendasLayout);
+        panVendasLayout.setHorizontalGroup(
+            panVendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panVendasLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(panVendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(scrollVendas, javax.swing.GroupLayout.PREFERRED_SIZE, 733, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panVendasLayout.createSequentialGroup()
+                        .addComponent(boxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(btnEditarStatus)))
+                .addContainerGap(42, Short.MAX_VALUE))
+        );
+        panVendasLayout.setVerticalGroup(
+            panVendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panVendasLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addGroup(panVendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnPesquisar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panVendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(boxStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnEditarStatus)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addComponent(scrollVendas, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38))
+        );
+
+        tbPanOrigami.addTab("Vendas", panVendas);
 
         getContentPane().add(tbPanOrigami, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, 810, -1));
 
@@ -633,7 +842,6 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblFotoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblFotoMouseClicked
-        // TODO add your handling code here:
         JFileChooser origamiFoto = new JFileChooser();
 
         origamiFoto.setAcceptAllFileFilterUsed(false);
@@ -647,7 +855,6 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
     }//GEN-LAST:event_lblFotoMouseClicked
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-        // TODO add your handling code here:
         String nome = txtNome.getText();
         String dific = boxDificuldade.getSelectedItem().toString();
         Float valor = Float.parseFloat(spnPreco.getValue().toString());
@@ -692,26 +899,335 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
 
         if( validarCampos() ) {
              // INSERIR NO BANCO
-            try {
-                byte[] fotoBytes = FuncoesUteis.IconToBytes(foto);
-                
-                // INSERIR
-                int id = gerIG.getGerDominio().inserirOrigami(nome, dific, valor, varicao, papel, qtd, fotoBytes, material);
-                JOptionPane.showMessageDialog(this, "Origami " + id + " inserido com sucesso.", "Inserir Origami", JOptionPane.INFORMATION_MESSAGE  );
-                limparCampos();
-            } catch (HibernateException ex) {
-                JOptionPane.showMessageDialog(this, ex, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
-            }
-            catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, ex, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
+            if(gerIG.getGerDominio().nomeOrigamiExiste(nome) != null) {
+                lblNome.setForeground(Color.red);      
+                JOptionPane.showMessageDialog(this, "Nome já cadastrado!", "ERRO Origami", JOptionPane.ERROR_MESSAGE  );
+            } else {
+                try {
+                    byte[] fotoBytes = FuncoesUteis.IconToBytes(foto);
+
+                    // INSERIR
+                    int id = gerIG.getGerDominio().inserirOrigami(nome, dific, valor, varicao, papel, qtd, fotoBytes, material);
+                    JOptionPane.showMessageDialog(this, "Origami " + id + " inserido com sucesso.", "Inserir Origami", JOptionPane.INFORMATION_MESSAGE  );
+                    limparCampos();
+                } catch (HibernateException ex) {
+                    JOptionPane.showMessageDialog(this, ex, "ERRO Origami", JOptionPane.ERROR_MESSAGE  );
+                }
+                catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, ex, "ERRO Origami", JOptionPane.ERROR_MESSAGE  );
+                }
             }
         }
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
-    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         limparCampos();
-    }//GEN-LAST:event_btnLimparActionPerformed
+        if(oriSelecionado != null) {
+            oriSelecionado = null;
+            habilitarBotoes();
+            boxVariacao.setEnabled(true);
+        }
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
+    private void ExcluirModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExcluirModActionPerformed
+        editarOuExcluirActionPerformed(evt, "Excluir", tbModular, "Modular");
+    }//GEN-LAST:event_ExcluirModActionPerformed
+
+    private void ExcluirArqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExcluirArqActionPerformed
+        editarOuExcluirActionPerformed(evt, "Excluir", tbArquit, "Arquitetônico");
+    }//GEN-LAST:event_ExcluirArqActionPerformed
+
+    private void ExcluirBlockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExcluirBlockActionPerformed
+        editarOuExcluirActionPerformed(evt, "Excluir", tbBlock, "Block Folding");
+    }//GEN-LAST:event_ExcluirBlockActionPerformed
+
+    private void ExcluirBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExcluirBillActionPerformed
+        editarOuExcluirActionPerformed(evt, "Excluir", tbBill, "Bill Folding");
+    }//GEN-LAST:event_ExcluirBillActionPerformed
+
+    private void EditarModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarModActionPerformed
+        editarOuExcluirActionPerformed(evt, "Editar", tbModular, "");
+    }//GEN-LAST:event_EditarModActionPerformed
+
+    private void EditarArqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarArqActionPerformed
+        editarOuExcluirActionPerformed(evt, "Editar", tbArquit, "");
+    }//GEN-LAST:event_EditarArqActionPerformed
+
+    private void EditarBlockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarBlockActionPerformed
+        editarOuExcluirActionPerformed(evt, "Editar", tbBlock, "");
+    }//GEN-LAST:event_EditarBlockActionPerformed
+
+    private void EditarBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditarBillActionPerformed
+        editarOuExcluirActionPerformed(evt, "Editar", tbBill, "");
+    }//GEN-LAST:event_EditarBillActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        String nome = txtNome.getText();
+        String dific = boxDificuldade.getSelectedItem().toString();
+        Float valor = Float.parseFloat(spnPreco.getValue().toString());
+
+        String varicao = boxVariacao.getSelectedItem().toString();
+        String papel = boxTipoPapel.getSelectedItem().toString();
+        int qtd = Integer.parseInt(spnQtdPecas.getValue().toString());
+
+        Icon foto = lblFoto.getIcon();
+
+        List<String> material = new ArrayList<>();
+        if(chkTassel.isSelected()) {
+            material.add(chkTassel.getText());
+        }
+        if(chkBijuteria.isSelected()) {
+            material.add(chkBijuteria.getText());
+        }
+        if(chkVerniz.isSelected()) {
+            material.add(chkVerniz.getText());
+        }
+        if(chkPompom.isSelected()) {
+            material.add(chkPompom.getText());
+        }
+        if(chkCola.isSelected()) {
+            material.add(chkCola.getText());
+        }
+        if(chkNylon.isSelected()) {
+            material.add(chkNylon.getText());
+        }
+        if(chkPisca.isSelected()) {
+            material.add(chkPisca.getText());
+        }
+        if(chkMandala.isSelected()) {
+            material.add(chkMandala.getText());
+        }
+        if(chkBarbante.isSelected()) {
+            material.add(chkBarbante.getText());
+        }
+        if(chkOutros.isSelected()) {
+            material.add(chkOutros.getText());
+        }
+
+        if( validarCampos() ) {
+             // UPDATE NO BANCO
+            if(gerIG.getGerDominio().nomeOrigamiExiste(nome) != null && !gerIG.getGerDominio().nomeOrigamiExiste(nome).equals(oriSelecionado)) {
+                lblNome.setForeground(Color.red);      
+                JOptionPane.showMessageDialog(this, "Nome já cadastrado!", "ERRO Origami", JOptionPane.ERROR_MESSAGE  );
+            } else {
+                try {
+                    byte[] fotoBytes = FuncoesUteis.IconToBytes(foto);
+
+                    // UPDATE
+                    gerIG.getGerDominio().alterarOrigami(oriSelecionado, nome, dific, valor, varicao, papel, qtd, fotoBytes, material);
+                    JOptionPane.showMessageDialog(this, "Origami " + oriSelecionado.getIdOrigami() + " alterado com sucesso.", "Alterar Origami", JOptionPane.INFORMATION_MESSAGE  );
+                    btnCancelarActionPerformed(evt);
+                    boxVariacao.setEnabled(true);
+                } catch (HibernateException ex) {
+                    JOptionPane.showMessageDialog(this, ex, "ERRO Origami", JOptionPane.ERROR_MESSAGE  );
+                }
+                catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, ex, "ERRO Origami", JOptionPane.ERROR_MESSAGE  );
+                }
+            }
+        }
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
+        String pesquisar = boxStatus.getSelectedItem().toString();
+        if("Todos".equals(pesquisar)) {
+            carregarVendas();
+        } else {
+            try {
+                List<CarrinhoCompra> compras = gerIG.getGerDominio().statusDaCompra(pesquisar);
+
+                DefaultTableModel tableModel = FuncoesUteis.defaultTableCenter(tbVendas);
+
+                for ( CarrinhoCompra venda : compras ) {
+                    tableModel.addRow( venda.toArray() );                
+                }
+
+                tbVendas.setModel(tableModel);
+                tbVendas.setShowVerticalLines(false);
+
+            } catch (HibernateException | ParseException  ex) {
+                JOptionPane.showMessageDialog(this, ex, "ERRO ao PESQUISAR Carrinhos de Compra", JOptionPane.ERROR_MESSAGE  );
+            } 
+        }
+    }//GEN-LAST:event_btnPesquisarActionPerformed
+
+    private void btnEditarStatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarStatusActionPerformed
+        int row = tbVendas.getSelectedRow();
+
+        if (row != -1) {                                             
+            CarrinhoCompra venda = (CarrinhoCompra) tbVendas.getValueAt(row, 0);
+
+            String[] options = {"Pedido realizado", "Pagamento confirmado", "Pedido enviado", "Saiu para entrega", "Pedido entregue", "Erro no pagamento", "Cancelado"};
+            JComboBox<String> comboBox = new JComboBox<>(options);
+
+            int result = JOptionPane.showOptionDialog(this, comboBox, "Selecione uma opção para alterar status",
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+
+            if (result == JOptionPane.OK_OPTION) {
+                try {
+                    String selectedOption = (String) comboBox.getSelectedItem();
+                    gerIG.getGerDominio().alterarStatusCompra(venda, selectedOption);
+                    JOptionPane.showMessageDialog(this, "Carrinho de Compra " + venda.getIdCarrinhoCompra()+ " alterado com sucesso.", "Alterar Carrinho de Compra", JOptionPane.INFORMATION_MESSAGE  );
+                    carregarVendas();
+                    boxStatus.setSelectedIndex(0);
+                } catch (HibernateException ex) {
+                    JOptionPane.showMessageDialog(this, ex, "ERRO Carrinho de Compra", JOptionPane.ERROR_MESSAGE  );
+                }
+                catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, ex, "ERRO Carrinho de Compra", JOptionPane.ERROR_MESSAGE  );
+                }
+            }
+        }
+    }//GEN-LAST:event_btnEditarStatusActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            List<Origami> origami = gerIG.getGerDominio().listar(Origami.class);
+            gerIG.getGerRelatorios().relComLista(origami, "reportGeral.jasper");
+            
+            List<Avaliacao> aval = gerIG.getGerDominio().listar(Avaliacao.class);
+            gerIG.getGerRelatorios().relComLista(aval, "reportClientes.jasper");
+            
+        } catch (HibernateException ex) {
+            JOptionPane.showMessageDialog(this, "ERRO ao LISTAR Relatório Geral" + ex  );
+        } 
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void carregarVendas() {
+        try {
+            List<CarrinhoCompra> compras = gerIG.getGerDominio().listar(CarrinhoCompra.class);
+            
+            DefaultTableModel tableModel = FuncoesUteis.defaultTableCenter(tbVendas);
+            
+            for ( CarrinhoCompra venda : compras ) {
+                tableModel.addRow( venda.toArray() );                
+            }
+            
+            tbVendas.setModel(tableModel);
+            tbVendas.setShowVerticalLines(false);
+            
+        } catch (HibernateException | ParseException  ex) {
+            JOptionPane.showMessageDialog(this, ex, "ERRO ao LISTAR Carrinhos de Compra", JOptionPane.ERROR_MESSAGE  );
+        } 
+    }
+    
+    private void editarOuExcluirActionPerformed(java.awt.event.ActionEvent evt, String acao, JTable tabela, String condicao) {
+        int row = tabela.getSelectedRow();
+
+        if (row != -1) {
+            Origami origami = (Origami) tabela.getValueAt(row, 0);
+
+            if (origami != null) {
+                if (acao.equals("Editar")) {
+                    oriSelecionado = origami;
+                    habilitarBotoes();
+                    tbPanOrigami.setSelectedIndex(0);
+                    alterarDados();
+                } else if (acao.equals("Excluir")) {
+                    try {
+                        gerIG.getGerDominio().excluir(origami);
+                        carregarDados(tabela, condicao);
+                    } catch (HibernateException ex) {
+                        JOptionPane.showMessageDialog(this, ex, "ERRO Excluir Origami", JOptionPane.ERROR_MESSAGE  );
+                    }
+                    catch (Exception ex) {
+                        JOptionPane.showMessageDialog(this, "ERRO!\n\nO origami "+origami.getNome()+" está referenciado em algumas compras.", "ERRO Excluir Origami", JOptionPane.ERROR_MESSAGE  );
+                    }
+                }
+            }
+        }
+    }
+    
+    private void alterarDados() {
+        lblNome.setForeground(Color.DARK_GRAY);
+        lblPreco.setForeground(Color.DARK_GRAY); 
+        lblQtdPecas.setForeground(Color.DARK_GRAY);
+        lblFoto.setForeground(Color.DARK_GRAY);
+        
+        TitledBorder titledBorder = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Materiais");
+        titledBorder.setTitleFont(new java.awt.Font("Segoe UI", 0, 14));
+        titledBorder.setTitleColor(Color.DARK_GRAY);
+        panelMateriais.setBorder(titledBorder);
+        
+        txtNome.setText(oriSelecionado.getNome());
+        boxDificuldade.setSelectedItem(oriSelecionado.getDificuldade());
+        spnPreco.setValue(oriSelecionado.getPreco());
+
+        boxVariacao.setSelectedItem(oriSelecionado.getCategoria());
+        boxVariacao.setEnabled(false);
+        
+        boxTipoPapel.setSelectedItem(oriSelecionado.getTipoPapel());
+        spnQtdPecas.setValue(oriSelecionado.getQtdPecas());
+        
+        byte[] imagemBytes = oriSelecionado.getFoto();
+        Image imagemOriginal = Toolkit.getDefaultToolkit().createImage(imagemBytes);
+        ImageIcon imagemRedimensionadaIcon = new ImageIcon(imagemOriginal);
+        resizeFoto(imagemRedimensionadaIcon);
+
+        List<String> materiais = new ArrayList<>(oriSelecionado.getMateriais());
+        for(String mat : materiais) {
+            if(mat.equals(chkTassel.getText())) {
+                chkTassel.setSelected(true);
+            } else {
+                chkTassel.setSelected(false);
+            }
+            
+            if(mat.equals(chkBijuteria.getText())) {
+                chkBijuteria.setSelected(true);
+            } else {
+                chkBijuteria.setSelected(false);
+            }
+            
+            if(mat.equals(chkVerniz.getText())) {
+                chkVerniz.setSelected(true);
+            } else {
+                chkVerniz.setSelected(false);
+            }
+            
+            if(mat.equals(chkPompom.getText())) {
+                chkPompom.setSelected(true);
+            } else {
+                chkPompom.setSelected(false);
+            }
+
+            if(mat.equals(chkCola.getText())) {
+                chkCola.setSelected(true);
+            } else {
+                chkCola.setSelected(false);
+            }
+
+            if(mat.equals(chkNylon.getText())) {
+                chkNylon.setSelected(true);
+            } else {
+                chkNylon.setSelected(false);
+            }
+
+            if(mat.equals(chkPisca.getText())) {
+                chkPisca.setSelected(true);
+            } else {
+                chkPisca.setSelected(false);
+            }
+
+            if(mat.equals(chkMandala.getText())) {
+                chkMandala.setSelected(true);
+            } else {
+                chkMandala.setSelected(false);
+            }
+
+            if(mat.equals(chkBarbante.getText())) {
+                chkBarbante.setSelected(true);
+            } else {
+                chkBarbante.setSelected(false);
+            }
+
+            if(mat.equals(chkOutros.getText())) {
+                chkOutros.setSelected(true);
+            } else {
+                chkOutros.setSelected(false);
+            }
+        }
+    }
+    
     private void panelEvento() {
         tbPanOrigami.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
@@ -725,37 +1241,32 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
                     carregarDados(tbBlock, "Block Folding");
                 } else if (selectedIndex == 4) {
                     carregarDados(tbBill, "Bill Folding");
+                } else if (selectedIndex == 5) {
+                    FuncoesUteis.customizeTableHeader(tbVendas);
+                    FuncoesUteis.customizeTableCell(tbVendas, 3);
+                    carregarVendas();
                 }
             }
         });
     }
     
     private void carregarDados(JTable tabela, String condicao) {
-        List<Origami> origamis = gerIG.getGerDominio().listar(Origami.class);
+        try {
+            List<Origami> origamis = gerIG.getGerDominio().listar(Origami.class);
 
-        DefaultTableModel tableModel = (DefaultTableModel) tabela.getModel();
-        tableModel.setRowCount(0);
-        
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-        centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        tabela.setDefaultRenderer(Object.class, centerRenderer);
-        
-        for (Origami origami : origamis) {
-            if (condicao.equals(origami.getCategoria())) {
-                String nome = origami.getNome();
-                String dificuldade = origami.getDificuldade();
-                String papel = origami.getTipoPapel();
-                float preco = origami.getPreco();
-                
-                String precoStr = "R$ " + Float.toString(preco);
+            DefaultTableModel tableModel = FuncoesUteis.defaultTableCenter(tabela);
 
-                Object[] rowData = {nome, dificuldade, papel, precoStr};
-                tableModel.addRow(rowData);
+            for (Origami origami : origamis) {
+                if (condicao.equals(origami.getCategoria())) {
+                    tableModel.addRow(origami.toArray());
+                }
             }
-        }
 
-        tabela.setModel(tableModel);
-        tabela.setShowVerticalLines(false);
+            tabela.setModel(tableModel);
+            tabela.setShowVerticalLines(false);    
+        } catch (HibernateException | ParseException  ex) {
+            JOptionPane.showMessageDialog(this, ex, "ERRO ao LISTAR Origamis", JOptionPane.ERROR_MESSAGE  );
+        } 
     }
     
     private void resizeFoto(ImageIcon img) {
@@ -863,13 +1374,34 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
         chkOutros.setSelected(false);
     }
     
+    public void habilitarBotoes() {
+        if ( oriSelecionado == null ) {
+            btnAdicionar.setVisible(true);
+            btnAlterar.setVisible(false);
+        } else {
+            btnAdicionar.setVisible(false);
+            btnAlterar.setVisible(true);
+        }
+    }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton EditarArq;
+    private javax.swing.JButton EditarBill;
+    private javax.swing.JButton EditarBlock;
+    private javax.swing.JButton EditarMod;
+    private javax.swing.JButton ExcluirArq;
+    private javax.swing.JButton ExcluirBill;
+    private javax.swing.JButton ExcluirBlock;
+    private javax.swing.JButton ExcluirMod;
     private javax.swing.JComboBox<String> boxDificuldade;
+    private javax.swing.JComboBox<String> boxStatus;
     private javax.swing.JComboBox<String> boxTipoPapel;
     private javax.swing.JComboBox<String> boxVariacao;
     private javax.swing.JButton btnAdicionar;
-    private javax.swing.JButton btnLimpar;
+    private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnEditarStatus;
+    private javax.swing.JButton btnPesquisar;
     private javax.swing.JCheckBox chkBarbante;
     private javax.swing.JCheckBox chkBijuteria;
     private javax.swing.JCheckBox chkCola;
@@ -882,6 +1414,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
     private javax.swing.JCheckBox chkVerniz;
     private javax.swing.JLabel dific1;
     private javax.swing.JLabel dific2;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JPanel jPanel12;
@@ -899,7 +1432,9 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
     private javax.swing.JPanel panBlock;
     private javax.swing.JPanel panModular;
     private javax.swing.JPanel panNovo;
+    private javax.swing.JPanel panVendas;
     private javax.swing.JPanel panelMateriais;
+    private javax.swing.JScrollPane scrollVendas;
     private javax.swing.JSpinner spnPreco;
     private javax.swing.JSpinner spnQtdPecas;
     private javax.swing.JTable tbArquit;
@@ -907,6 +1442,7 @@ public class DlgGerenciarOrigami extends javax.swing.JDialog {
     private javax.swing.JTable tbBlock;
     private javax.swing.JTable tbModular;
     private javax.swing.JTabbedPane tbPanOrigami;
+    private javax.swing.JTable tbVendas;
     private javax.swing.JTextField txtNome;
     // End of variables declaration//GEN-END:variables
 }

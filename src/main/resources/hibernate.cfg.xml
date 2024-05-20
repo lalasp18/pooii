@@ -16,6 +16,7 @@
     <mapping class="dominio.Avaliacao"></mapping>
     <mapping class="dominio.CarrinhoCompra"></mapping>
     <mapping class="dominio.Cliente"></mapping>
+    <mapping class="dominio.Item"></mapping>
     <mapping class="dominio.Origami"></mapping>
   </session-factory>
 </hibernate-configuration>

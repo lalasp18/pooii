@@ -5,8 +5,10 @@
 package dominio;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import javax.persistence.*;
 
 /**
@@ -21,65 +23,102 @@ public class CarrinhoCompra implements Serializable {
     @GeneratedValue ( strategy = GenerationType.IDENTITY)
     private int idCarrinhoCompra;
     
-    @OneToMany
-    @JoinColumn(name = "origami_id")
-    private List<Origami> origami;
-    
-    private int qtd;
-    
     private float frete;
-
+    private float total;
+    
+    @Temporal ( TemporalType.DATE )
+    private Date dataCompra;
+    private String status;
+    
+    @OneToMany(mappedBy = "carrinho", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Item> listaItens = new ArrayList();
+    
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
+    
     // Hibernate
     public CarrinhoCompra() {
     }
 
-    public CarrinhoCompra(int idCarrinhoCompra, List<Origami> origami, int qtd, float frete) {
+    public CarrinhoCompra(int idCarrinhoCompra, float frete, float total, Date dataCompra, String status, Cliente cliente) {
         this.idCarrinhoCompra = idCarrinhoCompra;
-        this.origami = origami;
-        this.qtd = qtd;
         this.frete = frete;
+        this.total = total;
+        this.dataCompra = dataCompra;
+        this.status = status;
+        this.cliente = cliente;
     }
 
-    public CarrinhoCompra(List<Origami> origami, int qtd, float frete) {
-        this.origami = origami;
-        this.qtd = qtd;
+    public CarrinhoCompra(float frete, float total, Date dataCompra, String status, Cliente cliente) {
         this.frete = frete;
+        this.total = total;
+        this.dataCompra = dataCompra;
+        this.status = status;
+        this.cliente = cliente;
     }
 
-    @Override
-    public String toString() {
-        return "CarrinhoCompra{" + "origami=" + origami + '}';
-    }
-    
     public int getIdCarrinhoCompra() {
         return idCarrinhoCompra;
     }
 
-    public void setIdCarrinhoCompra(int idCarrinhoCompra) {
-        this.idCarrinhoCompra = idCarrinhoCompra;
+    public float getFrete() {
+        return frete;
     }
 
-    public List<Origami> getOrigami() {
-        return origami;
+    public float getTotal() {
+        return total;
     }
 
-    public void setOrigami(List<Origami> origami) {
-        this.origami = origami;
+    public Date getDataCompra() {
+        return dataCompra;
     }
 
-    public int getQtd() {
-        return qtd;
+    public void setDataCompra(Date dataCompra) {
+        this.dataCompra = dataCompra;
     }
 
-    public void setQtd(int qtd) {
-        this.qtd = qtd;
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public List<Item> getListaItens() {
+        return listaItens;
+    }
+
+    public void setListaItens(List<Item> listaItens) {
+        this.listaItens = listaItens;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public Object[] toArray() throws ParseException {
+        return new Object[] { this, "R$ "+total,  getDtCompraFormatada(), status };
+    }
+
+    @Override
+    public String toString() {
+        return cliente.getNome();
+    }
+    
+    public String getDtCompraFormatada() throws ParseException {
+        return gerTarefas.FuncoesUteis.dateToStr(dataCompra);
     }
     
     @Override
     public int hashCode() {
         int hash = 5;
         hash = 19 * hash + this.idCarrinhoCompra;
-        hash = 19 * hash + Objects.hashCode(this.origami);
         return hash;
     }
 
@@ -96,9 +135,6 @@ public class CarrinhoCompra implements Serializable {
         }
         final CarrinhoCompra other = (CarrinhoCompra) obj;
         if (this.idCarrinhoCompra != other.idCarrinhoCompra) {
-            return false;
-        }
-        if (!Objects.equals(this.origami, other.origami)) {
             return false;
         }
         return true;

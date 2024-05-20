@@ -4,10 +4,8 @@
  */
 package intergraf;
 
-import dominio.Cliente;
 import gerTarefas.GerInterGrafica;
 import java.awt.Color;
-import java.util.List;
 import javax.swing.JOptionPane;
 import org.hibernate.HibernateException;
 
@@ -109,32 +107,27 @@ public class DlgCadastroLogin extends javax.swing.JDialog {
         String cidade = boxCidade.getSelectedItem().toString();
         
         if( validarCampos() ) {
-             // INSERIR NO BANCO
-            try {
-                //  VALIDAR EMAIL
-                boolean existe = validarEmailExistente(email);
-                // PESQUISAR
-                if(!existe) {
-                    int id = gerIG.getGerDominio().inserirCliente(nomeCliente, email, senha, cidade);
-                    JOptionPane.showMessageDialog(this, "Usuário " + id + " cadastrado com sucesso.", "Inserir Cliente", JOptionPane.INFORMATION_MESSAGE  );
+            if(gerIG.getGerDominio().pesquisarEmailCliente(email) != null) {
+                lblEmail.setForeground(Color.red);      
+                JOptionPane.showMessageDialog(this, "E-mail já cadastrado!", "ERRO Log In", JOptionPane.ERROR_MESSAGE  );
+            } else {
+                // INSERIR NO BANCO
+               try {
+                   int id = gerIG.getGerDominio().inserirCliente(nomeCliente, email, senha, cidade);
+                   JOptionPane.showMessageDialog(this, "Usuário " + id + " cadastrado com sucesso.", "Inserir Cliente", JOptionPane.INFORMATION_MESSAGE  );
 
-                    gerIG.janelaLogInCliente();
-                    limparCampos();
-                    dispose();
-                }
-            } catch (HibernateException ex) {
-                JOptionPane.showMessageDialog(this, ex, "ERRO Log in", JOptionPane.ERROR_MESSAGE  );
-            }
-            catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, ex, "ERRO Log in", JOptionPane.ERROR_MESSAGE  );
+                   gerIG.janelaLogInCliente();
+                   limparCampos();
+                   dispose();
+               } catch (HibernateException ex) {
+                   JOptionPane.showMessageDialog(this, ex, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
+               }
+               catch (Exception ex) {
+                   JOptionPane.showMessageDialog(this, ex, "ERRO Cliente", JOptionPane.ERROR_MESSAGE  );
+               }
             }
         }
     }//GEN-LAST:event_btnCadastrarActionPerformed
-
-    private boolean validarEmailExistente(String condicao) {
-        List<Cliente> emailExiste = gerIG.getGerDominio().pesquisarCliente(condicao);
-        return emailExiste.isEmpty();
-    }
     
     private boolean validarCampos() {
         

@@ -5,6 +5,8 @@
 package dominio;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.*;
@@ -32,14 +34,16 @@ public class Origami implements Serializable {
     
     @Column (length = 50, nullable = false)
     private String tipoPapel;
+    
+    @JoinColumn(name = "qtdPecas")
     private int qtdPecas;
     
     @Lob
     private byte[] foto;
     
-    @ElementCollection
-    private List<String> materiais;
-
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> materiais = new ArrayList<>();
+    
     // Hibernate
     public Origami() {
     }
@@ -65,11 +69,6 @@ public class Origami implements Serializable {
         this.qtdPecas = qtdPecas;
         this.foto = foto;
         this.materiais = materiais;
-    }
-
-    @Override
-    public String toString() {
-        return '{' + nome + foto + '}';
     }
 
     public int getIdOrigami() {
@@ -143,7 +142,16 @@ public class Origami implements Serializable {
     public void setMateriais(List<String> materiais) {
         this.materiais = materiais;
     }
-    
+
+    public Object[] toArray() throws ParseException {
+        return new Object[] { this, dificuldade, tipoPapel, "R$ "+preco };
+    }
+
+    @Override
+    public String toString() {
+        return nome;
+    }
+
     @Override
     public int hashCode() {
         int hash = 5;

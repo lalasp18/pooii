@@ -4,14 +4,19 @@
 
 package gerTarefas;
 
+import dominio.Cliente;
+import dominio.Item;
 import intergraf.DlgCadastroLogin;
 import intergraf.DlgCarrinhoDeCompras;
 import intergraf.DlgGerenciarOrigami;
+import intergraf.DlgHistorico;
 import intergraf.DlgLogIn;
 import intergraf.DlgTelaPedidos;
 import intergraf.MenuPrincipal;
 import java.awt.Frame;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import org.hibernate.HibernateException;
@@ -29,21 +34,35 @@ public class GerInterGrafica {
     private DlgCadastroLogin janCadlog = null;
     private DlgTelaPedidos janTelped = null;
     private DlgCarrinhoDeCompras janCarcomp = null;
+    private DlgHistorico janHistor = null;
     
     // GERENCIADORES de DOMINIO
     GerenciadorDominio gerDominio;
+    GerenciadorRelatorios gerRel;
+    
+    // CLIENTE LOGADO
+    Cliente gerCliente = null;
     
     public GerInterGrafica() {
         try {
             gerDominio = new GerenciadorDominio();
+            gerRel = new GerenciadorRelatorios();
         } catch (HibernateException  ex) {
             JOptionPane.showMessageDialog(janPrinc, "Erro de conexão com o banco. " + ex.getMessage() );
                 System.exit(-1);
         } 
     }
 
+    public Cliente getGerCliente() {
+        return gerCliente;
+    }
+
     public GerenciadorDominio getGerDominio() {
         return gerDominio;
+    }
+
+    public GerenciadorRelatorios getGerRelatorios() {
+        return gerRel;
     }
     
    // ABRIR JDIALOG
@@ -59,12 +78,15 @@ public class GerInterGrafica {
         return dlg;
     }
     
-    private void fecharJanela(JDialog dlg_1, JDialog dlg_2) {
+    private void fecharJanela(JDialog dlg_1, JDialog dlg_2, JDialog dlg_3) {
         if (dlg_1 != null && dlg_1.isVisible()) {
             dlg_1.dispose();
         }
         if (dlg_2 != null && dlg_2.isVisible()) {
             dlg_2.dispose();
+        }
+        if (dlg_3 != null && dlg_3.isVisible()) {
+            dlg_3.dispose();
         }
     }
 
@@ -72,10 +94,13 @@ public class GerInterGrafica {
     public void janelaPrincipal() {
         janPrinc = new MenuPrincipal(this);
         janPrinc.setVisible(true);
+        clienteDeslogado();
     }
     
     public void janelaLogInCliente() {
-        janLogin = (DlgLogIn) abrirJanela(janPrinc, janLogin, DlgLogIn.class);
+        if(gerCliente == null) {
+            janLogin = (DlgLogIn) abrirJanela(janPrinc, janLogin, DlgLogIn.class);
+        }
     }
     
     public void janelaCadCliente() {
@@ -90,15 +115,35 @@ public class GerInterGrafica {
         janCarcomp = (DlgCarrinhoDeCompras) abrirJanela(janPrinc, janCarcomp, DlgCarrinhoDeCompras.class);
     }
     
+    public void janelaHistorico() {
+        janHistor = (DlgHistorico) abrirJanela(janPrinc, janHistor, DlgHistorico.class);
+    }
+    
     public void janelaGerenciar() {
         janGeren = (DlgGerenciarOrigami) abrirJanela(janPrinc, janGeren, DlgGerenciarOrigami.class);
     }
     
     public void fecharPerfil() {
-        fecharJanela(janTelped, janCarcomp);
+        fecharJanela(janTelped, janCarcomp, janHistor);
+        clienteDeslogado();
     }
     
-
+    public boolean clienteLogado(String email, String senha) {
+        gerCliente = gerDominio.logar(email, senha);
+        if(gerCliente != null) {
+            return true;
+        }
+        return false;
+    }
+    
+    public void clienteDeslogado() {
+        gerCliente = null;
+    }
+    
+    public List<Item> produtosPedidos(){
+        return janTelped.getItensPedidos();
+    }
+    
     public static void main(String[] args) {
         
         // TRADUÇÃO

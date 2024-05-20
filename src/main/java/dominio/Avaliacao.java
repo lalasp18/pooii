@@ -51,11 +51,6 @@ public class Avaliacao implements Serializable {
         this.comentario = comentario;
     }
 
-    @Override
-    public String toString() {
-        return "Avaliacao{" + "comentario=" + comentario + '}';
-    }
-
     public int getIdAvaliacao() {
         return idAvaliacao;
     }
@@ -101,7 +96,6 @@ public class Avaliacao implements Serializable {
     public int hashCode() {
         int hash = 5;
         hash = 19 * hash + this.idAvaliacao;
-        hash = 19 * hash + Objects.hashCode(this.comentario);
         return hash;
     }
 
@@ -118,9 +112,6 @@ public class Avaliacao implements Serializable {
         }
         final Avaliacao other = (Avaliacao) obj;
         if (this.idAvaliacao != other.idAvaliacao) {
-            return false;
-        }
-        if (!Objects.equals(this.comentario, other.comentario)) {
             return false;
         }
         return true;
